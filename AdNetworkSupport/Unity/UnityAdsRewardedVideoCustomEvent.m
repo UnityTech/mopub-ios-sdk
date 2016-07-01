@@ -32,16 +32,22 @@ static NSString *const kUnityAdsOptionZoneIdKey = @"zoneId";
 - (void)requestRewardedVideoWithCustomEventInfo:(NSDictionary *)info
 {
     NSString *gameId = [info objectForKey:kMPUnityRewardedVideoGameId];
+    if (gameId == nil) {
+        [self.delegate rewardedVideoDidFailToLoadAdForCustomEvent:self error:[NSError errorWithDomain:MoPubRewardedVideoAdsSDKDomain code:MPRewardedVideoAdErrorInvalidCustomEvent userInfo:@{NSLocalizedDescriptionKey: @"Custom event class data did not contain gameId.", NSLocalizedRecoverySuggestionErrorKey: @"Update your MoPub custom event class data to contain a valid Unity Ads gameId."}]];
+        return;
+    }
+    
     self.placementId = [info objectForKey:kUnityAdsOptionPlacementIdKey];
     if (self.placementId == nil) {
         self.placementId = [info objectForKey:kUnityAdsOptionZoneIdKey];
     }
+    
     if (self.placementId == nil) {
-        // TODO: what error code is appropriate for the case where a placementId wasn't provided in the custom event data?
-        [self.delegate rewardedVideoDidFailToLoadAdForCustomEvent:self error:[NSError errorWithDomain:MoPubRewardedVideoAdsSDKDomain code:MPRewardedVideoAdErrorUnknown userInfo:nil]];
-    } else {
-        [[MPUnityRouter sharedRouter] requestVideoAdWithGameId:gameId placementId:self.placementId delegate:self];
+        [self.delegate rewardedVideoDidFailToLoadAdForCustomEvent:self error:[NSError errorWithDomain:MoPubRewardedVideoAdsSDKDomain code:MPRewardedVideoAdErrorInvalidCustomEvent userInfo:@{NSLocalizedDescriptionKey: @"Custom event class data did not contain placementId.", NSLocalizedRecoverySuggestionErrorKey: @"Update your MoPub custom event class data to contain a valid Unity Ads placementId."}]];
+        return;
     }
+    
+    [[MPUnityRouter sharedRouter] requestVideoAdWithGameId:gameId placementId:self.placementId delegate:self];
 }
 
 - (BOOL)hasAdAvailable
@@ -86,8 +92,53 @@ static NSString *const kUnityAdsOptionZoneIdKey = @"zoneId";
 
 - (void)unityAdsDidError:(UnityAdsError)error withMessage:(NSString *)message
 {
-    // TODO: should map the UnityAdsError to MoPubRewardedVideoAdsSDKDomain, or use a new domain
-    [self.delegate rewardedVideoDidFailToLoadAdForCustomEvent:self error:[NSError errorWithDomain:MoPubRewardedVideoAdsSDKDomain code:MPRewardedVideoAdErrorUnknown userInfo:nil]];
+    NSString* unityErrorMessage;
+    switch (error) {
+        case kUnityAdsErrorNotInitialized:
+            unityErrorMessage = @"Unity Ads not initialized";
+            break;
+            
+        case kUnityAdsErrorInitializedFailed:
+            unityErrorMessage = @"Unity Ads initialize failed";
+            break;
+            
+        case kUnityAdsErrorInvalidArgument:
+            unityErrorMessage = @"Unity Ads initialize given an invalid argument";
+            break;
+            
+        case kUnityAdsErrorVideoPlayerError:
+            unityErrorMessage = @"Unity Ads video player failed";
+            break;
+            
+        case kUnityAdsErrorInitSanityCheckFail:
+            unityErrorMessage = @"Unity Ads initialized in an invalid environment";
+            break;
+            
+        case kUnityAdsErrorAdBlockerDetected:
+            unityErrorMessage = @"Unity Ads failed due to presence of ad blocker";
+            break;
+            
+        case kUnityAdsErrorFileIoError:
+            unityErrorMessage = @"Unity Ads file IO error";
+            break;
+            
+        case kUnityAdsErrorDeviceIdError:
+            unityErrorMessage = @"Unity Ads encountered a bad device identifier";
+            break;
+            
+        case kUnityAdsErrorShowError:
+            unityErrorMessage = @"Unity Ads failed while attempting to show an ad";
+            break;
+            
+        case kUnityAdsErrorInternalError:
+            unityErrorMessage = @"Unity Ads experienced an internal failure";
+            break;
+            
+        default:
+            unityErrorMessage = @"Unity Ads unknown error";
+            break;
+    }
+    [self.delegate rewardedVideoDidFailToLoadAdForCustomEvent:self error:[NSError errorWithDomain:MoPubRewardedVideoAdsSDKDomain code:MPRewardedVideoAdErrorUnknown userInfo:@{NSLocalizedDescriptionKey: unityErrorMessage}]];
 }
 
 - (void) unityAdsDidStart:(NSString *)placementId
