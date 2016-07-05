@@ -62,14 +62,6 @@
 
         self.delegate = delegate;
 
-        // TODO: does the 2.0 SDK offer some way for us to provide the customerId or settings.userIdentifier to it? Perhaps a key in UADSMediationMetaData?
-//        if (customerId.length >0) {
-//            [[UnityAds sharedInstance] show:@{kUnityAdsOptionGamerSIDKey : customerId}];
-//        } else if (settings.userIdentifier.length > 0) {
-//            [[UnityAds sharedInstance] show:@{kUnityAdsOptionGamerSIDKey : settings.userIdentifier}];
-//        } else {
-//            [[UnityAds sharedInstance] show];
-//        }
         [UnityAds show:viewController placementId:placementId];
     } else {
         NSError *error = [NSError errorWithDomain:MoPubRewardedVideoAdsSDKDomain code:MPRewardedVideoAdErrorUnknown userInfo:nil];

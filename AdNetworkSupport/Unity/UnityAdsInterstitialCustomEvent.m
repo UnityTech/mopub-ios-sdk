@@ -27,7 +27,7 @@ static NSString *const kUnityAdsOptionZoneIdKey = @"zoneId";
     [[MPUnityRouter sharedRouter] clearDelegate:self];
 }
 
-- (void)requestRewardedVideoWithCustomEventInfo:(NSDictionary *)info
+- (void)requestInterstitialWithCustomEventInfo:(NSDictionary *)info
 {
     NSString *gameId = [info objectForKey:kMPUnityRewardedVideoGameId];
     self.placementId = [info objectForKey:kUnityAdsOptionPlacementIdKey];
@@ -46,7 +46,7 @@ static NSString *const kUnityAdsOptionZoneIdKey = @"zoneId";
     return [[MPUnityRouter sharedRouter] isAdAvailableForPlacementId:self.placementId];
 }
 
-- (void)presentRewardedVideoFromViewController:(UIViewController *)viewController
+- (void)showInterstitialFromRootViewController:(UIViewController *)viewController
 {
     if ([self hasAdAvailable]) {
         [[MPUnityRouter sharedRouter] presentVideoAdFromViewController:viewController customerId:nil placementId:self.placementId settings:nil delegate:self];
