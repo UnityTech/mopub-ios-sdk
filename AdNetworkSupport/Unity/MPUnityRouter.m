@@ -52,7 +52,7 @@
 
 - (BOOL)isAdAvailableForPlacementId:(NSString *)placementId
 {
-    return [UnityAds isReady:placementId] && [UnityAds getPlacementState:placementId] == kUnityAdsPlacementStateReady;
+    return [UnityAds isReady:placementId];
 }
 
 - (void)presentVideoAdFromViewController:(UIViewController *)viewController customerId:(NSString *)customerId placementId:(NSString *)placementId settings:(UnityAdsInstanceMediationSettings *)settings delegate:(id<MPUnityRouterDelegate>)delegate
