@@ -52,7 +52,6 @@ static NSString *const kUnityAdsOptionZoneIdKey = @"zoneId";
         [[MPUnityRouter sharedRouter] presentVideoAdFromViewController:viewController customerId:nil placementId:self.placementId settings:nil delegate:self];
     } else {
         MPLogInfo(@"Failed to show Unity rewarded video: Unity now claims that there is no available video ad.");
-        // TODO: MoPub doesn't have a domain for interstitial errors, returning nil for now
         [self.delegate interstitialCustomEvent:self didFailToLoadAdWithError:nil];
     }
 }
@@ -80,7 +79,6 @@ static NSString *const kUnityAdsOptionZoneIdKey = @"zoneId";
 
 - (void)unityAdsDidError:(UnityAdsError)error withMessage:(NSString *)message
 {
-    // TODO: MoPub doesn't have a domain for interstitial errors, returning nil for now
     [self.delegate interstitialCustomEvent:self didFailToLoadAdWithError:nil];
 }
 
@@ -98,7 +96,6 @@ static NSString *const kUnityAdsOptionZoneIdKey = @"zoneId";
 
 - (void)unityAdsDidFailWithError:(NSError *)error
 {
-    // TODO: MoPub doesn't have a domain for interstitial errors, returning nil for now
     [self.delegate interstitialCustomEvent:self didFailToLoadAdWithError:nil];
 }
 
