@@ -97,47 +97,4 @@
     self.isAdPlaying = NO;
 }
 
-//- (void)unityAdsVideoCompleted:(NSString *)rewardItemKey skipped:(BOOL)skipped
-//{
-//    [self.delegate unityAdsVideoCompleted:rewardItemKey skipped:skipped];
-//}
-//
-//- (void)unityAdsWillShow
-//{
-//    [self.delegate unityAdsWillShow];
-//}
-//
-//- (void)unityAdsDidShow
-//{
-//    [self.delegate unityAdsDidShow];
-//}
-//
-//- (void)unityAdsWillHide
-//{
-//    [self.delegate unityAdsWillHide];
-//}
-//
-//- (void)unityAdsDidHide
-//{
-//    [self.delegate unityAdsDidHide];
-//    self.isAdPlaying = NO;
-//}
-//
-//- (void)unityAdsWillLeaveApplication
-//{
-//    [self.delegate unityAdsWillLeaveApplication];
-//}
-//
-//- (void)unityAdsFetchCompleted
-//{
-//    [self.delegate unityAdsFetchCompleted];
-//}
-//
-//- (void)unityAdsFetchFailed
-//{
-//    NSError *error = [NSError errorWithDomain:MoPubRewardedVideoAdsSDKDomain code:MPRewardedVideoAdErrorUnknown userInfo:nil];
-//
-//    [self.delegate unityAdsDidFailWithError:error];
-//}
-
 @end
