@@ -6,21 +6,15 @@
 //
 
 #import "FakeMPInstanceProvider.h"
-#import <EventKit/EventKit.h>
-#import <EventKitUI/EventKitUI.h>
 #import <MediaPlayer/MediaPlayer.h>
-#import "MPAdWebView.h"
+#import "MPWebView.h"
 #import "FakeMPTimer.h"
-#import "MRImageDownloader.h"
 #import "MRBundleManager.h"
 #import <FBAudienceNetwork/FBAudienceNetwork.h>
 
 @interface MPInstanceProvider (ThirdPartyAdditions)
 
 #pragma mark - Third Party Integrations Category Interfaces
-#pragma mark iAd
-- (ADInterstitialAd *)buildADInterstitialAd;
-- (ADBannerView *)buildADBannerViewWithAdType:(ADAdType)adType;
 
 #pragma mark Chartboost
 - (Chartboost *)buildChartboost;
@@ -160,14 +154,17 @@
 }
 #pragma mark - HTML Ads
 
-- (MPAdWebView *)buildMPAdWebViewWithFrame:(CGRect)frame delegate:(id<UIWebViewDelegate>)delegate
+- (MPWebView *)buildMPWebViewWithFrame:(CGRect)frame delegate:(id<MPWebViewDelegate>)delegate
 {
-    if (self.fakeMPAdWebView) {
-        self.fakeMPAdWebView.frame = frame;
-        self.fakeMPAdWebView.delegate = delegate;
-        return self.fakeMPAdWebView;
+    if (self.fakeMPWebView) {
+        self.fakeMPWebView.frame = frame;
+        self.fakeMPWebView.delegate = delegate;
+        return self.fakeMPWebView;
     } else {
-        return [super buildMPAdWebViewWithFrame:frame delegate:delegate];
+        MPWebView *newWebView = [[MPWebView alloc] initWithFrame:frame];
+        newWebView.delegate = delegate;
+
+        return newWebView;
     }
 }
 
@@ -182,7 +179,7 @@
 
 #pragma mark - MRAID
 
-- (MPClosableView *)buildMRAIDMPClosableViewWithFrame:(CGRect)frame webView:(UIWebView *)webView delegate:(id<MPClosableViewDelegate>)delegate
+- (MPClosableView *)buildMRAIDMPClosableViewWithFrame:(CGRect)frame webView:(MPWebView *)webView delegate:(id<MPClosableViewDelegate>)delegate
 {
     if (self.fakeMRAIDMPClosableView != nil) {
         return self.fakeMRAIDMPClosableView;
@@ -219,7 +216,7 @@
                      }];
 }
 
-- (MRBridge *)buildMRBridgeWithWebView:(UIWebView *)webView delegate:(id<MRBridgeDelegate>)delegate
+- (MRBridge *)buildMRBridgeWithWebView:(MPWebView *)webView delegate:(id<MRBridgeDelegate>)delegate
 {
     return [self returnFake:self.fakeMRBridge
                      orCall:^{
@@ -227,56 +224,9 @@
                      }];
 }
 
-- (UIWebView *)buildUIWebViewWithFrame:(CGRect)frame
+- (MPWebView *)buildMPWebViewWithFrame:(CGRect)frame
 {
-    return [self returnFake:self.fakeUIWebView orCall:^id{
-        return [super buildUIWebViewWithFrame:frame];
-    }];
-}
-
-- (MRCalendarManager *)buildMRCalendarManagerWithDelegate:(id<MRCalendarManagerDelegate>)delegate
-{
-    return [self returnFake:self.fakeMRCalendarManager
-                     orCall:^{
-                         return [super buildMRCalendarManagerWithDelegate:delegate];
-                     }];
-}
-
-- (EKEventEditViewController *)buildEKEventEditViewControllerWithEditViewDelegate:(id <EKEventEditViewDelegate>)editViewDelegate
-{
-    if (self.fakeEKEventEditViewController) {
-        self.fakeEKEventEditViewController.editViewDelegate = editViewDelegate;
-        return self.fakeEKEventEditViewController;
-    } else {
-        return [super buildEKEventEditViewControllerWithEditViewDelegate:editViewDelegate];
-    }
-}
-
-- (EKEventStore *)buildEKEventStore
-{
-    return [self returnFake:self.fakeEKEventStore
-                     orCall:^{
-                        return [super buildEKEventStore];
-                     }];
-}
-
-- (MRPictureManager *)buildMRPictureManagerWithDelegate:(id<MRPictureManagerDelegate>)delegate
-{
-    return [self returnFake:self.fakeMRPictureManager
-                     orCall:^{
-                         return [super buildMRPictureManagerWithDelegate:delegate];
-                     }];
-}
-
-- (MRImageDownloader *)buildMRImageDownloaderWithDelegate:(id<MRImageDownloaderDelegate>)delegate
-{
-    if (self.fakeImageDownloader) {
-        self.fakeImageDownloader.delegate = delegate;
-        return self.fakeImageDownloader;
-    } else {
-        return [super buildMRImageDownloaderWithDelegate:delegate];
-    }
-
+    return [self buildMPWebViewWithFrame:frame delegate:nil];
 }
 
 - (MRVideoPlayerManager *)buildMRVideoPlayerManagerWithDelegate:(id<MRVideoPlayerManagerDelegate>)delegate
@@ -340,38 +290,6 @@
 }
 
 #pragma mark - Third Party Integrations
-
-#pragma mark iAd
-
-- (ADBannerView *)buildADBannerViewWithAdType:(ADAdType)adType
-{
-    ADBannerView *returnValue;
-
-    switch (adType) {
-        case ADAdTypeBanner:
-            returnValue = self.fakeADBannerView;
-            break;
-        case ADAdTypeMediumRectangle:
-            returnValue = self.fakeADBannerViewMediumRectangle;
-            break;
-        default:
-            returnValue = self.fakeADBannerView;
-            break;
-    }
-
-    return [self returnFake:returnValue
-                     orCall:^{
-                         return [super buildADBannerViewWithAdType:adType];
-                     }];
-}
-
-- (ADInterstitialAd *)buildADInterstitialAd
-{
-    return [self returnFake:self.fakeADInterstitialAd
-                     orCall:^{
-                         return [super buildADInterstitialAd];
-                     }];
-}
 
 #pragma mark - Facebook
 

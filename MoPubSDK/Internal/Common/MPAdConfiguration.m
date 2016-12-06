@@ -34,6 +34,8 @@ NSString * const kWidthHeaderKey = @"X-Width";
 NSString * const kDspCreativeIdKey = @"X-DspCreativeid";
 NSString * const kPrecacheRequiredKey = @"X-PrecacheRequired";
 NSString * const kIsVastVideoPlayerKey = @"X-VastVideoPlayer";
+//TODO: Remove `kForceUIWebViewKey` once WKWebView is proven
+NSString * const kForceUIWebViewKey = @"X-ForceUIWebView";
 
 NSString * const kInterstitialAdTypeHeaderKey = @"X-Fulladtype";
 NSString * const kOrientationTypeHeaderKey = @"X-Orientation";
@@ -121,6 +123,8 @@ NSString * const kRewardedVideoCompletionUrlHeaderKey = @"X-Rewarded-Video-Compl
 
         self.isVastVideoPlayer = [[headers objectForKey:kIsVastVideoPlayerKey] boolValue];
 
+        self.forceUIWebView = [[headers objectForKey:kForceUIWebViewKey] boolValue];
+
         self.creationTimestamp = [NSDate date];
 
         self.creativeId = [headers objectForKey:kCreativeIdHeaderKey];
@@ -160,7 +164,6 @@ NSString * const kRewardedVideoCompletionUrlHeaderKey = @"X-Rewarded-Video-Compl
 
     NSMutableDictionary *convertedCustomEvents = [NSMutableDictionary dictionary];
     if (self.adType == MPAdTypeBanner) {
-        [convertedCustomEvents setObject:@"MPiAdBannerCustomEvent" forKey:@"iAd"];
         [convertedCustomEvents setObject:@"MPGoogleAdMobBannerCustomEvent" forKey:@"admob_native"];
         [convertedCustomEvents setObject:@"MPMillennialBannerCustomEvent" forKey:@"millennial_native"];
         [convertedCustomEvents setObject:@"MPHTMLBannerCustomEvent" forKey:@"html"];
@@ -168,7 +171,6 @@ NSString * const kRewardedVideoCompletionUrlHeaderKey = @"X-Rewarded-Video-Compl
         [convertedCustomEvents setObject:@"MOPUBNativeVideoCustomEvent" forKey:@"json_video"];
         [convertedCustomEvents setObject:@"MPMoPubNativeCustomEvent" forKey:@"json"];
     } else if (self.adType == MPAdTypeInterstitial) {
-        [convertedCustomEvents setObject:@"MPiAdInterstitialCustomEvent" forKey:@"iAd_full"];
         [convertedCustomEvents setObject:@"MPGoogleAdMobInterstitialCustomEvent" forKey:@"admob_full"];
         [convertedCustomEvents setObject:@"MPMillennialInterstitialCustomEvent" forKey:@"millennial_full"];
         [convertedCustomEvents setObject:@"MPHTMLInterstitialCustomEvent" forKey:@"html"];
