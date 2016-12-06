@@ -7,11 +7,12 @@
 
 #import <Foundation/Foundation.h>
 #import <UnityAds/UnityAds.h>
+#import <UnityAds/UnityAdsExtended.h>
 
 @protocol MPUnityRouterDelegate;
 @class UnityAdsInstanceMediationSettings;
 
-@interface MPUnityRouter : NSObject <UnityAdsDelegate>
+@interface MPUnityRouter : NSObject <UnityAdsExtendedDelegate>
 
 @property (nonatomic, weak) id<MPUnityRouterDelegate> delegate;
 
@@ -30,6 +31,7 @@
 - (void)unityAdsDidError:(UnityAdsError)error withMessage:(NSString *)message;
 - (void)unityAdsDidStart:(NSString *)placementId;
 - (void)unityAdsDidFinish:(NSString *)placementId withFinishState:(UnityAdsFinishState)state;
+- (void)unityAdsDidClick:(NSString *)placementId;
 
 - (void)unityAdsDidFailWithError:(NSError *)error;
 

@@ -94,6 +94,11 @@ static NSString *const kUnityAdsOptionZoneIdKey = @"zoneId";
     [self.delegate interstitialCustomEventDidDisappear:self];
 }
 
+- (void) unityAdsDidClick:(NSString *)placementId
+{
+    [self.delegate interstitialCustomEventDidReceiveTapEvent:self];
+}
+
 - (void)unityAdsDidFailWithError:(NSError *)error
 {
     [self.delegate interstitialCustomEvent:self didFailToLoadAdWithError:nil];

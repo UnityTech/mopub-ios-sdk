@@ -157,6 +157,11 @@ static NSString *const kUnityAdsOptionZoneIdKey = @"zoneId";
     [self.delegate rewardedVideoDidDisappearForCustomEvent:self];
 }
 
+- (void) unityAdsDidClick:(NSString *)placementId
+{
+    [self.delegate rewardedVideoDidReceiveTapEventForCustomEvent:self];
+}
+
 - (void)unityAdsDidFailWithError:(NSError *)error
 {
     [self.delegate rewardedVideoDidFailToLoadAdForCustomEvent:self error:error];

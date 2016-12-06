@@ -77,7 +77,7 @@
     }
 }
 
-#pragma mark - UnityAdsDelegate
+#pragma mark - UnityAdsExtendedDelegate
 
 - (void)unityAdsReady:(NSString *)placementId
 {
@@ -95,6 +95,11 @@
 - (void)unityAdsDidFinish:(NSString *)placementId withFinishState:(UnityAdsFinishState)state {
     [self.delegate unityAdsDidFinish:placementId withFinishState:state];
     self.isAdPlaying = NO;
+}
+
+- (void)unityAdsDidClick:(NSString *)placementId
+{
+    [self.delegate unityAdsDidClick:placementId];
 }
 
 @end
