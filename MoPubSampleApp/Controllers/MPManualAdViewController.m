@@ -10,6 +10,11 @@
 #import "MPGlobal.h"
 #import "MPAdInfo.h"
 
+#import "MPRewardedVideoAdDetailViewController.h"
+#import "MPAdPersistenceManager.h"
+#import "MPRewardedVideo.h"
+#import "MoPub.h"
+
 @interface MPManualAdViewController ()
 
 @property (nonatomic, strong) MPInterstitialAdController *firstInterstitial;
@@ -36,6 +41,8 @@
     self.firstInterstitialShowButton.hidden = YES;
     self.secondInterstitialShowButton.hidden = YES;
 
+    [[MoPub sharedInstance] initializeRewardedVideoWithGlobalMediationSettings:@[] delegate:self];
+    
     [self registerForKeyboardNotifications];
 }
 
@@ -75,8 +82,13 @@
     [self.secondInterstitialActivityIndicator startAnimating];
     self.secondInterstitialShowButton.hidden = YES;
 
-    self.secondInterstitial = [[MPSampleAppInstanceProvider sharedProvider] buildMPInterstitialAdControllerWithAdUnitID:self.secondInterstitialTextField.text];
-    self.secondInterstitial.delegate = self;
+//    self.secondInterstitial = [[MPSampleAppInstanceProvider sharedProvider] buildMPInterstitialAdControllerWithAdUnitID:self.secondInterstitialTextField.text];
+//    self.secondInterstitial.delegate = self;
+    
+    
+    // create Instance Mediation Settings as needed here
+    [MPRewardedVideo loadRewardedVideoAdWithAdUnitID: @"e89ae282acd749e0bdd8bbf6e0696758" keywords:@"" location:nil customerId:@"testCustomerId" mediationSettings:@[]];
+    
     [self.secondInterstitial loadAd];
 }
 
@@ -279,5 +291,125 @@
 {
     [self.banner rotateToOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
 }
+
+
+
+
+
+
+
+
+//
+//- (IBAction)didTapShowButton:(id)sender
+//{
+//    if ([MPRewardedVideo hasAdAvailableForAdUnitID:self.info.ID]) {
+//        NSArray * rewards = [MPRewardedVideo availableRewardsForAdUnitID:self.info.ID];
+//        MPRewardedVideoReward * reward = rewards[self.selectedRewardIndex];
+//        [MPRewardedVideo presentRewardedVideoAdForAdUnitID:self.info.ID fromViewController:self withReward:reward];
+//    }
+//}
+//
+//- (BOOL)textFieldShouldReturn:(UITextField *)textField
+//{
+//    [textField endEditing:YES];
+//    
+//    return YES;
+//}
+//
+//#pragma mark - <MPInterstitialAdControllerDelegate>
+//
+//- (void)rewardedVideoAdDidLoadForAdUnitID:(NSString *)adUnitID
+//{
+//    [self.spinner stopAnimating];
+//    self.showButton.hidden = NO;
+//    self.loadButton.enabled = YES;
+//    
+//    self.rewardPickerView.userInteractionEnabled = true;
+//    [self.rewardPickerView reloadAllComponents];
+//}
+//
+//- (void)rewardedVideoAdDidFailToLoadForAdUnitID:(NSString *)adUnitID error:(NSError *)error
+//{
+//    self.failLabel.hidden = NO;
+//    self.loadButton.enabled = YES;
+//    [self.spinner stopAnimating];
+//}
+//
+//- (void)rewardedVideoAdWillAppearForAdUnitID:(NSString *)adUnitID
+//{
+//    self.willAppearLabel.alpha = 1.0;
+//}
+//
+//- (void)rewardedVideoAdDidAppearForAdUnitID:(NSString *)adUnitID
+//{
+//    self.didAppearLabel.alpha = 1.0;
+//}
+//
+//- (void)rewardedVideoAdWillDisappearForAdUnitID:(NSString *)adUnitID
+//{
+//    self.willDisappearLabel.alpha = 1.0;
+//}
+//
+//- (void)rewardedVideoAdDidDisappearForAdUnitID:(NSString *)adUnitID
+//{
+//    self.showButton.hidden = YES;
+//    self.didDisappearLabel.alpha = 1.0;
+//}
+//
+//- (void)rewardedVideoAdDidExpireForAdUnitID:(NSString *)adUnitID
+//{
+//    self.expireLabel.hidden = NO;
+//    self.loadButton.enabled = YES;
+//    self.showButton.hidden = YES;
+//    [self.spinner stopAnimating];
+//}
+//
+//- (void)rewardedVideoAdDidReceiveTapEventForAdUnitID:(NSString *)adUnitID
+//{
+//    self.didReceiveTapLabel.alpha = 1.0;
+//}
+//
+//- (void)rewardedVideoWillLeaveApplicationForAdUnitID:(NSString *)adUnitID
+//{
+//    
+//}
+//
+//- (void)rewardedVideoAdShouldRewardForAdUnitID:(NSString *)adUnitID reward:(MPRewardedVideoReward *)reward
+//{
+//    self.shouldRewardLabel.alpha = 1.0;
+//}
+//
+//#pragma mark - UIPickerViewDataSource
+//
+//- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
+//    return 1;
+//}
+//
+//- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
+//    if (![MPRewardedVideo hasAdAvailableForAdUnitID:self.info.ID]) {
+//        return 0;
+//    }
+//    
+//    NSArray * rewards = [MPRewardedVideo availableRewardsForAdUnitID:self.info.ID];
+//    return rewards.count;
+//}
+//
+//#pragma mark - UIPickerViewDelegate
+//
+//- (NSAttributedString *)pickerView:(UIPickerView *)pickerView attributedTitleForRow:(NSInteger)row forComponent:(NSInteger)component {
+//    NSArray * rewards = [MPRewardedVideo availableRewardsForAdUnitID:self.info.ID];
+//    MPRewardedVideoReward * reward = rewards[row];
+//    NSString * title = [NSString stringWithFormat:@"%@ %@", reward.amount, reward.currencyType];
+//    NSAttributedString * attributedTitle = [[NSAttributedString alloc] initWithString:title attributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
+//    
+//    return attributedTitle;
+//}
+//
+//- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
+//    self.selectedRewardIndex = row;
+//}
+
+
+
 
 @end

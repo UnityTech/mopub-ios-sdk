@@ -98,7 +98,8 @@
 
 - (void)didTapNewAdButton:(id)sender
 {
-    [self.navigationController pushViewController:[[MPAdEntryViewController alloc] init] animated:YES];
+//    [self.navigationController pushViewController:[[MPAdEntryViewController alloc] init] animated:YES];
+    [self.navigationController pushViewController:[[MPManualAdViewController alloc] init] animated:YES];
 }
 
 - (void)viewWillAppear:(BOOL)animated

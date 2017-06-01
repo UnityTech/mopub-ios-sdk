@@ -220,7 +220,7 @@ NSString * const kNativeVideoTrackerTextDictionaryKey = @"text";
         [convertedCustomEvents setObject:@"MPMillennialInterstitialCustomEvent" forKey:@"millennial_full"];
         [convertedCustomEvents setObject:@"MPHTMLInterstitialCustomEvent" forKey:@"html"];
         [convertedCustomEvents setObject:@"MPMRAIDInterstitialCustomEvent" forKey:@"mraid"];
-        [convertedCustomEvents setObject:@"MPMoPubRewardedVideoCustomEvent" forKey:@"rewarded_video"];
+        [convertedCustomEvents setObject:@"UnityAdsRewardedVideoCustomEvent" forKey:@"rewarded_video"];
         [convertedCustomEvents setObject:@"MPMoPubRewardedPlayableCustomEvent" forKey:@"rewarded_playable"];
     }
     if ([convertedCustomEvents objectForKey:self.networkType]) {

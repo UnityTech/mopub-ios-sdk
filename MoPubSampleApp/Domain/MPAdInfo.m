@@ -72,7 +72,7 @@
 + (NSArray *)rewardedVideoAds
 {
     return @[
-             [MPAdInfo infoWithTitle:@"Rewarded Video Ad" ID:@"8f000bd5e00246de9c789eed39ff6096" type:MPAdInfoRewardedVideo],
+             [MPAdInfo infoWithTitle:@"Rewarded Video Ad" ID:@"e89ae282acd749e0bdd8bbf6e0696758" type:MPAdInfoRewardedVideo],
              [MPAdInfo infoWithTitle:@"Rewarded Rich Media Ad" ID:@"98c29e015e7346bd9c380b1467b33850" type:MPAdInfoRewardedVideo],
     // 3rd Party Networks
     #if CUSTOM_EVENTS_ENABLED
