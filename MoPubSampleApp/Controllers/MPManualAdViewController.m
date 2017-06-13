@@ -21,6 +21,7 @@
 @property (nonatomic, strong) MPInterstitialAdController *firstInterstitial;
 @property (nonatomic, strong) MPInterstitialAdController *rewarded;
 @property (nonatomic, strong) MPInterstitialAdController *secondInterstitial;
+@property (nonatomic, strong) MPInterstitialAdController *anotherInterstitial;
 
 @property (nonatomic, strong) MPAdView *banner;
 @property (nonatomic, strong) MPAdView *mRectBanner;
@@ -30,6 +31,7 @@
 @property (nullable, nonatomic, copy) NSString *rewardedID;
 @property (nullable, nonatomic, copy) NSString *selectedRewardIndex;
 
+@property NSArray* rewardIds;
 
 @end
 
@@ -45,12 +47,14 @@
     }
 #endif
 
+    self.rewardIds = @[ @"e89ae282acd749e0bdd8bbf6e0696758", @"a2e918c1c6bb479ca5fcaf3403f02135" ];
+    
     self.title = @"Manual";
     self.rewardPickerView.dataSource = self;
     self.rewardPickerView.delegate = self;
     self.rewardedID = @"e89ae282acd749e0bdd8bbf6e0696758";
-    self.firstInterstitialShowButton.hidden = YES;
-    self.secondInterstitialShowButton.hidden = YES;
+    self.firstInterstitialShowButton.enabled = YES;
+    self.secondInterstitialShowButton.enabled = YES;
     self.selectedRewardIndex = 0;
 
     [[MoPub sharedInstance] initializeRewardedVideoWithGlobalMediationSettings:@[] delegate:self];
@@ -72,25 +76,38 @@
 
 - (IBAction)didTapFirstInterstitialLoadButton:(id)sender
 {
-    self.firstInterstitialLoadButton.enabled = NO;
-    self.firstInterstitialStatusLabel.text = @"";
-    [self.firstInterstitialActivityIndicator startAnimating];
-    self.firstInterstitialShowButton.hidden = YES;
-
-   // self.firstInterstitial = [[MPSampleAppInstanceProvider sharedProvider] buildMPInterstitialAdControllerWithAdUnitID:self.firstInterstitialTextField.text];
-   
-    self.firstInterstitial = [[MPSampleAppInstanceProvider sharedProvider] buildMPInterstitialAdControllerWithAdUnitID:@"d9740275876e4b348eda8bc983a7158a"];
-    self.firstInterstitial.delegate = self;
-    [self.firstInterstitial loadAd];
+    NSString* rewardId = @"e89ae282acd749e0bdd8bbf6e0696758";
+    NSLog(@"RewardID=%@", rewardId);
+    [MPRewardedVideo loadRewardedVideoAdWithAdUnitID: rewardId keywords:@"" location:nil customerId:@"testCustomerId" mediationSettings:@[]];
+    
+//    self.firstInterstitialLoadButton.enabled = NO;
+//    self.firstInterstitialStatusLabel.text = @"";
+//    [self.firstInterstitialActivityIndicator startAnimating];
+//    self.firstInterstitialShowButton.hidden = YES;
+//
+//   // self.firstInterstitial = [[MPSampleAppInstanceProvider sharedProvider] buildMPInterstitialAdControllerWithAdUnitID:self.firstInterstitialTextField.text];
+//   
+//    self.firstInterstitial = [[MPSampleAppInstanceProvider sharedProvider] buildMPInterstitialAdControllerWithAdUnitID:@"d9740275876e4b348eda8bc983a7158a"];
+//    self.firstInterstitial.delegate = self;
+//    [self.firstInterstitial loadAd];
 }
 
 - (IBAction)didTapFirstInterstitialShowButton:(id)sender
 {
-    [self.firstInterstitial showFromViewController:self];
+    // [self.rewarded showFromViewController:self];
+    if ([MPRewardedVideo hasAdAvailableForAdUnitID:@"e89ae282acd749e0bdd8bbf6e0696758"]) {
+        NSArray * rewards = [MPRewardedVideo availableRewardsForAdUnitID: @"e89ae282acd749e0bdd8bbf6e0696758"];
+        MPRewardedVideoReward * reward = rewards[0];
+        [MPRewardedVideo presentRewardedVideoAdForAdUnitID:self.rewardedID fromViewController:self withReward:reward];
+    }
 }
 
 - (IBAction)didTapSecondInterstitialLoadButton:(id)sender
 {
+    NSString* rewardId = @"a2e918c1c6bb479ca5fcaf3403f02135";
+    NSLog(@"RewardID=%@", rewardId);
+    [MPRewardedVideo loadRewardedVideoAdWithAdUnitID: rewardId keywords:@"" location:nil customerId:@"testCustomerId" mediationSettings:@[]];
+    /*
     self.secondInterstitialLoadButton.enabled = NO;
     self.secondInterstitialStatusLabel.text = @"";
     [self.secondInterstitialActivityIndicator startAnimating];
@@ -104,15 +121,16 @@
     [MPRewardedVideo loadRewardedVideoAdWithAdUnitID: @"e89ae282acd749e0bdd8bbf6e0696758" keywords:@"" location:nil customerId:@"testCustomerId" mediationSettings:@[]];
     
    // [self.rewarded loadAd];
+     */
 }
 
 - (IBAction)didTapSecondInterstitialShowButton:(id)sender
 {
    // [self.rewarded showFromViewController:self];
-    if ([MPRewardedVideo hasAdAvailableForAdUnitID:self.rewardedID]) {
-        NSArray * rewards = [MPRewardedVideo availableRewardsForAdUnitID: @"e89ae282acd749e0bdd8bbf6e0696758"];
+    if ([MPRewardedVideo hasAdAvailableForAdUnitID:@"a2e918c1c6bb479ca5fcaf3403f02135"]) {
+        NSArray * rewards = [MPRewardedVideo availableRewardsForAdUnitID: @"a2e918c1c6bb479ca5fcaf3403f02135"];
         MPRewardedVideoReward * reward = rewards[0];
-        [MPRewardedVideo presentRewardedVideoAdForAdUnitID:self.rewardedID fromViewController:self withReward:reward];
+        [MPRewardedVideo presentRewardedVideoAdForAdUnitID:@"a2e918c1c6bb479ca5fcaf3403f02135" fromViewController:self withReward:reward];
     }
 }
 
@@ -340,9 +358,8 @@
 
 - (void)rewardedVideoAdDidLoadForAdUnitID:(NSString *)adUnitID
 {
-    [self.secondInterstitialActivityIndicator stopAnimating];
-    self.secondInterstitialShowButton.hidden = NO;
-    self.secondInterstitialLoadButton.enabled = YES;
+    NSLog(@"AdUnit=%@ loaded.", adUnitID);
+    [self disableLoadButtonAndEnableShowButton:adUnitID];
     
   //  self.rewardPickerView.userInteractionEnabled = true;
   //  [self.rewardPickerView reloadAllComponents];
@@ -350,53 +367,42 @@
 
 - (void)rewardedVideoAdDidFailToLoadForAdUnitID:(NSString *)adUnitID error:(NSError *)error
 {
-    self.secondInterstitialStatusLabel.text = @"Failed";
-    self.secondInterstitialLoadButton.enabled = YES;
-    [self.secondInterstitialActivityIndicator stopAnimating];
+    NSLog(@"Rewarded video failed to load. (adUnitId=%@, error=%@)", adUnitID, error);
+    [self enableLoadButtonAndDisableShowButton:adUnitID];
+    [self setAdUnitStatusText:adUnitID: @"Failed to load."];
 }
 
 - (void)rewardedVideoAdWillAppearForAdUnitID:(NSString *)adUnitID
 {
-    self.secondInterstitialStatusLabel.text = @"Failed";
-    self.secondInterstitialLoadButton.enabled = YES;
-    [self.secondInterstitialActivityIndicator stopAnimating];
+    NSLog(@"Appearing (adUnit=%@)", adUnitID);
 }
 
 - (void)rewardedVideoAdDidAppearForAdUnitID:(NSString *)adUnitID
 {
-    self.secondInterstitialStatusLabel.text = @"Failed";
-    self.secondInterstitialLoadButton.enabled = YES;
-    [self.secondInterstitialActivityIndicator stopAnimating];
-
+    NSLog(@"Appeared (adUnit=%@)", adUnitID);
 }
 
 - (void)rewardedVideoAdWillDisappearForAdUnitID:(NSString *)adUnitID
 {
-    self.secondInterstitialStatusLabel.text = @"Failed";
-    self.secondInterstitialLoadButton.enabled = NO;
-    [self.secondInterstitialActivityIndicator stopAnimating];
+    NSLog(@"Disappearing (adUnit=%@)", adUnitID);
 }
 
 - (void)rewardedVideoAdDidDisappearForAdUnitID:(NSString *)adUnitID
 {
-    self.secondInterstitialStatusLabel.text = @"Failed";
-    self.secondInterstitialLoadButton.enabled = NO;
-    [self.secondInterstitialActivityIndicator stopAnimating];
+    NSLog(@"Disappeared (adUnit=%@)", adUnitID);
+    [self enableLoadButtonAndDisableShowButton:adUnitID];
 }
 
 - (void)rewardedVideoAdDidExpireForAdUnitID:(NSString *)adUnitID
 {
-    self.secondInterstitialStatusLabel.text = @"Failed";
-    self.secondInterstitialLoadButton.enabled = NO;
-    [self.secondInterstitialActivityIndicator stopAnimating];
-
+    NSLog(@"Expired (adUnit=%@)", adUnitID);
+    [self enableLoadButtonAndDisableShowButton:adUnitID];
+    [self setAdUnitStatusText:adUnitID: @"Loaded"];
 }
 
 - (void)rewardedVideoAdDidReceiveTapEventForAdUnitID:(NSString *)adUnitID
 {
-    self.secondInterstitialStatusLabel.text = @"Failed";
-    self.secondInterstitialLoadButton.enabled = NO;
-    [self.secondInterstitialActivityIndicator stopAnimating];
+    NSLog(@"Tapped (adUnit=%@)", adUnitID);
 }
 
 - (void)rewardedVideoWillLeaveApplicationForAdUnitID:(NSString *)adUnitID
@@ -404,11 +410,44 @@
     
 }
 
+- (void)enableLoadButtonAndDisableShowButton:(NSString*) adUnitID {
+    /*
+    if ([adUnitID isEqualToString:@"a2e918c1c6bb479ca5fcaf3403f02135"]) {
+        self.secondInterstitialLoadButton.enabled = YES;
+        self.secondInterstitialActivityIndicator.hidden = YES;
+        self.secondInterstitialShowButton.enabled = NO;
+    } else {
+        self.firstInterstitialLoadButton.enabled = YES;
+        self.firstInterstitialActivityIndicator.hidden = YES;
+        self.firstInterstitialShowButton.enabled = NO;
+    }
+     */
+}
+
+- (void)disableLoadButtonAndEnableShowButton:(NSString*) adUnitID {
+    /*
+    if ([adUnitID isEqualToString:@"a2e918c1c6bb479ca5fcaf3403f02135"]) {
+        self.secondInterstitialLoadButton.enabled = NO;
+        // self.secondInterstitialActivityIndicator.hidden = NO;
+        self.secondInterstitialShowButton.enabled = YES;
+    } else {
+        self.firstInterstitialLoadButton.enabled = NO;
+        // self.firstInterstitialActivityIndicator.hidden = NO;
+        self.firstInterstitialShowButton.enabled = YES;
+    }
+     */
+}
+
+- (void) setAdUnitStatusText:(NSString*) adUnitID :(NSString*) text {
+    if ([adUnitID isEqualToString:@"a2e918c1c6bb479ca5fcaf3403f02135"]) {
+        self.secondInterstitialStatusLabel.text = text;
+    } else {
+        self.firstInterstitialStatusLabel.text = text;
+    }
+}
+
 - (void)rewardedVideoAdShouldRewardForAdUnitID:(NSString *)adUnitID reward:(MPRewardedVideoReward *)reward
 {
-    self.secondInterstitialStatusLabel.text = @"Failed";
-    self.secondInterstitialLoadButton.enabled = NO;
-    [self.secondInterstitialActivityIndicator stopAnimating];
 }
 
 //#pragma mark - UIPickerViewDataSource
