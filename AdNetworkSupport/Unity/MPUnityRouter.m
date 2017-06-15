@@ -20,6 +20,13 @@
 
 @implementation MPUnityRouter
 
+- (id) init {
+    self = [super init];
+    self.delegateMap = [[NSMutableDictionary alloc] init];
+    
+    return self;
+}
+
 + (MPUnityRouter *)sharedRouter
 {
     return [[MPInstanceProvider sharedProvider] sharedMPUnityRouter];
@@ -28,8 +35,8 @@
 - (void)requestVideoAdWithGameId:(NSString *)gameId placementId:(NSString *)placementId delegate:(id<MPUnityRouterDelegate>)delegate;
 {
     if (!self.isAdPlaying) {
-        self.delegate = delegate;
-
+        [self.delegateMap setObject:delegate forKey:placementId];
+        
         static dispatch_once_t unityInitToken;
         dispatch_once(&unityInitToken, ^{
             UADSMediationMetaData *mediationMetaData = [[UADSMediationMetaData alloc] init];
@@ -41,7 +48,7 @@
 
         // Need to check immediately as an ad may be cached.
         if ([self isAdAvailableForPlacementId:placementId]) {
-            [self.delegate unityAdsReady:placementId];
+            [self unityAdsReady:placementId];
         }
         // MoPub timeout will handle the case for an ad failing to load.
     } else {
@@ -59,14 +66,15 @@
 {
     if (!self.isAdPlaying && [self isAdAvailableForPlacementId:placementId]) {
         self.isAdPlaying = YES;
-
-        self.delegate = delegate;
-
         [UnityAds show:viewController placementId:placementId];
     } else {
         NSError *error = [NSError errorWithDomain:MoPubRewardedVideoAdsSDKDomain code:MPRewardedVideoAdErrorUnknown userInfo:nil];
         [delegate unityAdsDidFailWithError:error];
     }
+}
+
+- (id<MPUnityRouterDelegate>)getDelegate:(NSString*) placementId {
+    return [self.delegateMap valueForKey:placementId];
 }
 
 - (void)clearDelegate:(id<MPUnityRouterDelegate>)delegate
@@ -81,25 +89,38 @@
 
 - (void)unityAdsReady:(NSString *)placementId
 {
-    [self.delegate unityAdsReady:placementId];
+    id delegate = [self getDelegate:placementId];
+    if (delegate != nil) {
+        [delegate unityAdsReady:placementId];
+    }
 }
 
 - (void)unityAdsDidError:(UnityAdsError)error withMessage:(NSString *)message {
-    [self.delegate unityAdsDidError:error withMessage:message];
+    // [self.delegate unityAdsDidError:error withMessage:message];
+    // TODO this will need to be passed in the placement ID in order for delegation to work.
 }
 
 - (void)unityAdsDidStart:(NSString *)placementId {
-    [self.delegate unityAdsDidStart:placementId];
+    id delegate = [self getDelegate:placementId];
+    if (delegate != nil) {
+        [delegate unityAdsDidStart:placementId];
+    }
 }
 
 - (void)unityAdsDidFinish:(NSString *)placementId withFinishState:(UnityAdsFinishState)state {
-    [self.delegate unityAdsDidFinish:placementId withFinishState:state];
+    id delegate = [self getDelegate:placementId];
+    if (delegate != nil) {
+        [delegate unityAdsDidFinish:placementId withFinishState:state];
+    }
+    [self.delegateMap removeObjectForKey:placementId];
     self.isAdPlaying = NO;
 }
 
-- (void)unityAdsDidClick:(NSString *)placementId
-{
-    [self.delegate unityAdsDidClick:placementId];
+- (void)unityAdsDidClick:(NSString *)placementId {
+    id delegate = [self getDelegate:placementId];
+    if (delegate != nil) {
+        [delegate unityAdsDidClick:placementId];
+    }
 }
 
 @end
