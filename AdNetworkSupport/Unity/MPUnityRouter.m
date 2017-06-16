@@ -90,9 +90,11 @@
 
 - (void)unityAdsReady:(NSString *)placementId
 {
-    id delegate = [self getDelegate:placementId];
-    if (delegate != nil) {
-        [delegate unityAdsReady:placementId];
+    if (!self.isAdPlaying) {
+        id delegate = [self getDelegate:placementId];
+        if (delegate != nil) {
+            [delegate unityAdsReady:placementId];
+        }
     }
 }
 
@@ -130,7 +132,7 @@
 
 - (void)unityAdsPlacementStateChanged:(NSString *)placementId oldState:(UnityAdsPlacementState)oldState newState:(UnityAdsPlacementState)newState {
     id delegate = [self getDelegate:placementId];
-    if (delegate != nil) {
+    if (delegate != nil && [delegate respondsToSelector:@selector(unityAdsPlacementStateChanged:oldState:newState:)]) {
         [delegate unityAdsPlacementStateChanged:placementId oldState:oldState newState:newState];
     }
 }
