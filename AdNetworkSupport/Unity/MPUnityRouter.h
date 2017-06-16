@@ -16,6 +16,7 @@
 
 @property (nonatomic, weak) id<MPUnityRouterDelegate> delegate;
 @property NSMutableDictionary* delegateMap;
+@property NSString* currentPlacementId;
 
 + (MPUnityRouter *)sharedRouter;
 

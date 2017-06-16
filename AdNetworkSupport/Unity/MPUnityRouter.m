@@ -66,6 +66,7 @@
 {
     if (!self.isAdPlaying && [self isAdAvailableForPlacementId:placementId]) {
         self.isAdPlaying = YES;
+        self.currentPlacementId = placementId;
         [UnityAds show:viewController placementId:placementId];
     } else {
         NSError *error = [NSError errorWithDomain:MoPubRewardedVideoAdsSDKDomain code:MPRewardedVideoAdErrorUnknown userInfo:nil];
@@ -98,6 +99,10 @@
 - (void)unityAdsDidError:(UnityAdsError)error withMessage:(NSString *)message {
     // [self.delegate unityAdsDidError:error withMessage:message];
     // TODO this will need to be passed in the placement ID in order for delegation to work.
+    id delegate = [self getDelegate:self.currentPlacementId];
+    if (delegate != nil) {
+        [delegate unityAdsDidError:error withMessage:message];
+    }
 }
 
 - (void)unityAdsDidStart:(NSString *)placementId {
@@ -120,6 +125,13 @@
     id delegate = [self getDelegate:placementId];
     if (delegate != nil) {
         [delegate unityAdsDidClick:placementId];
+    }
+}
+
+- (void)unityAdsPlacementStateChanged:(NSString *)placementId oldState:(UnityAdsPlacementState)oldState newState:(UnityAdsPlacementState)newState {
+    id delegate = [self getDelegate:placementId];
+    if (delegate != nil) {
+        [delegate unityAdsPlacementStateChanged:placementId oldState:oldState newState:newState];
     }
 }
 
