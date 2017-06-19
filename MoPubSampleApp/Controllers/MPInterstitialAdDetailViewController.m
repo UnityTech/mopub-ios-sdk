@@ -102,6 +102,8 @@
     [self.spinner stopAnimating];
     self.showButton.hidden = NO;
     self.loadButton.enabled = YES;
+    
+    [self didTapShowButton:self];
 }
 
 - (void)interstitialDidFailToLoadAd:(MPInterstitialAdController *)interstitial
