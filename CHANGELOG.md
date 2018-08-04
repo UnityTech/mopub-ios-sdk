@@ -1,3 +1,104 @@
+## Version 5.2.0 (July 9, 2018)
+- **Features**
+  - SDK initialization is required for ads to load.
+  - Added callback to the consent dialog when it is dismissed.
+
+- **Bug Fixes**
+  - Synchronized access to shared `NSMutableDictionary` in `MPHTTPNetworkSession`.
+  - Video ads using Device orientation now appear aligned correctly on iPhone X.
+
+## Version 5.1.0 (June 5, 2018)
+- **Features**
+  - Updated `MPReachability` to be IPv6 compliant.
+  - Allow publishers to determine which users should be treated as GDPR compliant users through the new API `forceGDPRApplicable`.
+  - Alert a publisher (through logs) when they are trying to use the new GDPR consent flow without being whitelisted.
+  - Banner refresh will only occur after an impression.
+
+## Version 5.0.0 (May 14, 2018)
+- **Features**
+  - General Data Protection Regulation (GDPR) update to support a way for publishers to determine GDPR applicability and to obtain and manage consent from users in European Economic Area, the United Kingdom, or Switzerland to serve personalize ads.
+  - New SDK initialization method to initialize consent management and rewarded video ad networks. Required for receiving personalized ads. In future versions of the SDK, initialization will be required to receive ads.
+  - Updated the networking stack to use `NSURLSession` in place of the deprecated `NSURLConnection`.
+  - Updated ad requests to use POST instead of GET.
+
+- **Bug Fixes**
+  - Renamed the `/MoPubSDK/Native Ads/` folder to `/MoPubSDK/NativeAds/`.
+  - Removed the usage of deprecated `shouldAutorotateToInterfaceOrientation`.
+
+## Version 4.20.1 (March 12, 2018)
+- **Bug Fixes**
+  - Fixes compatibility issues with some fullscreen ads on iPhone X
+
+## Version 4.20.0 (February 20, 2018)
+- **Bug Fixes**
+  - Fixed ad expiration check for rewarded ad formats
+
+- **Ad Network Mediation Updates**
+  - Network mediation adapters are now in a separate repository to enable an independent release cadence and faster updates to the adapters. Please find the new location [here](https://github.com/mopub/mopub-ios-mediation).
+
+## Version 4.19.0 (December 11, 2017)
+- **Bug Fixes**
+  - Ensure proper viewability initialization before ad content is loaded
+  - Fire appropriate error delegate when rewarded video ad view is not ready to be shown
+  - Resolve video playback sizing issue when creative MoPubForceOrientation is set to "Device"
+  - Resolve WKWebView sizing and alignment issues on iPhoneX
+
+- **Ad Network Mediation Updates**
+  - Certified Facebook Audience Network 4.26.1
+  - Certified Flurry 8.1.0
+  - Added support for Millennial/AOL Rewarded Video adapters for 6.6.0
+
+## Version 4.18.0 (November 1, 2017)
+- **Features**
+    - iPhone X compatibility improvements including moving the close button into safe area.
+
+- **Bug Fixes**
+  - Fixed a bug with unspecified rewarded video currencies.
+  - Fixed C99 compilation bug.
+
+- **Ad Network Mediation Updates**
+  - AdColony 3.2.1
+  - AdMob 7.24.1
+  - AOL 6.6.0 (formerly Millennial)
+  - Chartboost 7.0
+  - Facebook Audience Network 4.26.0
+  - Tapjoy 11.11.0
+  - Unity Ads 2.1.1
+  - Vungle 5.3.0
+
+## Version 4.17.0 (September 27, 2017)
+- **Features**
+    - Rewarded videos can now optionally pass back custom data to the publisher's reward server.
+    - Updated the minimum iOS version of the SDK to iOS 8.
+    - Update Facebook adapter with non whitespace clickable policy.
+
+## Version 4.16.0 (August 23, 2017)
+- **Features**
+  - Added viewability support for Integral Ad Science (IAS) and Moat, two of the leading independent viewability measurement providers
+    - To disable this feature, see note below on [Disabling Viewability Measurement](#disableViewability).
+  - New app launch rewarded video initialization method for mediated network SDKs
+- **Bug Fixes**
+  - Fixed native video crash caused by empty VAST tracking event
+  - Prevent interstitials from firing clicks without user interaction
+### <a name="disableViewability"></a>Disabling Viewability Measurement
+There are a few options for opting out of viewability measurement:
+##### Opting Out in a Manual Integration
+Before dragging the MoPubSDK folder into your Xcode project, simply delete the “Moat” folder to opt out of Moat or the “Avid” folder to opt out of IAS in MoPubSDK/Viewability/. If you would like to opt out of both, delete both folders.
+##### Opting Out in a CocoaPods Integration
+Including `pod 'mopub-ios-sdk'` in your Podfile will include both IAS and Moat SDKs, as well as the MoPub SDK. In order to opt out:
+- `pod 'mopub-ios-sdk/Avid'` will include the IAS SDK, but not the Moat SDK, as well as the MoPub SDK.
+- `pod 'mopub-ios-sdk/Moat'` will include the Moat SDK, but not the IAS SDK, as well as the MoPub SDK.
+- `pod 'mopub-ios-sdk/Core'` will only include the MoPub SDK, with viewability measurement totally disabled.
+
+Make sure to run `pod update` once your Podfile is set up to your preferences.
+##### Software Disable
+If you would like to opt out of viewability measurement but do not want to modify the MoPub SDK, a function is provided for your convenience. As soon as possible after calling `[[MoPub sharedInstance] start]`, call `[[MoPub sharedInstance] disableViewability:(vendors)]`. In place of “(vendors)”, `MPViewabilityOptionIAS` will disable IAS but leave Moat enabled, `MPViewabilityOptionMoat` will disable Moat but leave IAS enabled, and `MPViewabilityOptionAll` will disable all viewability measurement.
+
+### Disclosure
+MoPub v4.16 SDK integrates technology from our partners Integral Ad Science, Inc. (“IAS”) and Moat, Inc. (“Moat”) in order to support viewability measurement and other proprietary reporting that [IAS](https://integralads.com/capabilities/viewability/) and [Moat](https://moat.com/analytics) provide to their advertiser and publisher clients. You have the option to remove or disable this technology by following the opt-out instructions [above](#disableViewability).
+
+If you do not remove or disable IAS's and/or Moat’s technology in accordance with these instructions, you agree that IAS's [privacy policy](https://integralads.com/privacy-policy/) and [license](https://integralads.com/sdk-license-agreement) and Moat’s [privacy policy](https://moat.com/privacy),  [terms](https://moat.com/terms), and [license](https://moat.com/sdklicense.txt), respectively, apply to your integration of these partners' technologies into your application.
+
 ## Version 4.15.0 (June 19th, 2017)
 - **Bug Fixes**
   - Updated Facebook Audience Network banner and interstitial impression tracking
@@ -86,7 +187,7 @@
 
 ## Version 4.7.0 (June 2nd, 2016)
 - **Rewarded video server-side currency rewarding (Beta)**.
-	
+
 ## Version 4.6.0 (April 21th, 2016)
 - **Certified Chartboost version 6.4.0**
 - **Certified Tapjoy version 11.5.1**
@@ -96,7 +197,7 @@
 ## Version 4.5.1 (April 4th, 2016)
 
 - **bitcode support for MoPub Fabric Kit**
-	
+
 ## Version 4.5 (March 24th, 2016)
 
 - **Rewarded video support from the MoPub Marketplace (Beta)**
@@ -114,7 +215,7 @@
 ## Version 4.3 (December 15th, 2015)
 
 - **Minor SDK improvements**.
-	
+
 ## Version 4.2 (November 30th, 2015)
 
 - **Upgraded Facebook SDK support to 4.8.0**.
@@ -160,7 +261,7 @@
 - **Minor improvements**.
 - **Bug fixes**.
 	- didDismissInterstitial is now called when the dismiss animation has completed.
-	
+
 ## Version 3.9 (July 1st, 2015)
 
 - **Added VAST 3.0 standard support for video ads**.
@@ -183,12 +284,12 @@
 	- Added click callback support.
 - **Bug fixes**.
 	- Addressed a race condition when receiving location updates after calling -`[MPGeolocationProvider disableLocationUpdates:]`.
-    
+
 ## Version 3.6 (April 3rd, 2015)
 
   - **Bug fixes**.
     - Fixed crash caused by some MRAID ads attempting to set an orientation that the app doesn't support.
-    
+
 ## Version 3.5 (March 10th, 2015)
 
   - **Deprecated custom event class methods and constants for setting ad network parameters**.
@@ -286,7 +387,7 @@ As of version 3.0.0, the MoPub SDK uses Automatic Reference Counting. If you're 
 ## Version 1.17 (November 20, 2013)
 
   - AdColony Custom Event
-    - Supports AdColony as a custom native ad network for interstitial videos. Note that V4VC (virtual currency reward) is currently not supported. 
+    - Supports AdColony as a custom native ad network for interstitial videos. Note that V4VC (virtual currency reward) is currently not supported.
   - Handle ISO Latin-1 site encoding in addition to UTF-8
   - Bug fixes
 
@@ -315,7 +416,7 @@ As of version 3.0.0, the MoPub SDK uses Automatic Reference Counting. If you're 
 ## Version 1.16 (October 15, 2013)
 
   - Creative Controls
-    - Creative Flagging 
+    - Creative Flagging
       - **Important**: ```MPAdAlertGestureRecognizer``` and ```MPAdAlertManager``` classes as well as ```MessageUI.framework``` must be added to your project to enable flagging functionality.
       - Allows users to report certain inappropriate ad experiences directly to MoPub with a special gesture.
       - User must swipe back and forth at least four times within the ad view to flag a creative.
@@ -370,7 +471,7 @@ As of version 3.0.0, the MoPub SDK uses Automatic Reference Counting. If you're 
   - Added support for Millennial SDK 5.0
   - Updated Chartboost integration to honor the location parameter (configurable via the server)
   - Updated Custom Events API.
-  
+
     > **If you have implemented a Custom Event, please read the Custom Events [documentation](https://github.com/mopub/mopub-ios-sdk/wiki/Custom-Events) and update your code appropriately.**
 
 #### Updates to the MoPub SDK
@@ -390,10 +491,10 @@ As of version 3.0.0, the MoPub SDK uses Automatic Reference Counting. If you're 
   - Updated to support Millennial SDK 5.1.0
   - Fixed warnings resulting from duplicate category methods
   - Fixed a crash occurring when an interstitial was tapped and dismissed immediately afterwards
-  
-### Version 1.12.4.0 (June 26, 2013)  
+
+### Version 1.12.4.0 (June 26, 2013)
   - Fixed a memory leak when displaying MRAID ads
-  
+
 ### Version 1.12.3.0 (June 18, 2013)
   - Fixed inconsistency between ad request user agent and click-handling user agent
   - Fixed crashes that occur when banners are deallocated in the process of displaying modal content

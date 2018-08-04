@@ -4,18 +4,19 @@
 //
 
 #import "MOPUBNativeVideoAdAdapter.h"
-#import "MPNativeAdError.h"
-#import "MPAdDestinationDisplayAgent.h"
-#import "MPCoreInstanceProvider.h"
-#import "MPNativeAdConstants.h"
-#import "MPLogging.h"
-#import "MPStaticNativeAdImpressionTimer.h"
 #import "MOPUBNativeVideoAdConfigValues.h"
+#import "MPAdDestinationDisplayAgent.h"
+#import "MPAdImpressionTimer.h"
+#import "MPCoreInstanceProvider.h"
+#import "MPLogging.h"
+#import "MPMemoryCache.h"
+#import "MPNativeAdConstants.h"
+#import "MPNativeAdError.h"
 
-@interface MOPUBNativeVideoAdAdapter() <MPAdDestinationDisplayAgentDelegate, MPStaticNativeAdImpressionTimerDelegate>
+@interface MOPUBNativeVideoAdAdapter() <MPAdDestinationDisplayAgentDelegate, MPAdImpressionTimerDelegate>
 
-@property (nonatomic) MPStaticNativeAdImpressionTimer *staticImpressionTimer;
-@property (nonatomic, readonly) MPAdDestinationDisplayAgent *destinationDisplayAgent;
+@property (nonatomic) MPAdImpressionTimer *impressionTimer;
+@property (nonatomic, strong) MPAdDestinationDisplayAgent *destinationDisplayAgent;
 
 @end
 
@@ -30,11 +31,20 @@
 
         // Let's make sure the data types of all the provided native ad properties are strings before creating the adapter.
 
-        NSArray *keysToCheck = @[kAdIconImageKey, kAdMainImageKey, kAdTextKey, kAdTitleKey, kAdCTATextKey, kVASTVideoKey];
+        NSArray *keysToCheck = @[kAdIconImageKey, kAdMainImageKey, kAdTextKey, kAdTitleKey, kAdCTATextKey, kVASTVideoKey, kAdPrivacyIconImageUrlKey, kAdPrivacyIconClickUrlKey];
 
         for (NSString *key in keysToCheck) {
             id value = properties[key];
             if (value != nil && ![value isKindOfClass:[NSString class]]) {
+                return nil;
+            }
+        }
+
+        // Validate that the views are actually views
+        NSArray * viewKeysToCheck = @[kAdIconImageViewKey, kAdMainMediaViewKey];
+        for (NSString * key in viewKeysToCheck) {
+            id value = properties[key];
+            if (value != nil && ![value isKindOfClass:[UIView class]]) {
                 return nil;
             }
         }
@@ -72,12 +82,36 @@
             return nil;
         }
 
-        // Add the DAA icon settings to our properties dictionary.
-        [properties setObject:MPResourcePathForResource(kDAAIconImageName) forKey:kAdDAAIconImageKey];
+        // The privacy icon has been overridden by the server. We will use its image instead if it is
+        // already cached. Otherwise, we will defer loading the image until later.
+        NSString * privacyIconUrl = properties[kAdPrivacyIconImageUrlKey];
+        if (privacyIconUrl != nil) {
+            UIImage * cachedIcon = [MPMemoryCache.sharedInstance imageForKey:privacyIconUrl];
+            if (cachedIcon != nil) {
+                [properties setObject:cachedIcon forKey:kAdPrivacyIconUIImageKey];
+            }
+        }
+        // Use the default MoPub privacy icon bundled with the SDK.
+        else {
+            // Add the privacy icon settings to our properties dictionary.
+            // Path will not change, so load path and image statically.
+            static NSString *privacyIconImagePath = nil;
+            static UIImage *privacyIconImage = nil;
+            if (!privacyIconImagePath || !privacyIconImage) {
+                privacyIconImagePath = MPResourcePathForResource(kPrivacyIconImageName);
+                privacyIconImage = privacyIconImagePath ? [UIImage imageWithContentsOfFile:privacyIconImagePath] : nil;
+            }
+            if (privacyIconImagePath) {
+                [properties setObject:privacyIconImagePath forKey:kAdPrivacyIconImageUrlKey];
+            }
+            if (privacyIconImage) {
+                [properties setObject:privacyIconImage forKey:kAdPrivacyIconUIImageKey];
+            }
+        }
 
-        _destinationDisplayAgent = [[MPCoreInstanceProvider sharedProvider] buildMPAdDestinationDisplayAgentWithDelegate:self];
+        _destinationDisplayAgent = [MPAdDestinationDisplayAgent agentWithDelegate:self];
 
-        _staticImpressionTimer = nil;
+        _impressionTimer = nil;
     }
 
     return self;
@@ -95,8 +129,8 @@
 
 - (void)removeStaticImpressionTimer
 {
-    _staticImpressionTimer.delegate = nil;
-    _staticImpressionTimer = nil;
+    _impressionTimer.delegate = nil;
+    _impressionTimer = nil;
 }
 
 #pragma mark - <MPNativeAdAdapter>
@@ -105,14 +139,21 @@
 {
     [self removeStaticImpressionTimer];
 
-    // Set up a static impression timer that will fire the mopub impression if the video fails to play prior to meeting the video impression tracking requirements.
-    MOPUBNativeVideoAdConfigValues *nativeVideoAdConfig = [self.properties objectForKey:kNativeVideoAdConfigKey];
+    // Set up an impression timer that will fire the mopub impression if the video fails to play prior to meeting the video impression tracking requirements.
+    MOPUBNativeVideoAdConfigValues *nativeVideoAdConfig = [self.properties objectForKey:kNativeAdConfigKey];
 
-    // impressionMinVisiblePercent is an integer (a value of 50 means 50%) while the impression timer takes in a float (.50 means 50%) so we have to multiply it by .01f.
-    self.staticImpressionTimer = [[MPStaticNativeAdImpressionTimer alloc] initWithRequiredSecondsForImpression:nativeVideoAdConfig.impressionVisible requiredViewVisibilityPercentage:nativeVideoAdConfig.impressionMinVisiblePercent*0.01f];
-    self.staticImpressionTimer.delegate = self;
+    // If we have a valid pixel value, use it to track the impression. If not, use percentage instead.
+    if (nativeVideoAdConfig.isImpressionMinVisiblePixelsValid) {
+        self.impressionTimer = [[MPAdImpressionTimer alloc] initWithRequiredSecondsForImpression:nativeVideoAdConfig.impressionMinVisibleSeconds
+                                                                    requiredViewVisibilityPixels:nativeVideoAdConfig.impressionMinVisiblePixels];
+    } else {
+        // impressionMinVisiblePercent is an integer (a value of 50 means 50%) while the impression timer takes in a float (.50 means 50%) so we have to multiply it by .01f.
+        self.impressionTimer = [[MPAdImpressionTimer alloc] initWithRequiredSecondsForImpression:nativeVideoAdConfig.impressionMinVisibleSeconds
+                                                                requiredViewVisibilityPercentage:nativeVideoAdConfig.impressionMinVisiblePercent * 0.01f];
+    }
+    self.impressionTimer.delegate = self;
 
-    [self.staticImpressionTimer startTrackingView:view];
+    [self.impressionTimer startTrackingView:view];
 }
 
 - (void)displayContentForURL:(NSURL *)URL rootViewController:(UIViewController *)controller
@@ -128,11 +169,17 @@
     [self.destinationDisplayAgent displayDestinationForURL:URL];
 }
 
-#pragma mark - DAA Icon
+#pragma mark - Privacy Icon
 
 - (void)displayContentForDAAIconTap
 {
-    [self.destinationDisplayAgent displayDestinationForURL:[NSURL URLWithString:kDAAIconTapDestinationURL]];
+    NSURL *defaultPrivacyClickUrl = [NSURL URLWithString:kPrivacyIconTapDestinationURL];
+    NSURL *overridePrivacyClickUrl = ({
+        NSString *url = self.properties[kAdPrivacyIconClickUrlKey];
+        (url != nil ? [NSURL URLWithString:url] : nil);
+    });
+
+    [self.destinationDisplayAgent displayDestinationForURL:(overridePrivacyClickUrl != nil ? overridePrivacyClickUrl : defaultPrivacyClickUrl)];
 }
 
 #pragma mark - Impression and click tracking. Renderer calls those two methods
@@ -150,13 +197,13 @@
 - (void)handleVideoHasProgressedToTime:(NSTimeInterval)playbackTime
 {
     // If the video makes progress, don't allow static impression tracking.
-    self.staticImpressionTimer.delegate = nil;
-    self.staticImpressionTimer = nil;
+    self.impressionTimer.delegate = nil;
+    self.impressionTimer = nil;
 }
 
-#pragma mark - <MPStaticNativeAdImpressionTimerDelegate>
+#pragma mark - <MPAdImpressionTimerDelegate>
 
-- (void)trackImpression
+- (void)adViewWillLogImpression:(UIView *)adView
 {
     // We'll fire a static impression if the video hasn't started playing by the time the static impression timer has met its requirements.
     [self.delegate nativeAdWillLogImpression:self];

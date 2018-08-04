@@ -9,6 +9,11 @@
 
 #import <Foundation/Foundation.h>
 
+NSString * const kAdInfoIdKey = @"adUnitId";
+NSString * const kAdInfoFormatKey = @"format";
+NSString * const kAdInfoKeywordsKey = @"keywords";
+NSString * const kAdInfoNameKey = @"name";
+
 @implementation MPAdInfo
 
 + (NSDictionary *)supportedAddedAdTypes
@@ -17,7 +22,7 @@
 
     static dispatch_once_t once;
     dispatch_once(&once, ^{
-        adTypes = @{@"Banner":@(MPAdInfoBanner), @"Interstitial":@(MPAdInfoInterstitial), @"MRect":@(MPAdInfoMRectBanner), @"Leaderboard":@(MPAdInfoLeaderboardBanner), @"Native":@(MPAdInfoNative), @"Rewarded Video":@(MPAdInfoRewardedVideo)};
+        adTypes = @{@"Banner":@(MPAdInfoBanner), @"Interstitial":@(MPAdInfoInterstitial), @"MRect":@(MPAdInfoMRectBanner), @"Leaderboard":@(MPAdInfoLeaderboardBanner), @"Native":@(MPAdInfoNative), @"Rewarded Video":@(MPAdInfoRewardedVideo), @"Rewarded":@(MPAdInfoRewardedVideo), @"NativeTablePlacer":@(MPAdInfoNativeTableViewPlacer), @"NativeCollectionPlacer":@(MPAdInfoNativeInCollectionView)};
     });
 
     return adTypes;
@@ -38,14 +43,6 @@
         [ads addObject:[MPAdInfo infoWithTitle:@"HTML Leaderboard Banner Ad" ID:@"d456ea115eec497ab33e02531a5efcbc" type:MPAdInfoLeaderboardBanner]];
     }
 
-    // 3rd Party Networks
-#if CUSTOM_EVENTS_ENABLED
-    [ads addObject:[MPAdInfo infoWithTitle:@"Facebook" ID:@"446dfa864dcb4469965267694a940f3d" type:MPAdInfoBanner]];
-    [ads addObject:[MPAdInfo infoWithTitle:@"Flurry RTB Banner Ad" ID:@"b827dff81325466e95cc6d475f207fb3" type:MPAdInfoBanner]];
-    [ads addObject:[MPAdInfo infoWithTitle:@"Google AdMob" ID:@"01535a569c8e11e281c11231392559e4" type:MPAdInfoBanner]];
-    [ads addObject:[MPAdInfo infoWithTitle:@"Millennial" ID:@"1aa442709c9f11e281c11231392559e4" type:MPAdInfoBanner]];
-#endif
-
     return ads;
 }
 
@@ -54,18 +51,6 @@
     return @[
              [MPAdInfo infoWithTitle:@"HTML Interstitial Ad" ID:@"4f117153f5c24fa6a3a92b818a5eb630" type:MPAdInfoInterstitial],
              [MPAdInfo infoWithTitle:@"MRAID Interstitial Ad" ID:@"3aba0056add211e281c11231392559e4" type:MPAdInfoInterstitial],
-
-    // 3rd Party Networks
-    #if CUSTOM_EVENTS_ENABLED
-             [MPAdInfo infoWithTitle:@"Chartboost" ID:@"a425ff78959911e295fa123138070049" type:MPAdInfoInterstitial],
-             [MPAdInfo infoWithTitle:@"Facebook" ID:@"cec4c5ea0ff140d3a15264da23449f97" type:MPAdInfoInterstitial],
-             [MPAdInfo infoWithTitle:@"Flurry Interstitial Ad" ID:@"5124d5ff5e3944d2ab8ad496b87a0978" type:MPAdInfoInterstitial],
-             [MPAdInfo infoWithTitle:@"Flurry RTB Interstitial Ad" ID:@"49960150e2874e9294105af00a77b85c" type:MPAdInfoInterstitial],
-             [MPAdInfo infoWithTitle:@"Google AdMob" ID:@"16ae389a932d11e281c11231392559e4" type:MPAdInfoInterstitial],
-             [MPAdInfo infoWithTitle:@"Millennial" ID:@"de4205fc932411e295fa123138070049" type:MPAdInfoInterstitial],
-             [MPAdInfo infoWithTitle:@"Tapjoy" ID:@"8f66c17adff74e189555247bc1bd26c4" type:MPAdInfoInterstitial],
-             [MPAdInfo infoWithTitle:@"Vungle" ID:@"20e01fce81f611e295fa123138070049" type:MPAdInfoInterstitial],
-    #endif
              ];
 }
 
@@ -74,12 +59,6 @@
     return @[
              [MPAdInfo infoWithTitle:@"Rewarded Video Ad" ID:@"8f000bd5e00246de9c789eed39ff6096" type:MPAdInfoRewardedVideo],
              [MPAdInfo infoWithTitle:@"Rewarded Rich Media Ad" ID:@"98c29e015e7346bd9c380b1467b33850" type:MPAdInfoRewardedVideo],
-    // 3rd Party Networks
-    #if CUSTOM_EVENTS_ENABLED
-             [MPAdInfo infoWithTitle:@"Chartboost" ID:@"8be0bb08fb4f4e90a86416c29c235d4a" type:MPAdInfoRewardedVideo],
-             [MPAdInfo infoWithTitle:@"Tapjoy" ID:@"58e30d62673e4c85b2098887a4218816" type:MPAdInfoRewardedVideo],
-             [MPAdInfo infoWithTitle:@"Vungle" ID:@"48274e80f11b496bb3532c4f59f28d12" type:MPAdInfoRewardedVideo],
-    #endif
              ];
 }
 
@@ -91,15 +70,6 @@
              [MPAdInfo infoWithTitle:@"Native Ad (CollectionView Placer)" ID:@"76a3fefaced247959582d2d2df6f4757" type:MPAdInfoNativeInCollectionView],
              [MPAdInfo infoWithTitle:@"Native Ad (TableView Placer)" ID:@"76a3fefaced247959582d2d2df6f4757" type:MPAdInfoNativeTableViewPlacer],
              [MPAdInfo infoWithTitle:@"Native Video Ad (TableView Placer)" ID:@"b2b67c2a8c0944eda272ed8e4ddf7ed4" type:MPAdInfoNativeTableViewPlacer],
-
-    // 3rd Party Networks
-    #if CUSTOM_EVENTS_ENABLED
-             [MPAdInfo infoWithTitle:@"Facebook" ID:@"1ceee46ba9744155aed48ee6277ecbd6" type:MPAdInfoNative],
-             [MPAdInfo infoWithTitle:@"Flurry Native Ad" ID:@"1023187dc1984ec28948b49220e1e3d4" type:MPAdInfoNative],
-             [MPAdInfo infoWithTitle:@"Flurry Native Video Ad" ID:@"86fa46ac76c546178f1a5774bad66103" type:MPAdInfoNative],
-             [MPAdInfo infoWithTitle:@"Flurry Native Ad (TableView Placer)" ID:@"1023187dc1984ec28948b49220e1e3d4" type:MPAdInfoNativeTableViewPlacer],
-             [MPAdInfo infoWithTitle:@"Millennial" ID:@"b6191f80fa6f4241a942254df07f0b59" type:MPAdInfoNative],
-    #endif
              ];
 }
 
@@ -108,6 +78,27 @@
     info.title = title;
     info.ID = ID;
     info.type = type;
+    return info;
+}
+
++ (MPAdInfo *)infoWithDictionary:(NSDictionary *)dict
+{
+    // Extract the required fields from the dictionary. If either of the required fields
+    // is invalid, object creation will not be performed.
+    NSString * adUnitId = [[dict objectForKey:kAdInfoIdKey] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSString * formatString = [[dict objectForKey:kAdInfoFormatKey] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSString * keywords = [[dict objectForKey:kAdInfoKeywordsKey] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSString * name = [[dict objectForKey:kAdInfoNameKey] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+
+    if (adUnitId.length == 0 || formatString.length == 0 || (formatString != nil && [[self supportedAddedAdTypes] objectForKey:formatString] == nil)) {
+        return nil;
+    }
+
+    MPAdInfoType format = (MPAdInfoType)[[[self supportedAddedAdTypes] objectForKey:formatString] integerValue];
+    NSString * title = (name != nil ? name : adUnitId);
+    MPAdInfo * info = [MPAdInfo infoWithTitle:title ID:adUnitId type:format];
+    info.keywords = keywords;
+
     return info;
 }
 

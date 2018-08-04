@@ -10,7 +10,6 @@
 #import "MPAdSection.h"
 #import "MPBannerAdDetailViewController.h"
 #import "MPInterstitialAdDetailViewController.h"
-#import "MPManualAdViewController.h"
 #import "MPMRectBannerAdDetailViewController.h"
 #import "MPLeaderboardBannerAdDetailViewController.h"
 #import "MPNativeAdDetailViewController.h"
@@ -22,6 +21,7 @@
 #import "MPNativeAdPlacerPageViewController.h"
 #import "MPSampleAppLogReader.h"
 #import "MPRewardedVideoAdDetailViewController.h"
+#import "MoPub.h"
 
 @interface MPAdTableViewController () <UIAlertViewDelegate, UIActionSheetDelegate>
 
@@ -44,11 +44,9 @@
     if (self) {
         self.sections = sections;
 
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= MP_IOS_7_0
         if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)]) {
             self.edgesForExtendedLayout = UIRectEdgeNone;
         }
-#endif
     }
     return self;
 }
@@ -91,11 +89,6 @@
     [infoAV show];
 }
 
-- (void)didTapManualButton:(id)sender
-{
-    [self.navigationController pushViewController:[[MPManualAdViewController alloc] init] animated:YES];
-}
-
 - (void)didTapNewAdButton:(id)sender
 {
     [self.navigationController pushViewController:[[MPAdEntryViewController alloc] init] animated:YES];
@@ -106,6 +99,63 @@
     [super viewWillAppear:animated];
 
     [self.tableView reloadData];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+
+    // Attempt to load/show the consent dialog if needed
+    if ([MoPub sharedInstance].shouldShowConsentDialog) {
+        __weak __typeof__(self) weakSelf = self;
+        [[MoPub sharedInstance] loadConsentDialogWithCompletion:^(NSError *error){
+            if (error == nil) {
+                [[MoPub sharedInstance] showConsentDialogFromViewController:weakSelf completion:nil];
+            } else {
+                NSLog(@"MoPubSampleApp failed to load consent dialog with error: %@", error);
+            }
+        }];
+    }
+}
+
+- (void)loadAd:(MPAdInfo *)info
+{
+    UIViewController *detailViewController = nil;
+
+    switch (info.type) {
+        case MPAdInfoBanner:
+            detailViewController = [[MPBannerAdDetailViewController alloc] initWithAdInfo:info];
+            break;
+        case MPAdInfoMRectBanner:
+            detailViewController = [[MPMRectBannerAdDetailViewController alloc] initWithAdInfo:info];
+            break;
+        case MPAdInfoLeaderboardBanner:
+            detailViewController = [[MPLeaderboardBannerAdDetailViewController alloc] initWithAdInfo:info];
+            break;
+        case MPAdInfoInterstitial:
+            detailViewController = [[MPInterstitialAdDetailViewController alloc] initWithAdInfo:info];
+            break;
+        case MPAdInfoRewardedVideo:
+            detailViewController = [[MPRewardedVideoAdDetailViewController alloc] initWithAdInfo:info];
+            break;
+        case MPAdInfoNative:
+            detailViewController = [[MPNativeAdDetailViewController alloc] initWithAdInfo:info];
+            break;
+        case MPAdInfoNativeInCollectionView:
+            detailViewController = [[MPNativeAdPlacerCollectionViewController alloc] initWithAdInfo:info];
+            break;
+        case MPAdInfoNativeTableViewPlacer:
+            detailViewController = [[MPNativeAdPlacerTableViewController alloc] initWithAdInfo:info];
+            break;
+        case MPAdInfoNativePageViewControllerPlacer:
+            detailViewController = [[MPNativeAdPlacerPageViewController alloc] initWithAdInfo:info];
+            break;
+        default:
+            break;
+    }
+
+    if (detailViewController) {
+        [self.navigationController pushViewController:detailViewController animated:YES];
+    }
 }
 
 #pragma mark - Table view data source
@@ -151,43 +201,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     MPAdInfo *info = [self infoAtIndexPath:indexPath];
-    UIViewController *detailViewController = nil;
-
-    switch (info.type) {
-        case MPAdInfoBanner:
-            detailViewController = [[MPBannerAdDetailViewController alloc] initWithAdInfo:info];
-            break;
-        case MPAdInfoMRectBanner:
-            detailViewController = [[MPMRectBannerAdDetailViewController alloc] initWithAdInfo:info];
-            break;
-        case MPAdInfoLeaderboardBanner:
-            detailViewController = [[MPLeaderboardBannerAdDetailViewController alloc] initWithAdInfo:info];
-            break;
-        case MPAdInfoInterstitial:
-            detailViewController = [[MPInterstitialAdDetailViewController alloc] initWithAdInfo:info];
-            break;
-        case MPAdInfoRewardedVideo:
-            detailViewController = [[MPRewardedVideoAdDetailViewController alloc] initWithAdInfo:info];
-            break;
-        case MPAdInfoNative:
-            detailViewController = [[MPNativeAdDetailViewController alloc] initWithAdInfo:info];
-            break;
-        case MPAdInfoNativeInCollectionView:
-            detailViewController = [[MPNativeAdPlacerCollectionViewController alloc] initWithAdInfo:info];
-            break;
-        case MPAdInfoNativeTableViewPlacer:
-            detailViewController = [[MPNativeAdPlacerTableViewController alloc] initWithAdInfo:info];
-            break;
-        case MPAdInfoNativePageViewControllerPlacer:
-            detailViewController = [[MPNativeAdPlacerPageViewController alloc] initWithAdInfo:info];
-            break;
-        default:
-            break;
-    }
-
-    if (detailViewController) {
-        [self.navigationController pushViewController:detailViewController animated:YES];
-    }
+    [self loadAd:info];
 }
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath

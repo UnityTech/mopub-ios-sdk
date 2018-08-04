@@ -12,7 +12,18 @@
 
 @implementation MRCommand
 
-@synthesize delegate = _delegate;
++ (void)initialize {
+    if (self == [MRCommand self]) {
+        // Register command classes
+        [self registerCommand:[MRCloseCommand self]];
+        [self registerCommand:[MRExpandCommand self]];
+        [self registerCommand:[MRResizeCommand self]];
+        [self registerCommand:[MRUseCustomCloseCommand self]];
+        [self registerCommand:[MRSetOrientationPropertiesCommand self]];
+        [self registerCommand:[MROpenCommand self]];
+        [self registerCommand:[MRPlayVideoCommand self]];
+    }
+}
 
 + (NSMutableDictionary *)sharedCommandClassMap
 {
@@ -117,11 +128,6 @@
 
 @implementation MRCloseCommand
 
-+ (void)load
-{
-    [MRCommand registerCommand:self];
-}
-
 + (NSString *)commandType
 {
     return @"close";
@@ -138,11 +144,6 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 @implementation MRExpandCommand
-
-+ (void)load
-{
-    [MRCommand registerCommand:self];
-}
 
 + (NSString *)commandType
 {
@@ -168,11 +169,6 @@
 
 @implementation MRResizeCommand
 
-+ (void)load
-{
-    [MRCommand registerCommand:self];
-}
-
 + (NSString *)commandType
 {
     return @"resize";
@@ -190,11 +186,6 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 @implementation MRUseCustomCloseCommand
-
-+ (void)load
-{
-    [MRCommand registerCommand:self];
-}
 
 // We allow useCustomClose to run while we're blocking requests because it only controls how we present a UIButton.
 // It can't present/dismiss any view or view controllers. It also doesn't affect any mraid ad/screen metrics.
@@ -225,11 +216,6 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 @implementation MRSetOrientationPropertiesCommand
-
-+ (void)load
-{
-    [MRCommand registerCommand:self];
-}
 
 + (NSString *)commandType
 {
@@ -310,11 +296,6 @@
 
 @implementation MROpenCommand
 
-+ (void)load
-{
-    [MRCommand registerCommand:self];
-}
-
 + (NSString *)commandType
 {
     return @"open";
@@ -331,35 +312,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-@implementation MRCreateCalendarEventCommand
-
-+ (void)load
-{
-    [MRCommand registerCommand:self];
-}
-
-+ (NSString *)commandType
-{
-    return @"createCalendarEvent";
-}
-
-- (BOOL)executeWithParams:(NSDictionary *)params
-{
-    [self.delegate mrCommand:self createCalendarEventWithParams:params];
-
-    return YES;
-}
-
-@end
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
 @implementation MRPlayVideoCommand
-
-+ (void)load
-{
-    [MRCommand registerCommand:self];
-}
 
 + (NSString *)commandType
 {
@@ -375,29 +328,6 @@
 - (BOOL)executeWithParams:(NSDictionary *)params
 {
     [self.delegate mrCommand:self playVideoWithURL:[self urlFromParameters:params forKey:@"uri"]];
-
-    return YES;
-}
-
-@end
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
-@implementation MRStorePictureCommand
-
-+ (void)load
-{
-    [MRCommand registerCommand:self];
-}
-
-+ (NSString *)commandType
-{
-    return @"storePicture";
-}
-
-- (BOOL)executeWithParams:(NSDictionary *)params
-{
-    [self.delegate mrCommand:self storePictureWithURL:[self urlFromParameters:params forKey:@"uri"]];
 
     return YES;
 }

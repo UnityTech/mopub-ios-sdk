@@ -7,10 +7,13 @@
 
 #import <XCTest/XCTest.h>
 #import "MPAdConfiguration.h"
+#import "MPAPIEndpoints.h"
 #import "MPRewardedVideoAdManager.h"
 #import "MPRewardedVideoAdManager+Testing.h"
 #import "MPRewardedVideoDelegateHandler.h"
 #import "MPRewardedVideoReward.h"
+#import "MPMockAdServerCommunicator.h"
+#import "NSURLComponents+Testing.h"
 
 static NSString * const kTestAdUnitId = @"967f82c7-c059-4ae8-8cb6-41c34265b1ef";
 static const NSTimeInterval kTestTimeout   = 2; // seconds
@@ -41,7 +44,7 @@ static const NSTimeInterval kTestTimeout   = 2; // seconds
 
     MPRewardedVideoAdManager * rewardedAd = [[MPRewardedVideoAdManager alloc] initWithAdUnitID:kTestAdUnitId delegate:delegateHandler];
     [rewardedAd loadWithConfiguration:config];
-    [rewardedAd presentRewardedVideoAdFromViewController:nil];
+    [rewardedAd presentRewardedVideoAdFromViewController:nil withReward:nil customData:nil];
 
     [self waitForExpectationsWithTimeout:kTestTimeout handler:^(NSError * _Nullable error) {
         XCTAssertNil(error);
@@ -74,7 +77,7 @@ static const NSTimeInterval kTestTimeout   = 2; // seconds
 
     MPRewardedVideoAdManager * rewardedAd = [[MPRewardedVideoAdManager alloc] initWithAdUnitID:kTestAdUnitId delegate:delegateHandler];
     [rewardedAd loadWithConfiguration:config];
-    [rewardedAd presentRewardedVideoAdFromViewController:nil];
+    [rewardedAd presentRewardedVideoAdFromViewController:nil withReward:nil customData:nil];
 
     [self waitForExpectationsWithTimeout:kTestTimeout handler:^(NSError * _Nullable error) {
         XCTAssertNil(error);
@@ -109,7 +112,7 @@ static const NSTimeInterval kTestTimeout   = 2; // seconds
 
     MPRewardedVideoAdManager * rewardedAd = [[MPRewardedVideoAdManager alloc] initWithAdUnitID:kTestAdUnitId delegate:delegateHandler];
     [rewardedAd loadWithConfiguration:config];
-    [rewardedAd presentRewardedVideoAdFromViewController:nil withReward:rewardedAd.availableRewards[1]];
+    [rewardedAd presentRewardedVideoAdFromViewController:nil withReward:rewardedAd.availableRewards[1] customData:nil];
 
     [self waitForExpectationsWithTimeout:kTestTimeout handler:^(NSError * _Nullable error) {
         XCTAssertNil(error);
@@ -152,7 +155,7 @@ static const NSTimeInterval kTestTimeout   = 2; // seconds
 
     MPRewardedVideoAdManager * rewardedAd = [[MPRewardedVideoAdManager alloc] initWithAdUnitID:kTestAdUnitId delegate:delegateHandler];
     [rewardedAd loadWithConfiguration:config];
-    [rewardedAd presentRewardedVideoAdFromViewController:nil];
+    [rewardedAd presentRewardedVideoAdFromViewController:nil withReward:nil customData:nil];
 
     [self waitForExpectationsWithTimeout:kTestTimeout handler:^(NSError * _Nullable error) {
         XCTAssertNil(error);
@@ -194,7 +197,7 @@ static const NSTimeInterval kTestTimeout   = 2; // seconds
 
     MPRewardedVideoAdManager * rewardedAd = [[MPRewardedVideoAdManager alloc] initWithAdUnitID:kTestAdUnitId delegate:delegateHandler];
     [rewardedAd loadWithConfiguration:config];
-    [rewardedAd presentRewardedVideoAdFromViewController:nil withReward:nil];
+    [rewardedAd presentRewardedVideoAdFromViewController:nil withReward:nil customData:nil];
 
     [self waitForExpectationsWithTimeout:kTestTimeout handler:^(NSError * _Nullable error) {
         XCTAssertNil(error);
@@ -239,7 +242,7 @@ static const NSTimeInterval kTestTimeout   = 2; // seconds
 
     MPRewardedVideoAdManager * rewardedAd = [[MPRewardedVideoAdManager alloc] initWithAdUnitID:kTestAdUnitId delegate:delegateHandler];
     [rewardedAd loadWithConfiguration:config];
-    [rewardedAd presentRewardedVideoAdFromViewController:nil withReward:badReward];
+    [rewardedAd presentRewardedVideoAdFromViewController:nil withReward:badReward customData:nil];
 
     [self waitForExpectationsWithTimeout:kTestTimeout handler:^(NSError * _Nullable error) {
         XCTAssertNil(error);
@@ -247,6 +250,52 @@ static const NSTimeInterval kTestTimeout   = 2; // seconds
 
     XCTAssertNil(rewardForUser);
     XCTAssertTrue(didFail);
+}
+
+- (void)testPresentationFailure {
+    // Semaphore to wait for asynchronous method to finish before continuing the test.
+    XCTestExpectation * expectation = [self expectationWithDescription:@"Wait for reward completion block to fire."];
+
+    // Configure delegate handler to listen for the error event.
+    __block BOOL didFail = NO;
+    MPRewardedVideoDelegateHandler * delegateHandler = [MPRewardedVideoDelegateHandler new];
+    delegateHandler.didFailToPlayAd = ^() {
+        didFail = YES;
+        [expectation fulfill];
+    };
+
+    MPRewardedVideoAdManager * rewardedAd = [[MPRewardedVideoAdManager alloc] initWithAdUnitID:kTestAdUnitId delegate:delegateHandler];
+    [rewardedAd presentRewardedVideoAdFromViewController:nil withReward:nil customData:nil];
+
+    [self waitForExpectationsWithTimeout:kTestTimeout handler:^(NSError * _Nullable error) {
+        XCTAssertNil(error);
+    }];
+
+    XCTAssertTrue(didFail);
+}
+
+#pragma mark - Viewability
+
+- (void)testViewabilityQueryParameter {
+    // Rewarded video ads should send a viewability query parameter.
+    MPMockAdServerCommunicator * mockAdServerCommunicator = nil;
+    MPRewardedVideoAdManager * rewardedAd = [[MPRewardedVideoAdManager alloc] initWithAdUnitID:kTestAdUnitId delegate:nil];
+    rewardedAd.communicator = ({
+        MPMockAdServerCommunicator * mock = [[MPMockAdServerCommunicator alloc] initWithDelegate:rewardedAd];
+        mockAdServerCommunicator = mock;
+        mock;
+    });
+    [rewardedAd loadRewardedVideoAdWithKeywords:nil userDataKeywords:nil location:nil customerId:nil];
+
+    XCTAssertNotNil(mockAdServerCommunicator);
+    XCTAssertNotNil(mockAdServerCommunicator.lastUrlLoaded);
+
+    NSURL * url = mockAdServerCommunicator.lastUrlLoaded;
+    NSURLComponents * urlComponents = [NSURLComponents componentsWithURL:url resolvingAgainstBaseURL:YES];
+
+    NSString * viewabilityQueryParamValue = [urlComponents valueForQueryParameter:@"vv"];
+    XCTAssertNotNil(viewabilityQueryParamValue);
+    XCTAssertTrue([viewabilityQueryParamValue isEqualToString:@"1"]);
 }
 
 @end

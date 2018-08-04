@@ -90,14 +90,14 @@ def build(options)
   out_file = output_file("mopub_#{options[:target].downcase.gsub(/\s+/, '')}_#{sdk}")
 
   if target == "MoPubSDKTests"
-    workspace = options[:workspace]
-    system_or_exit(%Q[xcodebuild -workspace #{workspace}.xcworkspace -scheme #{target} -configuration #{configuration} ARCHS=i386 #{destination} -sdk #{sdk} test SYMROOT=#{BUILD_DIR}], out_file)    
+    project = options[:project]
+    system_or_exit(%Q[xcodebuild -project '#{project}.xcodeproj' -scheme #{target} -configuration #{configuration} #{destination} -sdk #{sdk} test SYMROOT=#{BUILD_DIR}], out_file)
   elsif options[:workspace]
     workspace = options[:workspace]
     system_or_exit(%Q[xcodebuild -workspace #{workspace}.xcworkspace -scheme #{target} -configuration #{configuration} ARCHS=i386 #{destination} -sdk #{sdk} build SYMROOT=#{BUILD_DIR}], out_file)
   else
     project = options[:project]
-    system_or_exit(%Q[xcodebuild -project '#{project}.xcodeproj' -target '#{target}' -configuration '#{configuration}' ARCHS=i386 #{destination} -sdk '#{sdk}' build SYMROOT=#{BUILD_DIR}], out_file) 
+    system_or_exit(%Q[xcodebuild -project '#{project}.xcodeproj' -target '#{target}' -configuration '#{configuration}' ARCHS=i386 #{destination} -sdk '#{sdk}' build SYMROOT=#{BUILD_DIR}], out_file)
   end
 end
 
@@ -160,7 +160,7 @@ def enterprise_transform
 end
 
 desc "Build MoPubSDK on all SDKs then run tests"
-task :default => [:trim_whitespace, "mopubsdk:build", "mopubsample:build", "mopubsdk:unittest"] 
+task :default => [:trim_whitespace, "mopubsdk:build", "mopubsample:build", "mopubsdk:unittest"]
 
 desc "Run all unit tests"
 task :unittest => ["mopubsdk:unittest"]
@@ -198,10 +198,15 @@ namespace :mopubsdk do
     end
 
     available_sdk_versions.each do |sdk_version|
-      head "Building MoPubSDK+Networks for #{sdk_version}"
-      build :project => "MoPubSDK", :target => "MoPubSDK+Networks", :sdk_version => sdk_version
+      head "Building MoPubSDK-ExcludeNative for #{sdk_version}"
+      build :project => "MoPubSDK", :target => "MoPubSDK-ExcludeNative", :sdk_version => sdk_version
     end
-    
+
+    available_sdk_versions.each do |sdk_version|
+      head "Building MoPubSDKFramework for #{sdk_version}"
+      build :project => "MoPubSDK", :target => "MoPubSDKFramework", :sdk_version => sdk_version
+    end
+
     head "SUCCESS"
   end
 
@@ -214,7 +219,7 @@ namespace :mopubsdk do
     end
 
     head "Running unit tests in iOS Simulator version #{simulator_version}"
-    build :workspace => "MoPubSDK", :target => "MoPubSDKTests", :destination => "'platform=iOS Simulator,name=iPad'"
+    build :project => "MoPubSDK", :target => "MoPubSDKTests", :destination => "'platform=iOS Simulator,name=iPhone 8'"
 
     head "SUCCESS"
   end
@@ -253,6 +258,9 @@ else
     task :build => ['clean'] do
       head "Building MoPub Sample App"
       build :project => "MoPubSampleApp", :target => "MoPubSampleApp"
+
+      head "Building MoPub Sample App with Framework"
+      build :project => "MoPubSampleApp", :target => "MoPubSampleApp+Framework"
     end
   end
 end

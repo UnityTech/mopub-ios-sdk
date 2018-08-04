@@ -43,7 +43,6 @@ GreystripeCustomEvent/
 InMobiCustomEvent/
 MillennialCustomEvent/
 MoPubFabric/
-MoPubResources/
 VungleCustomEvent/
 iAdCustomEvent/
 UnityCustomEvent/
@@ -52,3 +51,5 @@ TapJoyCustomEvent/
 MoPubSwiftSampleApp/
 /Pods
 AdNetworkSupport/InMobi/
+Jenkinsfile
+Canary

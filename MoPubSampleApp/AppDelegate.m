@@ -6,18 +6,19 @@
 //
 
 #import "AppDelegate.h"
+#import "MPAdPersistenceManager.h"
 #import "MPAdTableViewController.h"
 #import "MPAdSection.h"
 #import "MPIdentityProvider.h"
 #import "MPAdConversionTracker.h"
-#import "MPLogEvent.h"
-#import "MPLogEventRecorder.h"
+#import "MPAdInfo.h"
 #import "MPLogging.h"
+#import "MoPub.h"
 #import <UIKit/UIKit.h>
 
-#if CUSTOM_EVENTS_ENABLED
-#import <FBAudienceNetwork/FBAudienceNetwork.h>
-#endif
+@interface AppDelegate()
+@property (nonatomic, strong) MPAdTableViewController * adTable;
+@end
 
 @implementation AppDelegate
 
@@ -27,7 +28,8 @@
 
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:[[MPAdTableViewController alloc] initWithAdSections:[MPAdSection adSections]]];
+    self.adTable = [[MPAdTableViewController alloc] initWithAdSections:[MPAdSection adSections]];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:self.adTable];
     self.window.rootViewController = navController;
     [self.window makeKeyAndVisible];
 
@@ -37,11 +39,47 @@
     navController.navigationBar.barStyle = UIBarStyleBlackOpaque;
     navController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName: [UIColor colorWithRed:0.86 green:0.86 blue:0.86 alpha:1]};
 
-#if CUSTOM_EVENTS_ENABLED
-    [FBAdSettings addTestDevice:[FBAdSettings testDeviceHash]];
-#endif
+    MPMoPubConfiguration * sdkConfig = [[MPMoPubConfiguration alloc] initWithAdUnitIdForAppInitialization: @"0ac59b0996d947309c33f59d6676399f"];
+    sdkConfig.globalMediationSettings = @[];
+    sdkConfig.mediatedNetworks = @[];
+    sdkConfig.advancedBidders = nil;
+    [[MoPub sharedInstance] initializeSdkWithConfiguration:sdkConfig completion:^{
+        NSLog(@"SDK initialization complete");
+    }];
 
     return YES;
+}
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+    if ([url.scheme isEqualToString:@"mopub"] && [url.host isEqualToString:@"load"]) {
+        // Convert the query parameters into a dictionary.
+        NSDictionary * queryParameters = ({
+            NSURLComponents * urlComponents = [NSURLComponents componentsWithURL:url resolvingAgainstBaseURL:NO];
+
+            NSMutableDictionary * params = [NSMutableDictionary dictionary];
+            for (NSURLQueryItem * queryItem in urlComponents.queryItems) {
+                [params setObject:queryItem.value forKey:queryItem.name];
+            }
+
+            params;
+        });
+
+        // Extract the info needed to create the `MPAdInfo` object.
+        MPAdInfo * adUnit = [MPAdInfo infoWithDictionary:queryParameters];
+        if (adUnit == nil) {
+            return NO;
+        }
+
+        // Dispatch the display of the ad unit onto the main thread.
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.adTable loadAd:adUnit];
+            [[MPAdPersistenceManager sharedManager] addSavedAd:adUnit];
+        });
+
+        return YES;
+    }
+    return NO;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
