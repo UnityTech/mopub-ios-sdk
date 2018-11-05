@@ -1,18 +1,22 @@
 //
 //  MPInterstitialCustomEventAdapterTests.m
-//  MoPubSDK
 //
-//  Copyright © 2017 MoPub. All rights reserved.
+//  Copyright 2018 Twitter, Inc.
+//  Licensed under the MoPub SDK License Agreement
+//  http://www.mopub.com/legal/sdk-license-agreement/
 //
 
 #import <XCTest/XCTest.h>
+#import "MPAdConfigurationFactory.h"
+#import "MPConstants.h"
+#import "MPConstants+Testing.h"
+#import "MPError.h"
 #import "MPInterstitialCustomEventAdapter.h"
 #import "MPInterstitialAdapterDelegateHandler.h"
 #import "MPInterstitialCustomEventAdapter+Testing.h"
 #import "MPInterstitialCustomEvent.h"
 #import "MPHTMLInterstitialCustomEvent.h"
 #import "MPMRAIDInterstitialCustomEvent.h"
-#import "MPConstants+Testing.h"
 
 static NSTimeInterval const kTestTimeout = 2;
 
@@ -134,6 +138,41 @@ static NSTimeInterval const kTestTimeout = 2;
 
     XCTAssertFalse(self.adapter.hasTrackedImpression);
     XCTAssertFalse(didExpire);
+}
+
+#pragma mark - Timeout
+
+- (void)testTimeoutOverrideSuccess {
+    XCTestExpectation * expectation = [self expectationWithDescription:@"Wait for timeout"];
+
+    // Generate the ad configurations
+    MPAdConfiguration * config = [MPAdConfigurationFactory defaultInterstitialConfigurationWithCustomEventClassName:@"MPMockInterstitialCustomEvent" additionalMetadata:@{kAdTimeoutMetadataKey: @(1000)}];
+
+    // Configure handler
+    __block BOOL didTimeout = NO;
+    MPInterstitialAdapterDelegateHandler * handler = MPInterstitialAdapterDelegateHandler.new;
+    handler.didFailToLoadAd = ^(MPBaseInterstitialAdapter * adapter, NSError * error) {
+        if (error != nil && error.code == MOPUBErrorAdRequestTimedOut) {
+            didTimeout = YES;
+        }
+
+        [expectation fulfill];
+    };
+
+    // Adapter contains the timeout logic
+    MPInterstitialCustomEventAdapter * adapter = [MPInterstitialCustomEventAdapter new];
+    adapter.configuration = config;
+    adapter.delegate = handler;
+    [adapter startTimeoutTimer];
+
+    [self waitForExpectationsWithTimeout:INTERSTITIAL_TIMEOUT_INTERVAL handler:^(NSError * _Nullable error) {
+        if (error != nil) {
+            XCTFail(@"Timed out");
+        }
+    }];
+
+    // Verify error was timeout
+    XCTAssertTrue(didTimeout);
 }
 
 @end

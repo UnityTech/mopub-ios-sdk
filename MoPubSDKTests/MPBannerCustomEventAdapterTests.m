@@ -1,16 +1,21 @@
 //
 //  MPBannerCustomEventAdapterTests.m
-//  MoPubSDKTests
 //
-//  Copyright © 2017 MoPub. All rights reserved.
+//  Copyright 2018 Twitter, Inc.
+//  Licensed under the MoPub SDK License Agreement
+//  http://www.mopub.com/legal/sdk-license-agreement/
 //
 
 #import <XCTest/XCTest.h>
 #import "MPAdConfiguration.h"
+#import "MPAdConfigurationFactory.h"
+#import "MPBannerAdapterDelegateHandler.h"
 #import "MPBannerCustomEvent.h"
+#import "MPBannerCustomEventAdapter+Testing.h"
+#import "MPConstants.h"
+#import "MPError.h"
 #import "MPHTMLBannerCustomEvent.h"
 #import "MPMRAIDBannerCustomEvent.h"
-#import "MPBannerCustomEventAdapter+Testing.h"
 
 @interface MPBannerCustomEventAdapterTests : XCTestCase
 
@@ -30,8 +35,8 @@
 
 // When an AD is in the imp tracking experiment, banner impressions (include all banner formats) are fired from SDK.
 - (void)testShouldTrackImpOnDisplayWhenExperimentEnabled {
-    NSDictionary *headers = @{ kBannerImpressionVisableMsHeaderKey: @"0", kBannerImpressionMinPixelHeaderKey:@"1"};
-    MPAdConfiguration *config = [[MPAdConfiguration alloc] initWithHeaders:headers data:nil];
+    NSDictionary *headers = @{ kBannerImpressionVisableMsMetadataKey: @"0", kBannerImpressionMinPixelMetadataKey:@"1"};
+    MPAdConfiguration *config = [[MPAdConfiguration alloc] initWithMetadata:headers data:nil];
 
     MPBannerCustomEventAdapter *adapter = [MPBannerCustomEventAdapter new];
 
@@ -88,6 +93,41 @@
     [adapter didDisplayAd];
 
     XCTAssertTrue(adapter.hasTrackedImpression);
+}
+
+#pragma mark - Timeout
+
+- (void)testTimeoutOverrideSuccess {
+    XCTestExpectation * expectation = [self expectationWithDescription:@"Wait for timeout"];
+
+    // Generate the ad configurations
+    MPAdConfiguration * bannerConfig = [MPAdConfigurationFactory defaultBannerConfigurationWithCustomEventClassName:@"MPMockBannerCustomEvent" additionalMetadata:@{kAdTimeoutMetadataKey: @(1000)}];
+
+    // Configure handler
+    __block BOOL didTimeout = NO;
+    MPBannerAdapterDelegateHandler * handler = MPBannerAdapterDelegateHandler.new;
+    handler.didFailToLoadAd = ^(NSError *error) {
+        if (error != nil && error.code == MOPUBErrorAdRequestTimedOut) {
+            didTimeout = YES;
+        }
+
+        [expectation fulfill];
+    };
+
+    // Adapter contains the timeout logic
+    MPBannerCustomEventAdapter * adapter = [MPBannerCustomEventAdapter new];
+    adapter.configuration = bannerConfig;
+    adapter.delegate = handler;
+    [adapter startTimeoutTimer];
+
+    [self waitForExpectationsWithTimeout:BANNER_TIMEOUT_INTERVAL handler:^(NSError * _Nullable error) {
+        if (error != nil) {
+            XCTFail(@"Timed out");
+        }
+    }];
+
+    // Verify error was timeout
+    XCTAssertTrue(didTimeout);
 }
 
 @end

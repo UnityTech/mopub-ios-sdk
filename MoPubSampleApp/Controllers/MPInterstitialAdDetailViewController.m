@@ -1,8 +1,9 @@
 //
 //  MPInterstitialAdDetailViewController.m
-//  MoPub
 //
-//  Copyright (c) 2013 MoPub. All rights reserved.
+//  Copyright 2018 Twitter, Inc.
+//  Licensed under the MoPub SDK License Agreement
+//  http://www.mopub.com/legal/sdk-license-agreement/
 //
 
 #import "MPInterstitialAdDetailViewController.h"
@@ -73,6 +74,7 @@
         [[MPAdPersistenceManager sharedManager] addSavedAd:self.info];
     }
 
+    [self startTimer];
     [self.interstitial loadAd];
 }
 
@@ -97,6 +99,7 @@
 
 - (void)interstitialDidLoadAd:(MPInterstitialAdController *)interstitial
 {
+    [self endTimer];
     [self.spinner stopAnimating];
     self.showButton.hidden = NO;
     self.loadButton.enabled = YES;
@@ -104,6 +107,7 @@
 
 - (void)interstitialDidFailToLoadAd:(MPInterstitialAdController *)interstitial
 {
+    [self endTimer];
     self.failLabel.hidden = NO;
     self.loadButton.enabled = YES;
     [self.spinner stopAnimating];

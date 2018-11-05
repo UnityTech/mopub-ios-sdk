@@ -1,8 +1,9 @@
 //
 //  MPNativeAdDetailViewController.m
-//  MoPub
 //
-//  Copyright (c) 2014 MoPub. All rights reserved.
+//  Copyright 2018 Twitter, Inc.
+//  Licensed under the MoPub SDK License Agreement
+//  http://www.mopub.com/legal/sdk-license-agreement/
 //
 
 #import "MPNativeAdDetailViewController.h"
@@ -105,7 +106,9 @@ NSString *const kNativeAdDefaultActionViewKey = @"kNativeAdDefaultActionButtonKe
         [[MPAdPersistenceManager sharedManager] addSavedAd:self.info];
     }
 
+    [self startTimer];
     [adRequest1 startWithCompletionHandler:^(MPNativeAdRequest *request, MPNativeAd *response, NSError *error) {
+        [self endTimer];
         if (error) {
             NSLog(@"================> %@", error);
             [self configureAdLoadFail];

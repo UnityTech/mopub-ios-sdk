@@ -1,8 +1,9 @@
 //
 //  MPMediationManager.m
-//  MoPubSDK
 //
-//  Copyright © 2018 MoPub. All rights reserved.
+//  Copyright 2018 Twitter, Inc.
+//  Licensed under the MoPub SDK License Agreement
+//  http://www.mopub.com/legal/sdk-license-agreement/
 //
 
 #import "MPMediationManager.h"
@@ -57,29 +58,36 @@ static NSString * const kNetworkSDKInitializationParametersKey = @"com.mopub.mop
         return nil;
     }
 
-    NSDictionary * cachedParameters = [[NSUserDefaults standardUserDefaults] objectForKey:kNetworkSDKInitializationParametersKey];
-    if (cachedParameters == nil) {
-        return nil;
+    NSDictionary * networkParameters = nil;
+    @synchronized (self) {
+        NSDictionary * cachedParameters = [[NSUserDefaults standardUserDefaults] objectForKey:kNetworkSDKInitializationParametersKey];
+        if (cachedParameters != nil) {
+            networkParameters = [cachedParameters objectForKey:network];
+        }
     }
 
-    return [cachedParameters objectForKey:network];
+    return networkParameters;
 }
 
 - (NSArray<Class<MPMediationSdkInitializable>> * _Nullable)allCachedNetworks {
-    NSDictionary * cachedParameters = [[NSUserDefaults standardUserDefaults] objectForKey:kNetworkSDKInitializationParametersKey];
-    NSArray * cacheKeys = [cachedParameters allKeys];
-    if (cacheKeys == nil) {
-        return nil;
-    }
+    NSMutableArray<Class<MPMediationSdkInitializable>> * cachedNetworks = nil;
 
-    // Convert the strings of class names into class types.
-    NSMutableArray<Class<MPMediationSdkInitializable>> * cachedNetworks = [NSMutableArray array];
-    [cacheKeys enumerateObjectsUsingBlock:^(NSString * key, NSUInteger idx, BOOL * _Nonnull stop) {
-        Class c = NSClassFromString(key);
-        if ([c conformsToProtocol:@protocol(MPMediationSdkInitializable)]) {
-            [cachedNetworks addObject:c];
+    @synchronized (self) {
+        NSDictionary * cachedParameters = [[NSUserDefaults standardUserDefaults] objectForKey:kNetworkSDKInitializationParametersKey];
+        NSArray * cacheKeys = [cachedParameters allKeys];
+        if (cacheKeys == nil) {
+            return nil;
         }
-    }];
+
+        // Convert the strings of class names into class types.
+        cachedNetworks = [NSMutableArray array];
+        [cacheKeys enumerateObjectsUsingBlock:^(NSString * key, NSUInteger idx, BOOL * _Nonnull stop) {
+            Class c = NSClassFromString(key);
+            if ([c conformsToProtocol:@protocol(MPMediationSdkInitializable)]) {
+                [cachedNetworks addObject:c];
+            }
+        }];
+    }
 
     return cachedNetworks;
 }

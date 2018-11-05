@@ -1,16 +1,18 @@
 //
 //  MPBannerAdDetailViewController.h
-//  MoPub
 //
-//  Copyright (c) 2013 MoPub. All rights reserved.
+//  Copyright 2018 Twitter, Inc.
+//  Licensed under the MoPub SDK License Agreement
+//  http://www.mopub.com/legal/sdk-license-agreement/
 //
 
 #import <UIKit/UIKit.h>
 #import "MPAdView.h"
+#import "MPViewController.h"
 
 @class MPAdInfo;
 
-@interface MPBannerAdDetailViewController : UIViewController <MPAdViewDelegate>
+@interface MPBannerAdDetailViewController : MPViewController <MPAdViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *IDLabel;

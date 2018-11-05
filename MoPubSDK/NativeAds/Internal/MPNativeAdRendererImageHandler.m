@@ -1,6 +1,9 @@
 //
 //  MPNativeAdRendererImageHandler.m
-//  Copyright (c) 2015 MoPub. All rights reserved.
+//
+//  Copyright 2018 Twitter, Inc.
+//  Licensed under the MoPub SDK License Agreement
+//  http://www.mopub.com/legal/sdk-license-agreement/
 //
 
 #import "MPNativeAdRendererImageHandler.h"
@@ -86,7 +89,7 @@
             MPLogDebug(@"Cell was recycled. Don't bother setting the image.");
             return;
         }
-        
+
         if (image) {
             imageView.image = image;
         }

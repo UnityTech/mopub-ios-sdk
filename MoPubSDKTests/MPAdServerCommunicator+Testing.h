@@ -1,8 +1,9 @@
 //
 //  MPAdServerCommunicator+Testing.h
-//  MoPubSDKTests
 //
-//  Copyright © 2017 MoPub. All rights reserved.
+//  Copyright 2018 Twitter, Inc.
+//  Licensed under the MoPub SDK License Agreement
+//  http://www.mopub.com/legal/sdk-license-agreement/
 //
 
 #import "MPAdServerCommunicator.h"
@@ -12,6 +13,6 @@
 @property (nonatomic, assign, readwrite) BOOL loading;
 
 // Expose private methods from `MPAdServerCommunicator`
-- (void)didFinishLoadingWithData:(NSData *)data headers:(NSDictionary *)headers;
+- (void)didFinishLoadingWithData:(NSData *)data;
 
 @end

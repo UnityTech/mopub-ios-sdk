@@ -1,8 +1,9 @@
 //
 //  MPAdServerKeys.m
-//  MoPubSDK
 //
-//  Copyright © 2018 MoPub. All rights reserved.
+//  Copyright 2018 Twitter, Inc.
+//  Licensed under the MoPub SDK License Agreement
+//  http://www.mopub.com/legal/sdk-license-agreement/
 //
 
 #import "MPAdServerKeys.h"
@@ -85,3 +86,11 @@ NSString * const kLanguageKey                      = @"language";
 #pragma mark - Consent Dialog Endpoint: Response Keys
 
 NSString * const kDialogHTMLKey                    = @"dialog_html";
+
+#pragma mark - Rewarded Keys
+
+NSString * const kCustomerIdKey                    = @"customer_id";
+NSString * const kRewardedCurrencyNameKey          = @"rcn";
+NSString * const kRewardedCurrencyAmountKey        = @"rca";
+NSString * const kRewardedCustomEventNameKey       = @"cec";
+NSString * const kRewardedCustomDataKey            = @"rcd";

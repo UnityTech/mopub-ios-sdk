@@ -1,8 +1,9 @@
 //
 //  MPAdPersistenceManager.m
-//  MoPubSampleApp
 //
-//  Copyright (c) 2013 MoPub. All rights reserved.
+//  Copyright 2018 Twitter, Inc.
+//  Licensed under the MoPub SDK License Agreement
+//  http://www.mopub.com/legal/sdk-license-agreement/
 //
 
 #import "MPAdPersistenceManager.h"
@@ -22,7 +23,7 @@ static MPAdPersistenceManager *sharedManager = nil;
     dispatch_once(&once, ^{
         sharedManager = [[self alloc] init];
     });
-    
+
     return sharedManager;
 }
 
@@ -50,7 +51,7 @@ static MPAdPersistenceManager *sharedManager = nil;
 - (void)persistSavedAds
 {
     NSData *persistData = [NSKeyedArchiver archivedDataWithRootObject:_savedAds];
-    
+
     [[NSUserDefaults standardUserDefaults] setObject:persistData forKey:kSavedAdsInfoKey];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
@@ -58,14 +59,14 @@ static MPAdPersistenceManager *sharedManager = nil;
 - (MPAdInfo *)savedAdForID:(NSString *)adID
 {
     MPAdInfo *target = nil;
-    
+
     for (MPAdInfo *ad in self.savedAds) {
         if ([ad.ID isEqualToString:adID]) {
             target = ad;
             break;
         }
     }
-    
+
     return target;
 }
 
@@ -73,9 +74,9 @@ static MPAdPersistenceManager *sharedManager = nil;
 {
     // overwrite if this ad unit id already exists
     [self removeSavedAd:adInfo];
-    
+
     [_savedAds addObject:adInfo];
-    
+
     [self persistSavedAds];
 }
 

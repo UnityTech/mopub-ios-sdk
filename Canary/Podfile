@@ -1,0 +1,30 @@
+source 'https://github.com/CocoaPods/Specs.git'
+
+platform :ios, '9.0'
+inhibit_all_warnings!
+use_frameworks!
+workspace 'Canary'
+
+pod 'mopub-ios-sdk', :path => '../'
+pod 'LoremIpsum'
+
+# Network mediation adapters
+pod 'MoPub-AdColony-Adapters'
+pod 'MoPub-AdMob-Adapters'
+pod 'MoPub-Applovin-Adapters'
+pod 'MoPub-Chartboost-Adapters'
+pod 'MoPub-FacebookAudienceNetwork-Adapters'
+pod 'MoPub-Flurry-Adapters'
+pod 'MoPub-TapJoy-Adapters'
+pod 'MoPub-UnityAds-Adapters'
+pod 'MoPub-Vungle-Adapters'
+
+target 'Canary' do
+  # Pods for Canary
+
+end
+
+target 'Canary (Internal)' do
+  # Pods for Canary (Internal)
+
+end

@@ -1,8 +1,9 @@
 //
 //  MPGeolocationProvider.m
-//  MoPub
 //
-//  Copyright (c) 2014 MoPub. All rights reserved.
+//  Copyright 2018 Twitter, Inc.
+//  Licensed under the MoPub SDK License Agreement
+//  http://www.mopub.com/legal/sdk-license-agreement/
 //
 
 #import "MPGeolocationProvider.h"
@@ -296,15 +297,7 @@ const NSTimeInterval kMPLocationUpdateInterval = 10.0 * 60.0;
     }
 }
 
-#pragma mark - <CLLocationManagerDelegate> (iOS < 6.0)
-
-- (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation
-{
-    if ([self isLocation:newLocation betterThanLocation:self.lastKnownLocation]) {
-        self.lastKnownLocation = newLocation;
-        MPLogDebug(@"Updated last known user location.");
-    }
-}
+#pragma mark - Consent
 
 - (void)consentStateChanged:(NSNotification *)notification
 {

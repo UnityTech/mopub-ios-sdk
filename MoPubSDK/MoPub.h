@@ -1,8 +1,9 @@
 //
 //  MoPub.h
-//  MoPub
 //
-//  Copyright (c) 2014 MoPub. All rights reserved.
+//  Copyright 2018 Twitter, Inc.
+//  Licensed under the MoPub SDK License Agreement
+//  http://www.mopub.com/legal/sdk-license-agreement/
 //
 
 #import "MPConstants.h"
@@ -10,6 +11,7 @@
 #import "MOPUBDisplayAgentType.h"
 #import "MPAdConversionTracker.h"
 #import "MPAdImpressionTimer.h"
+#import "MPAdTargeting.h"
 #import "MPAdvancedBidder.h"
 #import "MPAdView.h"
 #import "MPBannerCustomEvent.h"

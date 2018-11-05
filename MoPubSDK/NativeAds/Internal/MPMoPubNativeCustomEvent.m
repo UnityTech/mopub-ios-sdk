@@ -1,8 +1,9 @@
 //
 //  MPMoPubNativeCustomEvent.m
-//  MoPubSDK
 //
-//  Copyright (c) 2014 MoPub. All rights reserved.
+//  Copyright 2018 Twitter, Inc.
+//  Licensed under the MoPub SDK License Agreement
+//  http://www.mopub.com/legal/sdk-license-agreement/
 //
 
 #import "MPMoPubNativeCustomEvent.h"
@@ -17,12 +18,12 @@
 - (void)requestAdWithCustomEventInfo:(NSDictionary *)info
 {
     MPMoPubNativeAdAdapter *adAdapter = [[MPMoPubNativeAdAdapter alloc] initWithAdProperties:[info mutableCopy]];
-    
+
     if (adAdapter.properties) {
         MPNativeAd *interfaceAd = [[MPNativeAd alloc] initWithAdAdapter:adAdapter];
         [interfaceAd.impressionTrackerURLs addObjectsFromArray:adAdapter.impressionTrackerURLs];
         [interfaceAd.clickTrackerURLs addObjectsFromArray:adAdapter.clickTrackerURLs];
-        
+
         // Get the image urls so we can download them prior to returning the ad.
         NSMutableArray *imageURLs = [NSMutableArray array];
         for (NSString *key in [info allKeys]) {
@@ -32,7 +33,7 @@
                 }
             }
         }
-        
+
         [super precacheImagesWithURLs:imageURLs completionBlock:^(NSArray *errors) {
             if (errors) {
                 MPLogDebug(@"%@", errors);
@@ -44,7 +45,7 @@
     } else {
         [self.delegate nativeCustomEvent:self didFailToLoadAdWithError:MPNativeAdNSErrorForInvalidAdServerResponse(nil)];
     }
-    
+
 }
 
 @end

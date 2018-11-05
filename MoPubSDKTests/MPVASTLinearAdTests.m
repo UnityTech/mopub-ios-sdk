@@ -1,9 +1,9 @@
 //
 //  MPVASTLinearAdTests.m
-//  MoPubSDK
 //
-//  Created by Kelly Dun on 1/23/17.
-//  Copyright © 2017 MoPub. All rights reserved.
+//  Copyright 2018 Twitter, Inc.
+//  Licensed under the MoPub SDK License Agreement
+//  http://www.mopub.com/legal/sdk-license-agreement/
 //
 
 #import <XCTest/XCTest.h>

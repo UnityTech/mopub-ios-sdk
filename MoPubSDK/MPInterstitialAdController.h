@@ -1,8 +1,9 @@
 //
 //  MPInterstitialAdController.h
-//  MoPub
 //
-//  Copyright (c) 2012 MoPub, Inc. All rights reserved.
+//  Copyright 2018 Twitter, Inc.
+//  Licensed under the MoPub SDK License Agreement
+//  http://www.mopub.com/legal/sdk-license-agreement/
 //
 
 #import <UIKit/UIKit.h>
@@ -15,7 +16,7 @@
  * displayed during natural transition points in your application.
  */
 
-@interface MPInterstitialAdController : UIViewController
+@interface MPInterstitialAdController : NSObject
 
 /** @name Obtaining an Interstitial Ad */
 
@@ -80,6 +81,11 @@
  */
 @property (nonatomic, copy) CLLocation *location;
 
+/**
+ * An optional dictionary containing extra local data.
+ */
+@property (nonatomic, copy) NSDictionary *localExtras;
+
 /** @name Loading an Interstitial Ad */
 
 /**
@@ -142,7 +148,7 @@
 /*
  * Returns the shared pool of interstitial objects for your application.
  */
-+ (NSMutableArray *)sharedInterstitialAdControllers;
++ (NSMutableArray *)sharedInterstitialAdControllers DEPRECATED_MSG_ATTRIBUTE("This functionality will be removed in a future SDK release.");
 
 @end
 

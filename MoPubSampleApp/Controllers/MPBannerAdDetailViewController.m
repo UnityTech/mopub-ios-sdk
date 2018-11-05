@@ -1,8 +1,9 @@
 //
 //  MPBannerAdDetailViewController.m
-//  MoPub
 //
-//  Copyright (c) 2013 MoPub. All rights reserved.
+//  Copyright 2018 Twitter, Inc.
+//  Licensed under the MoPub SDK License Agreement
+//  http://www.mopub.com/legal/sdk-license-agreement/
 //
 
 #import "MPBannerAdDetailViewController.h"
@@ -72,6 +73,8 @@
     self.adView.accessibilityLabel = @"banner";
     self.adView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     [self.adViewContainer addSubview:self.adView];
+
+    [self.adView stopAutomaticallyRefreshingContents];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -92,6 +95,7 @@
     self.loadAdButton.enabled = NO;
     self.failLabel.hidden = YES;
     [self.spinner startAnimating];
+    [self startTimer];
     [self.adView loadAd];
 }
 
@@ -120,6 +124,7 @@
     self.loadAdButton.enabled = YES;
 
     [self.spinner stopAnimating];
+    [self endTimer];
 }
 
 - (void)adViewDidFailToLoadAd:(MPAdView *)view
@@ -128,6 +133,8 @@
 
     [self.spinner stopAnimating];
     self.failLabel.hidden = NO;
+
+    [self endTimer];
 }
 
 @end

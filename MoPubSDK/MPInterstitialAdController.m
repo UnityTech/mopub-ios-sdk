@@ -1,12 +1,13 @@
 //
 //  MPInterstitialAdController.m
-//  MoPub
 //
-//  Copyright (c) 2012 MoPub, Inc. All rights reserved.
+//  Copyright 2018 Twitter, Inc.
+//  Licensed under the MoPub SDK License Agreement
+//  http://www.mopub.com/legal/sdk-license-agreement/
 //
 
 #import "MPInterstitialAdController.h"
-
+#import "MPAdTargeting.h"
 #import "MPLogging.h"
 #import "MPInterstitialAdManager.h"
 #import "MPInterstitialAdManagerDelegate.h"
@@ -15,7 +16,7 @@
 
 @property (nonatomic, strong) MPInterstitialAdManager *manager;
 
-+ (NSMutableArray *)sharedInterstitials;
++ (NSMutableDictionary *)sharedInterstitials;
 - (id)initWithAdUnitId:(NSString *)adUnitId;
 
 @end
@@ -40,22 +41,16 @@
 
 + (MPInterstitialAdController *)interstitialAdControllerForAdUnitId:(NSString *)adUnitId
 {
-    NSMutableArray *interstitials = [[self class] sharedInterstitials];
+    NSMutableDictionary *interstitials = [[self class] sharedInterstitials];
 
     @synchronized(self) {
         // Find the correct ad controller based on the ad unit ID.
-        MPInterstitialAdController *interstitial = nil;
-        for (MPInterstitialAdController *currentInterstitial in interstitials) {
-            if ([currentInterstitial.adUnitId isEqualToString:adUnitId]) {
-                interstitial = currentInterstitial;
-                break;
-            }
-        }
+        MPInterstitialAdController * interstitial = interstitials[adUnitId];
 
         // Create a new ad controller for this ad unit ID if one doesn't already exist.
-        if (!interstitial) {
+        if (interstitial == nil) {
             interstitial = [[[self class] alloc] initWithAdUnitId:adUnitId];
-            [interstitials addObject:interstitial];
+            interstitials[adUnitId] = interstitial;
         }
 
         return interstitial;
@@ -69,10 +64,13 @@
 
 - (void)loadAd
 {
-    [self.manager loadInterstitialWithAdUnitID:self.adUnitId
-                                      keywords:self.keywords
-                              userDataKeywords:self.userDataKeywords
-                                      location:self.location];
+    MPAdTargeting * targeting = [[MPAdTargeting alloc] init];
+    targeting.keywords = self.keywords;
+    targeting.localExtras = self.localExtras;
+    targeting.location = self.location;
+    targeting.userDataKeywords = self.userDataKeywords;
+
+    [self.manager loadInterstitialWithAdUnitID:self.adUnitId targeting:targeting];
 }
 
 - (void)showFromViewController:(UIViewController *)controller
@@ -92,13 +90,13 @@
 
 #pragma mark - Internal
 
-+ (NSMutableArray *)sharedInterstitials
++ (NSMutableDictionary *)sharedInterstitials
 {
-    static NSMutableArray *sharedInterstitials;
+    static NSMutableDictionary *sharedInterstitials;
 
     @synchronized(self) {
         if (!sharedInterstitials) {
-            sharedInterstitials = [NSMutableArray array];
+            sharedInterstitials = [NSMutableDictionary dictionary];
         }
     }
 
@@ -178,12 +176,15 @@
 
 + (NSMutableArray *)sharedInterstitialAdControllers
 {
-    return [[self class] sharedInterstitials];
+    return [NSMutableArray arrayWithArray:[[self class] sharedInterstitials].allValues];
 }
 
 + (void)removeSharedInterstitialAdController:(MPInterstitialAdController *)controller
 {
-    [[[self class] sharedInterstitials] removeObject:controller];
+    @synchronized(self) {
+        NSMutableDictionary * sharedInterstitials = [[self class] sharedInterstitials];
+        [sharedInterstitials removeObjectForKey:controller.adUnitId];
+    }
 }
 
 @end

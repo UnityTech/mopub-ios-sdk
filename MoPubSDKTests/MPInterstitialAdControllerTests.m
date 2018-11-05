@@ -1,17 +1,20 @@
 //
 //  MPInterstitialAdControllerTests.m
-//  MoPubSDK
 //
-//  Copyright © 2017 MoPub. All rights reserved.
+//  Copyright 2018 Twitter, Inc.
+//  Licensed under the MoPub SDK License Agreement
+//  http://www.mopub.com/legal/sdk-license-agreement/
 //
 
 #import <XCTest/XCTest.h>
+#import "MPAdServerKeys.h"
 #import "MPAPIEndpoints.h"
 #import "MPInterstitialAdController.h"
 #import "MPInterstitialAdController+Testing.h"
 #import "MPInterstitialAdManager+Testing.h"
 #import "MPMockAdServerCommunicator.h"
 #import "NSURLComponents+Testing.h"
+#import "MPURL.h"
 
 @interface MPInterstitialAdControllerTests : XCTestCase
 @property (nonatomic, strong) MPInterstitialAdController * interstitial;
@@ -44,12 +47,12 @@
     XCTAssertNotNil(self.mockAdServerCommunicator);
     XCTAssertNotNil(self.mockAdServerCommunicator.lastUrlLoaded);
 
-    NSURL * url = self.mockAdServerCommunicator.lastUrlLoaded;
-    NSURLComponents * urlComponents = [NSURLComponents componentsWithURL:url resolvingAgainstBaseURL:YES];
+    MPURL * url = [self.mockAdServerCommunicator.lastUrlLoaded isKindOfClass:[MPURL class]] ? (MPURL *)self.mockAdServerCommunicator.lastUrlLoaded : nil;
+    XCTAssertNotNil(url);
 
-    NSString * viewabilityQueryParamValue = [urlComponents valueForQueryParameter:@"vv"];
-    XCTAssertNotNil(viewabilityQueryParamValue);
-    XCTAssertTrue([viewabilityQueryParamValue isEqualToString:@"1"]);
+    NSString * viewabilityValue = [url stringForPOSTDataKey:kViewabilityStatusKey];
+    XCTAssertNotNil(viewabilityValue);
+    XCTAssertTrue([viewabilityValue isEqualToString:@"1"]);
 }
 
 @end

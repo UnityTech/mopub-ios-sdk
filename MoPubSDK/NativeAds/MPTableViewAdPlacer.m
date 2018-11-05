@@ -1,8 +1,9 @@
 //
 //  MPTableViewAdPlacer.m
-//  MoPub
 //
-//  Copyright (c) 2014 MoPub. All rights reserved.
+//  Copyright 2018 Twitter, Inc.
+//  Licensed under the MoPub SDK License Agreement
+//  http://www.mopub.com/legal/sdk-license-agreement/
 //
 
 #import "MPTableViewAdPlacer.h"
@@ -418,6 +419,54 @@ static NSString * const kTableViewAdPlacerReuseIdentifier = @"MPTableViewAdPlace
         NSIndexPath *origPath = [self.streamAdPlacer originalIndexPathForAdjustedIndexPath:indexPath];
         [delegate tableView:tableView performAction:action forRowAtIndexPath:origPath withSender:sender];
     }
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    if ([self.originalDelegate respondsToSelector:@selector(tableView:viewForHeaderInSection:)]) {
+        return [self.originalDelegate tableView:tableView viewForHeaderInSection:section];
+    }
+
+    return nil;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
+    if ([self.originalDelegate respondsToSelector:@selector(tableView:viewForFooterInSection:)]) {
+        return [self.originalDelegate tableView:tableView viewForFooterInSection:section];
+    }
+
+    return nil;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    if ([self.originalDelegate respondsToSelector:@selector(tableView:heightForHeaderInSection:)]) {
+        return [self.originalDelegate tableView:tableView heightForHeaderInSection:section];
+    }
+
+    return 0;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForHeaderInSection:(NSInteger)section {
+    if ([self.originalDelegate respondsToSelector:@selector(tableView:estimatedHeightForHeaderInSection:)]) {
+        return [self.originalDelegate tableView:tableView estimatedHeightForHeaderInSection:section];
+    }
+
+    return 0;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    if ([self.originalDelegate respondsToSelector:@selector(tableView:heightForFooterInSection:)]) {
+        return [self.originalDelegate tableView:tableView heightForFooterInSection:section];
+    }
+
+    return 0;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForFooterInSection:(NSInteger)section {
+    if ([self.originalDelegate respondsToSelector:@selector(tableView:estimatedHeightForFooterInSection:)]) {
+        return [self.originalDelegate tableView:tableView estimatedHeightForFooterInSection:section];
+    }
+
+    return 0;
 }
 
 #pragma mark - Method Forwarding

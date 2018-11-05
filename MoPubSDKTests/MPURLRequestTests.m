@@ -1,11 +1,14 @@
 //
 //  MPURLRequestTests.m
-//  MoPubSDKTests
 //
-//  Copyright © 2018 MoPub. All rights reserved.
+//  Copyright 2018 Twitter, Inc.
+//  Licensed under the MoPub SDK License Agreement
+//  http://www.mopub.com/legal/sdk-license-agreement/
 //
 
 #import <XCTest/XCTest.h>
+#import "MPAPIEndpoints.h"
+#import "MPURL.h"
 #import "MPURLRequest+Testing.h"
 
 @interface MPURLRequestTests : XCTestCase
@@ -16,109 +19,190 @@
 
 #pragma mark - JSON Building
 
-- (void)testNotPercentEncodedQueryParameters {
-    NSURL * url = [NSURL URLWithString:@"https://www.test.com/t1?a=1&b=2"];
-    NSURLComponents * components = [NSURLComponents componentsWithURL:url resolvingAgainstBaseURL:NO];
-    XCTAssertNotNil(components);
+- (void)testPOSTDataSuccessful {
+    NSDictionary * postData = @{
+                                @"string": @"1",
+                                @"number": @(2),
+                                @"sentence": @"i am a cat meow",
+                                @"unencoded": @"!#$&'()*+,/:;=?@[]",
+                                @"encoded": @"i%20am%20a%20cat%20meow",
+                                @"array": @[@"one", @"two"],
+                                @"dictionary": @{ @"token": @"1" },
+                                };
 
-    NSDictionary * json = [MPURLRequest jsonFromURLComponents:components];
+    MPURL * url = [MPURL URLWithString:@"https://www.test.com/t1?a=1&b=2"];
+    [url.postData addEntriesFromDictionary:postData];
+    XCTAssertNotNil(url);
+
+    MPURLRequest * request = [MPURLRequest requestWithURL:url];
+    XCTAssertNotNil(request);
+
+    NSData * data = request.HTTPBody;
+    XCTAssertNotNil(data);
+
+    NSError * error = nil;
+    NSDictionary * json = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
     XCTAssertNotNil(json);
     XCTAssert(json.count > 0);
 
-    XCTAssert([json[@"a"] isEqualToString:@"1"]);
-    XCTAssert([json[@"b"] isEqualToString:@"2"]);
+    XCTAssert([json[@"string"] isEqualToString:@"1"]);
+    XCTAssert([json[@"number"] intValue] == 2);
+    XCTAssert([json[@"sentence"] isEqualToString:@"i am a cat meow"]);
+    XCTAssert([json[@"unencoded"] isEqualToString:@"!#$&'()*+,/:;=?@[]"]);
+    XCTAssert([json[@"encoded"] isEqualToString:@"i%20am%20a%20cat%20meow"]);
+
+    NSArray * array = json[@"array"];
+    XCTAssertNotNil(array);
+    XCTAssert(array.count == 2);
+    XCTAssert([array.firstObject isEqualToString:@"one"]);
+    XCTAssert([array.lastObject isEqualToString:@"two"]);
+
+    NSDictionary * dict = json[@"dictionary"];
+    XCTAssertNotNil(dict);
+    XCTAssert([dict[@"token"] isEqualToString:@"1"]);
 }
 
-- (void)testWithPercentEncodedQueryParameters {
-    NSURL * url = [NSURL URLWithString:@"https://www.test.com/t2?a=i%20am%20a%20cat%20meow&b=2"];
-    NSURLComponents * components = [NSURLComponents componentsWithURL:url resolvingAgainstBaseURL:NO];
-    XCTAssertNotNil(components);
+- (void)testBadPOSTDataGeneratesNoPOSTBody {
+    NSDictionary * postData = @{ @"time": NSDate.date };
 
-    NSDictionary * json = [MPURLRequest jsonFromURLComponents:components];
+    MPURL * url = [MPURL URLWithString:@"https://www.test.com/t1?a=1&b=2"];
+    [url.postData addEntriesFromDictionary:postData];
+    XCTAssertNotNil(url);
+
+    MPURLRequest * request = [MPURLRequest requestWithURL:url];
+    XCTAssertNil(request.HTTPBody);
+}
+
+- (void)testMoPubHostNoPOSTData {
+    NSString * mopubUrl = [NSString stringWithFormat:@"https://%@", [MPAPIEndpoints baseHostname]];
+    MPURL * url = [[MPURL alloc] initWithString:mopubUrl];
+    XCTAssertNotNil(url);
+
+    MPURLRequest * request = [MPURLRequest requestWithURL:url];
+    XCTAssertNotNil(request.HTTPBody);
+}
+
+- (void)testNotMoPubHostWithPOSTData {
+    NSString * unitTestUrl = @"https://www.unittest.com";
+    MPURL * url = [MPURL URLWithString:unitTestUrl];
+    XCTAssertNotNil(url);
+
+    url.postData[@"q"] = @"i'm a cat!";
+    XCTAssert(url.postData.count == 1);
+
+    MPURLRequest * request = [MPURLRequest requestWithURL:url];
+    XCTAssertNotNil(request.HTTPBody);
+
+    NSError * error = nil;
+    NSDictionary * json = [NSJSONSerialization JSONObjectWithData:request.HTTPBody options:0 error:&error];
     XCTAssertNotNil(json);
     XCTAssert(json.count > 0);
 
-    XCTAssert([json[@"a"] isEqualToString:@"i am a cat meow"]);
-    XCTAssert([json[@"b"] isEqualToString:@"2"]);
+    XCTAssert([json[@"q"] isEqualToString:@"i'm a cat!"]);
 }
 
-- (void)testNoQueryParameters {
-    NSURL * url = [NSURL URLWithString:@"https://www.test.com/t3"];
-    NSURLComponents * components = [NSURLComponents componentsWithURL:url resolvingAgainstBaseURL:NO];
-    XCTAssertNotNil(components);
+- (void)testCombineQueryParametersWithPOSTDataForMoPubHost {
+    NSString * unitTestUrl = @"https://ads.mopub.com/combine?q=i%20am%20a%20cat%20meow&k=%21%23%24%26%27%28%29%2A%2B%2C%2F%3A%3B%3D%3F%40%5B%5D";
+    MPURL * url = [MPURL URLWithString:unitTestUrl];
+    XCTAssertNotNil(url);
 
-    NSDictionary * json = [MPURLRequest jsonFromURLComponents:components];
+    url.postData[@"query2"] = @(77);
+    XCTAssert(url.postData.count == 1);
+
+    MPURLRequest * request = [MPURLRequest requestWithURL:url];
+    XCTAssertNotNil(request.HTTPBody);
+
+    NSError * error = nil;
+    NSDictionary * json = [NSJSONSerialization JSONObjectWithData:request.HTTPBody options:0 error:&error];
     XCTAssertNotNil(json);
-    XCTAssert(json.count == 0);
+    XCTAssert(json.count == 3);
+
+    XCTAssert([json[@"q"] isEqualToString:@"i am a cat meow"]);
+    XCTAssert([json[@"k"] isEqualToString:@"!#$&'()*+,/:;=?@[]"]);
+    XCTAssert([json[@"query2"] intValue] == 77);
 }
 
-- (void)testAggregatingQueryParameters {
-    NSURL * url = [NSURL URLWithString:@"https://www.test.com/t3?a=i%20am%20a%20cat%20meow&b=2&a=10"];
-    NSURLComponents * components = [NSURLComponents componentsWithURL:url resolvingAgainstBaseURL:NO];
-    XCTAssertNotNil(components);
+- (void)testDoNotCombineQueryParametersWithPOSTDataForOtherHost {
+    NSString * unitTestUrl = @"https://www.unittest.com/combine?q=i%20am%20a%20cat%20meow&k=%21%23%24%26%27%28%29%2A%2B%2C%2F%3A%3B%3D%3F%40%5B%5D";
+    MPURL * url = [MPURL URLWithString:unitTestUrl];
+    XCTAssertNotNil(url);
 
-    NSDictionary * json = [MPURLRequest jsonFromURLComponents:components];
+    url.postData[@"query2"] = @(77);
+    XCTAssert(url.postData.count == 1);
+
+    MPURLRequest * request = [MPURLRequest requestWithURL:url];
+    XCTAssertNotNil(request.HTTPBody);
+
+    NSError * error = nil;
+    NSDictionary * json = [NSJSONSerialization JSONObjectWithData:request.HTTPBody options:0 error:&error];
     XCTAssertNotNil(json);
-    XCTAssert(json.count > 0);
-
-    XCTAssert([json[@"a"] isEqualToString:@"i am a cat meow,10"]);
-    XCTAssert([json[@"b"] isEqualToString:@"2"]);
+    XCTAssert(json.count == 1);
+    XCTAssert([json[@"query2"] intValue] == 77);
 }
 
-- (void)testFragmentQueryParameter {
-    NSURL * url = [NSURL URLWithString:@"https://www.test.com/t1?a=1&fragment"];
-    NSURLComponents * components = [NSURLComponents componentsWithURL:url resolvingAgainstBaseURL:NO];
-    XCTAssertNotNil(components);
+- (void)testUserAgentCanBeObtainedOnNonMainThread {
+    // reset user agent so MPURLRequest has to reobtain it
+    gUserAgent = nil;
 
-    NSDictionary * json = [MPURLRequest jsonFromURLComponents:components];
-    XCTAssertNotNil(json);
-    XCTAssert(json.count > 0);
+    dispatch_queue_t nonMainQueue = dispatch_queue_create("test queue", NULL);
 
-    XCTAssert([json[@"a"] isEqualToString:@"1"]);
-    XCTAssert([json.allKeys containsObject:@"fragment"]);
-    XCTAssert([json[@"fragment"] isEqualToString:@""]);
+    XCTestExpectation * expectation = [self expectationWithDescription:@"Wait for user agent to fill on background thread"];
+
+    // This will crash if the user agent isn't obtained via the main thread.
+    __block NSString * userAgent = nil;
+    dispatch_async(nonMainQueue, ^{
+        userAgent = [MPURLRequest userAgent];
+        [expectation fulfill];
+    });
+
+    [self waitForExpectations:@[expectation] timeout:5.0];
+
+    XCTAssertNotNil(userAgent);
 }
 
-- (void)testPercentDecodingReservedCharacters {
-    // Reserved characters that are percent encoded are:
-    //
-    // !    #    $    &    '    (    )    *    +    ,    /    :    ;    =    ?    @    [    ]
-    // %21    %23    %24    %26    %27    %28    %29    %2A    %2B    %2C    %2F    %3A    %3B    %3D    %3F    %40    %5B    %5D
-    // Source: https://en.wikipedia.org/wiki/Percent-encoding#Percent-encoding_reserved_characters
+- (void)testUserAgentCanBeObtainedOnMainThread {
+    // reset user agent so MPURLRequest has to reobtain it
+    gUserAgent = nil;
 
-    NSURL * url = [NSURL URLWithString:@"https://www.test.com/t5?z=%21%23%24%26%27%28%29%2A%2B%2C%2F%3A%3B%3D%3F%40%5B%5D"];
-    NSURLComponents * components = [NSURLComponents componentsWithURL:url resolvingAgainstBaseURL:NO];
-    XCTAssertNotNil(components);
+    NSString * userAgent = [MPURLRequest userAgent];
 
-    NSDictionary * json = [MPURLRequest jsonFromURLComponents:components];
-    XCTAssertNotNil(json);
-    XCTAssert(json.count > 0);
-
-    XCTAssert([json[@"z"] isEqualToString:@"!#$&'()*+,/:;=?@[]"]);
+    XCTAssertNotNil(userAgent);
 }
 
-- (void)testMultipleFragmentQueryParameter {
-    NSURL * url = [NSURL URLWithString:@"https://www.test.com/t7?a&a&a&a"];
-    NSURLComponents * components = [NSURLComponents componentsWithURL:url resolvingAgainstBaseURL:NO];
-    XCTAssertNotNil(components);
+- (void)testUserAgentCanBeObtainedOnMainQueue {
+    // reset user agent so MPURLRequest has to reobtain it
+    gUserAgent = nil;
 
-    NSDictionary * json = [MPURLRequest jsonFromURLComponents:components];
-    XCTAssertNotNil(json);
-    XCTAssert(json.count > 0);
+    XCTestExpectation * expectation = [self expectationWithDescription:@"Wait for user agent to fill on background thread"];
 
-    XCTAssert([json[@"a"] isEqualToString:@",,,"]);
+    __block NSString * userAgent = nil;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        userAgent = [MPURLRequest userAgent];
+        [expectation fulfill];
+    });
+
+    [self waitForExpectations:@[expectation] timeout:5.0];
+
+    XCTAssertNotNil(userAgent);
 }
 
-- (void)testDecodingVariantVersionQueryParameter {
-    NSURL * url = [NSURL URLWithString:@"https://www.test.com/t9?nv=5.0.0+variant"];
-    NSURLComponents * components = [NSURLComponents componentsWithURL:url resolvingAgainstBaseURL:NO];
-    XCTAssertNotNil(components);
+- (void)testJSONNotPrettyPrinted {
+    NSDictionary * postData = @{ @"string": @"1" };
+    NSString * const exptectedJSON = @"{\"string\":\"1\"}";
 
-    NSDictionary * json = [MPURLRequest jsonFromURLComponents:components];
-    XCTAssertNotNil(json);
-    XCTAssert(json.count > 0);
+    MPURL * url = [MPURL URLWithString:@"https://www.test.com"];
+    [url.postData addEntriesFromDictionary:postData];
+    XCTAssertNotNil(url);
 
-    XCTAssert([json[@"nv"] isEqualToString:@"5.0.0+variant"]);
+    MPURLRequest * request = [MPURLRequest requestWithURL:url];
+    XCTAssertNotNil(request);
+
+    NSData * data = request.HTTPBody;
+    XCTAssertNotNil(data);
+
+    NSString * jsonString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    XCTAssertNotNil(jsonString);
+    XCTAssert([jsonString isEqualToString:exptectedJSON]);
 }
 
 @end

@@ -1,8 +1,9 @@
 //
 //  MPAdServerCommunicator.h
-//  MoPub
 //
-//  Copyright (c) 2012 MoPub, Inc. All rights reserved.
+//  Copyright 2018 Twitter, Inc.
+//  Licensed under the MoPub SDK License Agreement
+//  http://www.mopub.com/legal/sdk-license-agreement/
 //
 
 #import <Foundation/Foundation.h>
@@ -23,6 +24,11 @@
 
 - (void)loadURL:(NSURL *)URL;
 - (void)cancel;
+
+- (void)sendBeforeLoadUrlWithConfiguration:(MPAdConfiguration *)configuration;
+- (void)sendAfterLoadUrlWithConfiguration:(MPAdConfiguration *)configuration
+                      adapterLoadDuration:(NSTimeInterval)duration
+                        adapterLoadResult:(MPAfterLoadResult)result;
 
 @end
 

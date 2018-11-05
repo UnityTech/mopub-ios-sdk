@@ -1,9 +1,9 @@
 //
 //  MPAdView.h
-//  MoPub
 //
-//  Created by Nafis Jamal on 1/19/11.
-//  Copyright 2011 MoPub, Inc. All rights reserved.
+//  Copyright 2018 Twitter, Inc.
+//  Licensed under the MoPub SDK License Agreement
+//  http://www.mopub.com/legal/sdk-license-agreement/
 //
 
 #import <UIKit/UIKit.h>
@@ -85,6 +85,11 @@ typedef enum
  * to receive more relevant advertising.
  */
 @property (nonatomic, copy) CLLocation *location;
+
+/**
+ * An optional dictionary containing extra local data.
+ */
+@property (nonatomic, copy) NSDictionary *localExtras;
 
 /** @name Loading a Banner Ad */
 

@@ -18,7 +18,6 @@ DerivedData
 .idea/
 Temp
 proxy.log
-Scripts/*.mov
 tmp_sdk
 node_modules
 AdNetworkSupport/**/SDK/*.h
@@ -27,10 +26,8 @@ AdNetworkSupport/**/SDK/*.framework
 AdNetworkSupport/**/SDK/*.embeddedframework
 AdNetworkSupport/Vungle/VungleSDK.embeddedframework/
 AdNetworkSupport/Unity/SDK/UnityAds.bundle/
-mopub-ios-sdk.podspec
 Scripts/*
-!Scripts/build_scripts/
-Scripts/build_scripts/*
+!Scripts/mraid_build.sh
 !Scripts/build_scripts/mraid_build.sh
 MoPubCanaryApp/
 mopub-sdk-common/
@@ -52,4 +49,10 @@ MoPubSwiftSampleApp/
 /Pods
 AdNetworkSupport/InMobi/
 Jenkinsfile
-Canary
+
+# Canary app
+# Should not publicly distribute the interal folder (containing the internal testing files)
+# and CocoaPod files.
+Canary/Internal
+Canary/Podfile.lock
+Canary/Pods

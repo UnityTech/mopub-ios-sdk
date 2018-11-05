@@ -1,15 +1,17 @@
 //
 //  MPNativeAdPlacerPageViewController.h
-//  MoPubSampleApp
 //
-//  Copyright (c) 2014 MoPub. All rights reserved.
+//  Copyright 2018 Twitter, Inc.
+//  Licensed under the MoPub SDK License Agreement
+//  http://www.mopub.com/legal/sdk-license-agreement/
 //
 
 #import <UIKit/UIKit.h>
+#import "MPViewController.h"
 
 @class MPAdInfo;
 
-@interface MPNativeAdPlacerPageViewController : UIViewController
+@interface MPNativeAdPlacerPageViewController : MPViewController
 
 - (instancetype)initWithAdInfo:(MPAdInfo *)info;
 

@@ -1,8 +1,9 @@
 //
 //  MPAdvancedBiddingManager.m
-//  MoPubSDK
 //
-//  Copyright © 2017 MoPub. All rights reserved.
+//  Copyright 2018 Twitter, Inc.
+//  Licensed under the MoPub SDK License Agreement
+//  http://www.mopub.com/legal/sdk-license-agreement/
 //
 
 #import <Foundation/Foundation.h>
@@ -61,7 +62,9 @@ static NSString const * kTokenKey = @"token";
     // Generate the JSON dictionary for all participating bidders.
     NSMutableDictionary * tokens = [NSMutableDictionary dictionary];
     [self.bidders enumerateKeysAndObjectsUsingBlock:^(NSString * network, id<MPAdvancedBidder> bidder, BOOL * stop) {
-        tokens[network] = @{ kTokenKey: bidder.token };
+        if (bidder.token != nil) {
+            tokens[network] = @{ kTokenKey: bidder.token };
+        }
     }];
 
     // Serialize the JSON dictionary into a JSON string.

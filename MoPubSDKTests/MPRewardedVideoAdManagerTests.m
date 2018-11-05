@@ -1,18 +1,24 @@
 //
 //  MPRewardedVideoAdManagerTests.m
-//  MoPubSDK
 //
-//  Copyright © 2017 MoPub. All rights reserved.
+//  Copyright 2018 Twitter, Inc.
+//  Licensed under the MoPub SDK License Agreement
+//  http://www.mopub.com/legal/sdk-license-agreement/
 //
 
 #import <XCTest/XCTest.h>
 #import "MPAdConfiguration.h"
+#import "MPAdConfigurationFactory.h"
+#import "MPAdServerKeys.h"
+#import "MPAdTargeting.h"
 #import "MPAPIEndpoints.h"
 #import "MPRewardedVideoAdManager.h"
 #import "MPRewardedVideoAdManager+Testing.h"
 #import "MPRewardedVideoDelegateHandler.h"
 #import "MPRewardedVideoReward.h"
 #import "MPMockAdServerCommunicator.h"
+#import "MPMockRewardedVideoCustomEvent.h"
+#import "MPURL.h"
 #import "NSURLComponents+Testing.h"
 
 static NSString * const kTestAdUnitId = @"967f82c7-c059-4ae8-8cb6-41c34265b1ef";
@@ -24,12 +30,14 @@ static const NSTimeInterval kTestTimeout   = 2; // seconds
 
 @implementation MPRewardedVideoAdManagerTests
 
+#pragma mark - Currency
+
 - (void)testRewardedSingleCurrencyPresentationSuccess {
     // Setup rewarded ad configuration
-    NSDictionary * headers = @{ kRewardedVideoCurrencyNameHeaderKey: @"Diamonds",
-                                kRewardedVideoCurrencyAmountHeaderKey: @"3",
+    NSDictionary * headers = @{ kRewardedVideoCurrencyNameMetadataKey: @"Diamonds",
+                                kRewardedVideoCurrencyAmountMetadataKey: @"3",
                                 };
-    MPAdConfiguration * config = [[MPAdConfiguration alloc] initWithHeaders:headers data:nil];
+    MPAdConfiguration * config = [[MPAdConfiguration alloc] initWithMetadata:headers data:nil];
 
     // Semaphore to wait for asynchronous method to finish before continuing the test.
     XCTestExpectation * expectation = [self expectationWithDescription:@"Wait for reward completion block to fire."];
@@ -61,8 +69,8 @@ static const NSTimeInterval kTestTimeout   = 2; // seconds
     //     { "name": "Coins", "amount": 8 }
     //   ]
     // }
-    NSDictionary * headers = @{ kRewardedCurrenciesHeaderKey: @"{ \"rewards\": [ { \"name\": \"Coins\", \"amount\": 8 } ] }" };
-    MPAdConfiguration * config = [[MPAdConfiguration alloc] initWithHeaders:headers data:nil];
+    NSDictionary * headers = @{ kRewardedCurrenciesMetadataKey: @{ @"rewards": @[ @{ @"name": @"Coins", @"amount": @(8) } ] } };
+    MPAdConfiguration * config = [[MPAdConfiguration alloc] initWithMetadata:headers data:nil];
 
     // Semaphore to wait for asynchronous method to finish before continuing the test.
     XCTestExpectation * expectation = [self expectationWithDescription:@"Wait for reward completion block to fire."];
@@ -96,8 +104,8 @@ static const NSTimeInterval kTestTimeout   = 2; // seconds
     //     { "name": "Energy", "amount": 20 }
     //   ]
     // }
-    NSDictionary * headers = @{ kRewardedCurrenciesHeaderKey: @"{ \"rewards\": [ { \"name\": \"Coins\", \"amount\": 8 }, { \"name\": \"Diamonds\", \"amount\": 1 }, { \"name\": \"Energy\", \"amount\": 20 } ] }" };
-    MPAdConfiguration * config = [[MPAdConfiguration alloc] initWithHeaders:headers data:nil];
+    NSDictionary * headers = @{ kRewardedCurrenciesMetadataKey: @{ @"rewards": @[ @{ @"name": @"Coins", @"amount": @(8) }, @{ @"name": @"Diamonds", @"amount": @(1) }, @{ @"name": @"Energy", @"amount": @(20) } ] } };
+    MPAdConfiguration * config = [[MPAdConfiguration alloc] initWithMetadata:headers data:nil];
 
     // Semaphore to wait for asynchronous method to finish before continuing the test.
     XCTestExpectation * expectation = [self expectationWithDescription:@"Wait for reward completion block to fire."];
@@ -131,8 +139,8 @@ static const NSTimeInterval kTestTimeout   = 2; // seconds
     //     { "name": "Energy", "amount": 20 }
     //   ]
     // }
-    NSDictionary * headers = @{ kRewardedCurrenciesHeaderKey: @"{ \"rewards\": [ { \"name\": \"Coins\", \"amount\": 8 }, { \"name\": \"Diamonds\", \"amount\": 1 }, { \"name\": \"Energy\", \"amount\": 20 } ] }" };
-    MPAdConfiguration * config = [[MPAdConfiguration alloc] initWithHeaders:headers data:nil];
+    NSDictionary * headers = @{ kRewardedCurrenciesMetadataKey: @{ @"rewards": @[ @{ @"name": @"Coins", @"amount": @(8) }, @{ @"name": @"Diamonds", @"amount": @(1) }, @{ @"name": @"Energy", @"amount": @(20) } ] } };
+    MPAdConfiguration * config = [[MPAdConfiguration alloc] initWithMetadata:headers data:nil];
 
     // Semaphore to wait for asynchronous method to finish before continuing the test.
     XCTestExpectation * expectation = [self expectationWithDescription:@"Wait for reward completion block to fire."];
@@ -173,8 +181,8 @@ static const NSTimeInterval kTestTimeout   = 2; // seconds
     //     { "name": "Energy", "amount": 20 }
     //   ]
     // }
-    NSDictionary * headers = @{ kRewardedCurrenciesHeaderKey: @"{ \"rewards\": [ { \"name\": \"Coins\", \"amount\": 8 }, { \"name\": \"Diamonds\", \"amount\": 1 }, { \"name\": \"Energy\", \"amount\": 20 } ] }" };
-    MPAdConfiguration * config = [[MPAdConfiguration alloc] initWithHeaders:headers data:nil];
+    NSDictionary * headers = @{ kRewardedCurrenciesMetadataKey: @{ @"rewards": @[ @{ @"name": @"Coins", @"amount": @(8) }, @{ @"name": @"Diamonds", @"amount": @(1) }, @{ @"name": @"Energy", @"amount": @(20) } ] } };
+    MPAdConfiguration * config = [[MPAdConfiguration alloc] initWithMetadata:headers data:nil];
 
     // Semaphore to wait for asynchronous method to finish before continuing the test.
     XCTestExpectation * expectation = [self expectationWithDescription:@"Wait for reward completion block to fire."];
@@ -215,8 +223,8 @@ static const NSTimeInterval kTestTimeout   = 2; // seconds
     //     { "name": "Energy", "amount": 20 }
     //   ]
     // }
-    NSDictionary * headers = @{ kRewardedCurrenciesHeaderKey: @"{ \"rewards\": [ { \"name\": \"Coins\", \"amount\": 8 }, { \"name\": \"Diamonds\", \"amount\": 1 }, { \"name\": \"Energy\", \"amount\": 20 } ] }" };
-    MPAdConfiguration * config = [[MPAdConfiguration alloc] initWithHeaders:headers data:nil];
+    NSDictionary * headers = @{ kRewardedCurrenciesMetadataKey: @{ @"rewards": @[ @{ @"name": @"Coins", @"amount": @(8) }, @{ @"name": @"Diamonds", @"amount": @(1) }, @{ @"name": @"Energy", @"amount": @(20) } ] } };
+    MPAdConfiguration * config = [[MPAdConfiguration alloc] initWithMetadata:headers data:nil];
 
     // Semaphore to wait for asynchronous method to finish before continuing the test.
     XCTestExpectation * expectation = [self expectationWithDescription:@"Wait for reward completion block to fire."];
@@ -274,9 +282,208 @@ static const NSTimeInterval kTestTimeout   = 2; // seconds
     XCTAssertTrue(didFail);
 }
 
+#pragma mark - Network
+
+- (void)testEmptyConfigurationArray {
+    XCTestExpectation * expectation = [self expectationWithDescription:@"Wait for rewardedVideo load"];
+
+    MPRewardedVideoDelegateHandler * handler = [MPRewardedVideoDelegateHandler new];
+    handler.didFailToLoadAd = ^{
+        [expectation fulfill];
+    };
+
+    MPRewardedVideoAdManager * manager = [[MPRewardedVideoAdManager alloc] initWithAdUnitID:kTestAdUnitId delegate:handler];
+    [manager communicatorDidReceiveAdConfigurations:@[]];
+
+    [self waitForExpectationsWithTimeout:kTestTimeout handler:^(NSError * _Nullable error) {
+        if (error != nil) {
+            XCTFail(@"Timed out");
+        }
+    }];
+}
+
+- (void)testNilConfigurationArray {
+    XCTestExpectation * expectation = [self expectationWithDescription:@"Wait for rewardedVideo load"];
+
+    MPRewardedVideoDelegateHandler * handler = [MPRewardedVideoDelegateHandler new];
+    handler.didFailToLoadAd = ^{
+        [expectation fulfill];
+    };
+
+    MPRewardedVideoAdManager * manager = [[MPRewardedVideoAdManager alloc] initWithAdUnitID:kTestAdUnitId delegate:handler];
+    [manager communicatorDidReceiveAdConfigurations:nil];
+
+    [self waitForExpectationsWithTimeout:kTestTimeout handler:^(NSError * _Nullable error) {
+        if (error != nil) {
+            XCTFail(@"Timed out");
+        }
+    }];
+}
+
+- (void)testMultipleResponsesFirstSuccess {
+    XCTestExpectation * expectation = [self expectationWithDescription:@"Wait for rewardedVideo load"];
+
+    MPRewardedVideoDelegateHandler * handler = [MPRewardedVideoDelegateHandler new];
+    handler.didLoadAd = ^{
+        [expectation fulfill];
+    };
+    handler.didFailToLoadAd = ^{
+        XCTFail(@"Encountered an unexpected load failure");
+        [expectation fulfill];
+    };
+
+    // Generate the ad configurations
+    MPAdConfiguration * rewardedVideoThatShouldLoad = [MPAdConfigurationFactory defaultRewardedVideoConfigurationWithCustomEventClassName:@"MPMockRewardedVideoCustomEvent"];
+    MPAdConfiguration * rewardedVideoLoadThatShouldNotLoad = [MPAdConfigurationFactory defaultRewardedVideoConfigurationWithCustomEventClassName:@"MPMockRewardedVideoCustomEvent"];
+    MPAdConfiguration * rewardedVideoLoadFail = [MPAdConfigurationFactory defaultRewardedVideoConfigurationWithCustomEventClassName:@"i_should_not_exist"];
+    NSArray * configurations = @[rewardedVideoThatShouldLoad, rewardedVideoLoadThatShouldNotLoad, rewardedVideoLoadFail];
+
+    MPRewardedVideoAdManager * manager = [[MPRewardedVideoAdManager alloc] initWithAdUnitID:kTestAdUnitId delegate:handler];
+    MPMockAdServerCommunicator * communicator = [[MPMockAdServerCommunicator alloc] initWithDelegate:manager];
+    manager.communicator = communicator;
+    [manager communicatorDidReceiveAdConfigurations:configurations];
+
+    [self waitForExpectationsWithTimeout:kTestTimeout handler:^(NSError * _Nullable error) {
+        if (error != nil) {
+            XCTFail(@"Timed out");
+        }
+    }];
+
+    XCTAssertTrue(communicator.numberOfBeforeLoadEventsFired == 1);
+    XCTAssertTrue(communicator.numberOfAfterLoadEventsFired == 1);
+}
+
+- (void)testMultipleResponsesMiddleSuccess {
+    XCTestExpectation * expectation = [self expectationWithDescription:@"Wait for rewardedVideo load"];
+
+    MPRewardedVideoDelegateHandler * handler = [MPRewardedVideoDelegateHandler new];
+    handler.didLoadAd = ^{
+        [expectation fulfill];
+    };
+    handler.didFailToLoadAd = ^{
+        XCTFail(@"Encountered an unexpected load failure");
+        [expectation fulfill];
+    };
+
+    // Generate the ad configurations
+    MPAdConfiguration * rewardedVideoThatShouldLoad = [MPAdConfigurationFactory defaultRewardedVideoConfigurationWithCustomEventClassName:@"MPMockRewardedVideoCustomEvent"];
+    MPAdConfiguration * rewardedVideoLoadThatShouldNotLoad = [MPAdConfigurationFactory defaultRewardedVideoConfigurationWithCustomEventClassName:@"MPMockRewardedVideoCustomEvent"];
+    MPAdConfiguration * rewardedVideoLoadFail = [MPAdConfigurationFactory defaultRewardedVideoConfigurationWithCustomEventClassName:@"i_should_not_exist"];
+    NSArray * configurations = @[rewardedVideoLoadFail, rewardedVideoThatShouldLoad, rewardedVideoLoadThatShouldNotLoad];
+
+    MPRewardedVideoAdManager * manager = [[MPRewardedVideoAdManager alloc] initWithAdUnitID:kTestAdUnitId delegate:handler];
+    MPMockAdServerCommunicator * communicator = [[MPMockAdServerCommunicator alloc] initWithDelegate:manager];
+    manager.communicator = communicator;
+    [manager communicatorDidReceiveAdConfigurations:configurations];
+
+    [self waitForExpectationsWithTimeout:kTestTimeout handler:^(NSError * _Nullable error) {
+        if (error != nil) {
+            XCTFail(@"Timed out");
+        }
+    }];
+
+    XCTAssertTrue(communicator.numberOfBeforeLoadEventsFired == 2);
+    XCTAssertTrue(communicator.numberOfAfterLoadEventsFired == 2);
+}
+
+- (void)testMultipleResponsesLastSuccess {
+    XCTestExpectation * expectation = [self expectationWithDescription:@"Wait for rewardedVideo load"];
+
+    MPRewardedVideoDelegateHandler * handler = [MPRewardedVideoDelegateHandler new];
+    handler.didLoadAd = ^{
+        [expectation fulfill];
+    };
+    handler.didFailToLoadAd = ^{
+        XCTFail(@"Encountered an unexpected load failure");
+        [expectation fulfill];
+    };
+
+    // Generate the ad configurations
+    MPAdConfiguration * rewardedVideoThatShouldLoad = [MPAdConfigurationFactory defaultRewardedVideoConfigurationWithCustomEventClassName:@"MPMockRewardedVideoCustomEvent"];
+    MPAdConfiguration * rewardedVideoLoadFail1 = [MPAdConfigurationFactory defaultRewardedVideoConfigurationWithCustomEventClassName:@"i_should_not_exist"];
+    MPAdConfiguration * rewardedVideoLoadFail2 = [MPAdConfigurationFactory defaultRewardedVideoConfigurationWithCustomEventClassName:@"i_should_not_exist"];
+    NSArray * configurations = @[rewardedVideoLoadFail1, rewardedVideoLoadFail2, rewardedVideoThatShouldLoad];
+
+    MPRewardedVideoAdManager * manager = [[MPRewardedVideoAdManager alloc] initWithAdUnitID:kTestAdUnitId delegate:handler];
+    MPMockAdServerCommunicator * communicator = [[MPMockAdServerCommunicator alloc] initWithDelegate:manager];
+    manager.communicator = communicator;
+    [manager communicatorDidReceiveAdConfigurations:configurations];
+
+    [self waitForExpectationsWithTimeout:kTestTimeout handler:^(NSError * _Nullable error) {
+        if (error != nil) {
+            XCTFail(@"Timed out");
+        }
+    }];
+
+    XCTAssertTrue(communicator.numberOfBeforeLoadEventsFired == 3);
+    XCTAssertTrue(communicator.numberOfAfterLoadEventsFired == 3);
+}
+
+- (void)testMultipleResponsesFailOverToNextPage {
+    XCTestExpectation * expectation = [self expectationWithDescription:@"Wait for rewardedVideo load"];
+
+    MPRewardedVideoDelegateHandler * handler = [MPRewardedVideoDelegateHandler new];
+    handler.didFailToLoadAd = ^{
+        [expectation fulfill];
+    };
+
+    // Generate the ad configurations
+    MPAdConfiguration * rewardedVideoLoadFail1 = [MPAdConfigurationFactory defaultRewardedVideoConfigurationWithCustomEventClassName:@"i_should_not_exist"];
+    MPAdConfiguration * rewardedVideoLoadFail2 = [MPAdConfigurationFactory defaultRewardedVideoConfigurationWithCustomEventClassName:@"i_should_not_exist"];
+    NSArray * configurations = @[rewardedVideoLoadFail1, rewardedVideoLoadFail2];
+
+    MPRewardedVideoAdManager * manager = [[MPRewardedVideoAdManager alloc] initWithAdUnitID:kTestAdUnitId delegate:handler];
+    MPMockAdServerCommunicator * communicator = [[MPMockAdServerCommunicator alloc] initWithDelegate:manager];
+    manager.communicator = communicator;
+    [manager communicatorDidReceiveAdConfigurations:configurations];
+
+    [self waitForExpectationsWithTimeout:kTestTimeout handler:^(NSError * _Nullable error) {
+        if (error != nil) {
+            XCTFail(@"Timed out");
+        }
+    }];
+
+    // 2 failed attempts from first page
+    XCTAssertTrue(communicator.numberOfBeforeLoadEventsFired == 2);
+    XCTAssertTrue(communicator.numberOfAfterLoadEventsFired == 2);
+    XCTAssert([communicator.lastUrlLoaded.absoluteString isEqualToString:@"http://ads.mopub.com/m/failURL"]);
+}
+
+- (void)testMultipleResponsesFailOverToNextPageClear {
+    XCTestExpectation * expectation = [self expectationWithDescription:@"Wait for rewardedVideo load"];
+
+    MPRewardedVideoDelegateHandler * handler = [MPRewardedVideoDelegateHandler new];
+    handler.didFailToLoadAd = ^{
+        [expectation fulfill];
+    };
+
+    // Generate the ad configurations
+    MPAdConfiguration * rewardedVideoLoadFail1 = [MPAdConfigurationFactory defaultRewardedVideoConfigurationWithCustomEventClassName:@"i_should_not_exist"];
+    MPAdConfiguration * rewardedVideoLoadFail2 = [MPAdConfigurationFactory defaultRewardedVideoConfigurationWithCustomEventClassName:@"i_should_not_exist"];
+    NSArray * configurations = @[rewardedVideoLoadFail1, rewardedVideoLoadFail2];
+
+    MPRewardedVideoAdManager * manager = [[MPRewardedVideoAdManager alloc] initWithAdUnitID:kTestAdUnitId delegate:handler];
+    MPMockAdServerCommunicator * communicator = [[MPMockAdServerCommunicator alloc] initWithDelegate:manager];
+    communicator.mockConfigurationsResponse = @[[MPAdConfigurationFactory clearResponse]];
+
+    manager.communicator = communicator;
+    [manager communicatorDidReceiveAdConfigurations:configurations];
+
+    [self waitForExpectationsWithTimeout:kTestTimeout handler:^(NSError * _Nullable error) {
+        if (error != nil) {
+            XCTFail(@"Timed out");
+        }
+    }];
+
+    // 2 failed attempts from first page
+    XCTAssertTrue(communicator.numberOfBeforeLoadEventsFired == 2);
+    XCTAssertTrue(communicator.numberOfAfterLoadEventsFired == 2);
+    XCTAssert([communicator.lastUrlLoaded.absoluteString isEqualToString:@"http://ads.mopub.com/m/failURL"]);
+}
+
 #pragma mark - Viewability
 
-- (void)testViewabilityQueryParameter {
+- (void)testViewabilityPOSTParameter {
     // Rewarded video ads should send a viewability query parameter.
     MPMockAdServerCommunicator * mockAdServerCommunicator = nil;
     MPRewardedVideoAdManager * rewardedAd = [[MPRewardedVideoAdManager alloc] initWithAdUnitID:kTestAdUnitId delegate:nil];
@@ -285,17 +492,60 @@ static const NSTimeInterval kTestTimeout   = 2; // seconds
         mockAdServerCommunicator = mock;
         mock;
     });
-    [rewardedAd loadRewardedVideoAdWithKeywords:nil userDataKeywords:nil location:nil customerId:nil];
+    [rewardedAd loadRewardedVideoAdWithCustomerId:nil targeting:nil];
 
     XCTAssertNotNil(mockAdServerCommunicator);
     XCTAssertNotNil(mockAdServerCommunicator.lastUrlLoaded);
 
-    NSURL * url = mockAdServerCommunicator.lastUrlLoaded;
-    NSURLComponents * urlComponents = [NSURLComponents componentsWithURL:url resolvingAgainstBaseURL:YES];
+    MPURL * url = [mockAdServerCommunicator.lastUrlLoaded isKindOfClass:[MPURL class]] ? (MPURL *)mockAdServerCommunicator.lastUrlLoaded : nil;
+    XCTAssertNotNil(url);
 
-    NSString * viewabilityQueryParamValue = [urlComponents valueForQueryParameter:@"vv"];
-    XCTAssertNotNil(viewabilityQueryParamValue);
-    XCTAssertTrue([viewabilityQueryParamValue isEqualToString:@"1"]);
+    NSString * viewabilityValue = [url stringForPOSTDataKey:kViewabilityStatusKey];
+    XCTAssertNotNil(viewabilityValue);
+    XCTAssertTrue([viewabilityValue isEqualToString:@"1"]);
+}
+
+#pragma mark - Local Extras
+
+- (void)testLocalExtrasInCustomEvent {
+    XCTestExpectation * expectation = [self expectationWithDescription:@"Wait for rewardedVideo load"];
+
+    MPRewardedVideoDelegateHandler * handler = [MPRewardedVideoDelegateHandler new];
+    handler.didLoadAd = ^{
+        [expectation fulfill];
+    };
+    handler.didFailToLoadAd = ^{
+        XCTFail(@"Encountered an unexpected load failure");
+        [expectation fulfill];
+    };
+
+    // Generate the ad configurations
+    MPAdConfiguration * rewardedVideoThatShouldLoad = [MPAdConfigurationFactory defaultRewardedVideoConfigurationWithCustomEventClassName:@"MPMockRewardedVideoCustomEvent"];
+    NSArray * configurations = @[rewardedVideoThatShouldLoad];
+
+    MPRewardedVideoAdManager * manager = [[MPRewardedVideoAdManager alloc] initWithAdUnitID:kTestAdUnitId delegate:handler];
+    MPMockAdServerCommunicator * communicator = [[MPMockAdServerCommunicator alloc] initWithDelegate:manager];
+    communicator.mockConfigurationsResponse = configurations;
+    manager.communicator = communicator;
+
+    MPAdTargeting * targeting = [[MPAdTargeting alloc] init];
+    targeting.localExtras = @{ @"testing": @"YES" };
+    [manager loadRewardedVideoAdWithCustomerId:@"CUSTOMER_ID" targeting:targeting];
+
+    [self waitForExpectationsWithTimeout:kTestTimeout handler:^(NSError * _Nullable error) {
+        if (error != nil) {
+            XCTFail(@"Timed out");
+        }
+    }];
+
+    MPRewardedVideoAdapter * adapter = (MPRewardedVideoAdapter *)manager.adapter;
+    MPMockRewardedVideoCustomEvent * customEvent = (MPMockRewardedVideoCustomEvent *)adapter.rewardedVideoCustomEvent;
+    XCTAssertNotNil(customEvent);
+
+    NSDictionary * localExtras = customEvent.localExtras;
+    XCTAssertNotNil(localExtras);
+    XCTAssert([localExtras[@"testing"] isEqualToString:@"YES"]);
+    XCTAssertTrue(customEvent.isLocalExtrasAvailableAtRequest);
 }
 
 @end

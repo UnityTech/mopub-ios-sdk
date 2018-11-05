@@ -1,8 +1,9 @@
 //
 //  MPNativeCache.m
-//  MoPub
 //
-//  Copyright (c) 2014 MoPub. All rights reserved.
+//  Copyright 2018 Twitter, Inc.
+//  Licensed under the MoPub SDK License Agreement
+//  http://www.mopub.com/legal/sdk-license-agreement/
 //
 
 #import "MPNativeCache.h"
@@ -46,11 +47,11 @@ typedef enum {
     if (self != nil) {
         _memoryCache = [[NSCache alloc] init];
         _memoryCache.delegate = self;
-        
+
         _diskCache = [[MPDiskLRUCache alloc] init];
-        
+
         _cacheMethod = MPNativeCacheMethodDiskAndMemory;
-        
+
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveMemoryWarning:) name:UIApplicationDidReceiveMemoryWarningNotification object:[UIApplication sharedApplication]];
     }
 
@@ -103,7 +104,7 @@ typedef enum {
     if (cacheMethod & MPNativeCacheMethodDiskAndMemory) {
         dataExists = [self.memoryCache objectForKey:key] != nil;
     }
-    
+
     if (!dataExists) {
         dataExists = [self.diskCache cachedDataExistsForKey:key];
     }
@@ -114,31 +115,31 @@ typedef enum {
 - (id)retrieveDataForKey:(NSString *)key withCacheMethod:(MPNativeCacheMethod)cacheMethod
 {
     id data = nil;
-    
+
     if (cacheMethod & MPNativeCacheMethodDiskAndMemory) {
         data = [self.memoryCache objectForKey:key];
     }
-    
+
     if (data) {
         MPLogDebug(@"RETRIEVE FROM MEMORY: %@", key);
     }
-    
-    
+
+
     if (data == nil) {
         data = [self.diskCache retrieveDataForKey:key];
-        
+
         if (data && cacheMethod & MPNativeCacheMethodDiskAndMemory) {
             MPLogDebug(@"RETRIEVE FROM DISK: %@", key);
-            
+
             [self.memoryCache setObject:data forKey:key];
             MPLogDebug(@"STORED IN MEMORY: %@", key);
         }
     }
-    
+
     if (data == nil) {
         MPLogDebug(@"RETRIEVE FAILED: %@", key);
     }
-    
+
     return data;
 }
 
@@ -147,12 +148,12 @@ typedef enum {
     if (data == nil) {
         return;
     }
-    
+
     if (cacheMethod & MPNativeCacheMethodDiskAndMemory) {
         [self.memoryCache setObject:data forKey:key];
         MPLogDebug(@"STORED IN MEMORY: %@", key);
     }
-    
+
     [self.diskCache storeData:data forKey:key];
     MPLogDebug(@"STORED ON DISK: %@", key);
 }

@@ -1,8 +1,9 @@
 //
 //  MPAdServerKeys.h
-//  MoPubSDK
 //
-//  Copyright © 2018 MoPub. All rights reserved.
+//  Copyright 2018 Twitter, Inc.
+//  Licensed under the MoPub SDK License Agreement
+//  http://www.mopub.com/legal/sdk-license-agreement/
 //
 
 #import <Foundation/Foundation.h>
@@ -85,3 +86,11 @@ extern NSString * const kLanguageKey;
 #pragma mark - Consent Dialog Endpoint: Response Keys
 
 extern NSString * const kDialogHTMLKey;
+
+#pragma mark - Rewarded Keys
+
+extern NSString * const kCustomerIdKey;
+extern NSString * const kRewardedCurrencyNameKey;
+extern NSString * const kRewardedCurrencyAmountKey;
+extern NSString * const kRewardedCustomEventNameKey;
+extern NSString * const kRewardedCustomDataKey;

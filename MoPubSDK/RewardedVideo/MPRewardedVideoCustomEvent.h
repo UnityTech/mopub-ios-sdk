@@ -1,8 +1,9 @@
 //
 //  MPRewardedVideoCustomEvent.h
-//  MoPubSDK
 //
-//  Copyright (c) 2015 MoPub. All rights reserved.
+//  Copyright 2018 Twitter, Inc.
+//  Licensed under the MoPub SDK License Agreement
+//  http://www.mopub.com/legal/sdk-license-agreement/
 //
 
 #import <Foundation/Foundation.h>
@@ -28,6 +29,11 @@
  */
 
 @interface MPRewardedVideoCustomEvent : NSObject <MPMediationSdkInitializable>
+
+/**
+ * An optional dictionary containing extra local data.
+ */
+@property (nonatomic, copy) NSDictionary * localExtras;
 
 @property (nonatomic, weak) id<MPRewardedVideoCustomEventDelegate> delegate;
 

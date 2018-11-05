@@ -1,8 +1,9 @@
 //
 //  MPMockRewardedVideoAdapter.m
-//  MoPubSDK
 //
-//  Copyright © 2017 MoPub. All rights reserved.
+//  Copyright 2018 Twitter, Inc.
+//  Licensed under the MoPub SDK License Agreement
+//  http://www.mopub.com/legal/sdk-license-agreement/
 //
 
 #import "MPMockRewardedVideoAdapter.h"
@@ -12,13 +13,13 @@
 @interface MPMockRewardedVideoAdapter()
 @property (nonatomic, strong) MPAdConfiguration * configuration;
 @property (nonatomic, strong) MPRewardedVideoCustomEvent * rewardedVideoCustomEvent;
-@property (nonatomic, copy) NSString * urlEncodedCustomData;
+@property (nonatomic, copy) NSString * customData;
 @end
 
 @implementation MPMockRewardedVideoAdapter
 @dynamic configuration;
 @dynamic rewardedVideoCustomEvent;
-@dynamic urlEncodedCustomData;
+@dynamic customData;
 
 - (instancetype)initWithDelegate:(id<MPRewardedVideoAdapterDelegate>)delegate configuration:(MPAdConfiguration *)config {
     if (self = [super initWithDelegate:delegate]) {
@@ -34,9 +35,9 @@
 
 - (void)presentRewardedVideoFromViewController:(UIViewController *)viewController customData:(NSString *)customData {
     // Only persist the custom data field if it's non-empty and there is a server-to-server
-    // callback URL. The persisted custom data will be url encoded.
+    // callback URL.
     if (customData.length > 0 && self.configuration.rewardedVideoCompletionUrl != nil) {
-        self.urlEncodedCustomData = [customData mp_URLEncodedString];
+        self.customData = customData;
     }
 
     [self.delegate rewardedVideoWillAppearForAdapter:self];

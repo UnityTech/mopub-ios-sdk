@@ -1,8 +1,9 @@
 //
 //  MPCoreInstanceProvider.m
-//  MoPub
 //
-//  Copyright (c) 2014 MoPub. All rights reserved.
+//  Copyright 2018 Twitter, Inc.
+//  Licensed under the MoPub SDK License Agreement
+//  http://www.mopub.com/legal/sdk-license-agreement/
 //
 
 #import "MPCoreInstanceProvider.h"
@@ -168,13 +169,6 @@ static MPCoreInstanceProvider *sharedProvider = nil;
     }
 
     return gestureRecognizer;
-}
-
-- (MPAnalyticsTracker *)sharedMPAnalyticsTracker
-{
-    return [self singletonForClass:[MPAnalyticsTracker class] provider:^id{
-        return [MPAnalyticsTracker tracker];
-    }];
 }
 
 - (MPATSSetting)appTransportSecuritySettings

@@ -1,17 +1,19 @@
 //
 //  MPNativeAdDetailViewController.h
-//  MoPub
 //
-//  Copyright (c) 2014 MoPub. All rights reserved.
+//  Copyright 2018 Twitter, Inc.
+//  Licensed under the MoPub SDK License Agreement
+//  http://www.mopub.com/legal/sdk-license-agreement/
 //
 
 #import <UIKit/UIKit.h>
+#import "MPViewController.h"
 
 @class MPAdInfo;
 
 extern NSString *const kNativeAdDefaultActionViewKey;
 
-@interface MPNativeAdDetailViewController : UIViewController
+@interface MPNativeAdDetailViewController : MPViewController
 
 - (id)initWithAdInfo:(MPAdInfo *)info;
 

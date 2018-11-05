@@ -1,8 +1,9 @@
 //
 //  MPError.h
-//  MoPub
 //
-//  Copyright (c) 2012 MoPub. All rights reserved.
+//  Copyright 2018 Twitter, Inc.
+//  Licensed under the MoPub SDK License Agreement
+//  http://www.mopub.com/legal/sdk-license-agreement/
 //
 
 #import <Foundation/Foundation.h>
@@ -20,12 +21,16 @@ typedef enum {
     MOPUBErrorAdapterHasNoInventory = 18,
     MOPUBErrorUnableToParseJSONAdResponse,
     MOPUBErrorUnexpectedNetworkResponse,
+    MOPUBErrorHTTPResponseNot200,
     MOPUBErrorNoNetworkData,
     MOPUBErrorSDKNotInitialized,
+    MOPUBErrorAdRequestTimedOut,
+    MOPUBErrorNoRenderer,
 } MOPUBErrorCode;
 
 @interface MOPUBError : NSError
 
 + (MOPUBError *)errorWithCode:(MOPUBErrorCode)code;
++ (MOPUBError *)errorWithCode:(MOPUBErrorCode)code localizedDescription:(NSString *)description;
 
 @end

@@ -1,8 +1,9 @@
 //
 //  MPAdDestinationDisplayAgent.m
-//  MoPub
 //
-//  Copyright (c) 2013 MoPub. All rights reserved.
+//  Copyright 2018 Twitter, Inc.
+//  Licensed under the MoPub SDK License Agreement
+//  http://www.mopub.com/legal/sdk-license-agreement/
 //
 
 #import "MPAdDestinationDisplayAgent.h"
@@ -168,7 +169,7 @@ static NSString * const kDisplayAgentErrorDomain = @"com.mopub.displayagent";
         [self hideOverlay];
         [self.delegate displayAgentWillLeaveApplication];
         [self completeDestinationLoading];
-        [[[MPCoreInstanceProvider sharedProvider] sharedMPAnalyticsTracker] sendTrackingRequestForURLs:request.primaryTrackingURLs];
+        [[MPAnalyticsTracker sharedTracker] sendTrackingRequestForURLs:request.primaryTrackingURLs];
     } else if (request.fallbackURL) {
         [self handleEnhancedDeeplinkFallbackForRequest:request];
     } else {
@@ -191,7 +192,7 @@ static NSString * const kDisplayAgentErrorDomain = @"com.mopub.displayagent";
             // normally with one exception: we don't follow any nested enhanced deeplinks.
             BOOL success = [strongSelf handleSuggestedURLAction:actionInfo isResolvingEnhancedDeeplink:YES];
             if (success) {
-                [[[MPCoreInstanceProvider sharedProvider] sharedMPAnalyticsTracker] sendTrackingRequestForURLs:request.fallbackTrackingURLs];
+                [[MPAnalyticsTracker sharedTracker] sendTrackingRequestForURLs:request.fallbackTrackingURLs];
             }
         }
     }];

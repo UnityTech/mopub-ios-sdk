@@ -1,8 +1,9 @@
 //
 //  MOPUBExperimentProviderTests.m
-//  MoPubSDK
 //
-//  Copyright © 2017 MoPub. All rights reserved.
+//  Copyright 2018 Twitter, Inc.
+//  Licensed under the MoPub SDK License Agreement
+//  http://www.mopub.com/legal/sdk-license-agreement/
 //
 
 #import <XCTest/XCTest.h>
@@ -20,7 +21,7 @@
 
 - (void)testClickthroughExperimentDefault {
     [MOPUBExperimentProvider setDisplayAgentOverriddenByClientFlag:NO];
-    MPAdConfiguration * config = [[MPAdConfiguration alloc] initWithHeaders:nil data:nil];
+    MPAdConfiguration * config = [[MPAdConfiguration alloc] initWithMetadata:nil data:nil];
     XCTAssertEqual(config.clickthroughExperimentBrowserAgent, MOPUBDisplayAgentTypeInApp);
     XCTAssertEqual([MOPUBExperimentProvider displayAgentType], MOPUBDisplayAgentTypeInApp);
 }
@@ -28,7 +29,7 @@
 - (void)testClickthroughExperimentInApp {
     [MOPUBExperimentProvider setDisplayAgentOverriddenByClientFlag:NO];
     NSDictionary * headers = @{ kClickthroughExperimentBrowserAgent: @"0"};
-    MPAdConfiguration * config = [[MPAdConfiguration alloc] initWithHeaders:headers data:nil];
+    MPAdConfiguration * config = [[MPAdConfiguration alloc] initWithMetadata:headers data:nil];
     XCTAssertEqual(config.clickthroughExperimentBrowserAgent, MOPUBDisplayAgentTypeInApp);
     XCTAssertEqual([MOPUBExperimentProvider displayAgentType], MOPUBDisplayAgentTypeInApp);
 }
@@ -36,7 +37,7 @@
 - (void)testClickthroughExperimentNativeBrowser {
     [MOPUBExperimentProvider setDisplayAgentOverriddenByClientFlag:NO];
     NSDictionary * headers = @{ kClickthroughExperimentBrowserAgent: @"1"};
-    MPAdConfiguration * config = [[MPAdConfiguration alloc] initWithHeaders:headers data:nil];
+    MPAdConfiguration * config = [[MPAdConfiguration alloc] initWithMetadata:headers data:nil];
     XCTAssertEqual(config.clickthroughExperimentBrowserAgent, MOPUBDisplayAgentTypeNativeSafari);
     XCTAssertEqual([MOPUBExperimentProvider displayAgentType], MOPUBDisplayAgentTypeNativeSafari);
 }
@@ -44,7 +45,7 @@
 - (void)testClickthroughExperimentSafariViewController {
     [MOPUBExperimentProvider setDisplayAgentOverriddenByClientFlag:NO];
     NSDictionary * headers = @{ kClickthroughExperimentBrowserAgent: @"2"};
-    MPAdConfiguration * config = [[MPAdConfiguration alloc] initWithHeaders:headers data:nil];
+    MPAdConfiguration * config = [[MPAdConfiguration alloc] initWithMetadata:headers data:nil];
     XCTAssertEqual(config.clickthroughExperimentBrowserAgent, MOPUBDisplayAgentTypeSafariViewController);
     XCTAssertEqual([MOPUBExperimentProvider displayAgentType], MOPUBDisplayAgentTypeSafariViewController);
 }
@@ -53,7 +54,7 @@
     [[MoPub sharedInstance] setClickthroughDisplayAgentType:MOPUBDisplayAgentTypeInApp];
 
     NSDictionary * headers = @{ kClickthroughExperimentBrowserAgent: @"2"};
-    MPAdConfiguration * config = [[MPAdConfiguration alloc] initWithHeaders:headers data:nil];
+    MPAdConfiguration * config = [[MPAdConfiguration alloc] initWithMetadata:headers data:nil];
     XCTAssertEqual(config.clickthroughExperimentBrowserAgent, MOPUBDisplayAgentTypeSafariViewController);
 
     XCTAssertEqual([MOPUBExperimentProvider displayAgentType], MOPUBDisplayAgentTypeInApp);
