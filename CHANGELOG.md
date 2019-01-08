@@ -1,3 +1,9 @@
+## Version 5.4.1 (November 28, 2018)
+- **Bug Fixes**
+  - Changed the MoPubSampleApp+Framework target to MoPubSampleApp in the Objective-C Sample App.
+  - Fixed crash when `MPTableViewAdPlacer` makes multiple ad requests within a short amount of time.
+  - Fixed bug with the internal state of rewarded video when the video fails to play.
+
 ## Version 5.4.0 (October 3, 2018)
 - **Features**
   - SDK distribution as a dynamic framework is now available.

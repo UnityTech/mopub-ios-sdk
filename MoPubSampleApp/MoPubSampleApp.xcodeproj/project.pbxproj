@@ -7,69 +7,76 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2A440B7A2023BD390003CC2A /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46B3345719F083350078078A /* MediaPlayer.framework */; };
-		2A440B7B2023BD390003CC2A /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46B3345B19F083F70078078A /* SystemConfiguration.framework */; };
-		2A440B7C2023BD390003CC2A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46B3345919F083EC0078078A /* QuartzCore.framework */; };
-		2A440B7D2023BD390003CC2A /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46B9E8AF17E0D7F600B78D11 /* AVFoundation.framework */; };
-		2A440B7E2023BD390003CC2A /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE10920A170120E700812E6E /* CoreTelephony.framework */; };
-		2A440B7F2023BD390003CC2A /* SafariServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2AC79F431DF7814700195AC5 /* SafariServices.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		2A440B802023BD390003CC2A /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57EF00CD1BD96EB5002634DE /* WebKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		2A440B812023BD390003CC2A /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46E5043F18035A26006A2FC3 /* CoreMedia.framework */; };
-		2A440B832023BD390003CC2A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE23239616F78A17002C2082 /* CoreGraphics.framework */; };
-		2A440B842023BD390003CC2A /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46B9E8B117E0D80400B78D11 /* MessageUI.framework */; };
-		2A440B852023BD390003CC2A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AE10920C170120E700812E6E /* libz.dylib */; };
-		2A440B862023BD390003CC2A /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AE10920D170120E700812E6E /* libsqlite3.dylib */; };
-		2A440B872023BD390003CC2A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE23239416F78A17002C2082 /* Foundation.framework */; };
-		2A440B882023BD390003CC2A /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE0F1FB1171F1D2800FA3BE6 /* CoreLocation.framework */; };
-		2A440B892023BD390003CC2A /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AED9E47016F78DA900EA71A7 /* StoreKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		2A440B8B2023BD390003CC2A /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AED9E47216F78DAD00EA71A7 /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		2A440B8C2023BD390003CC2A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE23239216F78A17002C2082 /* UIKit.framework */; };
-		2A440B8E2023BD390003CC2A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AE23239B16F78A17002C2082 /* InfoPlist.strings */; };
-		2A440B902023BD390003CC2A /* MPBannerAdDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = AED9E4CE16F798AF00EA71A7 /* MPBannerAdDetailViewController.xib */; };
-		2A440B912023BD390003CC2A /* MPInterstitialAdDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = AE43414616F9068000B73710 /* MPInterstitialAdDetailViewController.xib */; };
-		2A440B922023BD390003CC2A /* mopub_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 2A5874FD1F90341F00E8CDFA /* mopub_logo.png */; };
-		2A440B992023BD390003CC2A /* MPNativeAdDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4A6FC1F618C561B3007A1197 /* MPNativeAdDetailViewController.xib */; };
-		2A440B9D2023BD390003CC2A /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = AE8E1D441729A76C0051FA6C /* icon.png */; };
-		2A440BA12023BD390003CC2A /* MPAdEntryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 46DA87B0185010DD00F34858 /* MPAdEntryViewController.xib */; };
-		2A440BA22023BD390003CC2A /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE8E1D461729A76F0051FA6C /* icon@2x.png */; };
-		2A440BA42023BD390003CC2A /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = AE8E1D481729A7730051FA6C /* Default.png */; };
-		2A440BA52023BD390003CC2A /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE8E1D4A1729A7760051FA6C /* Default@2x.png */; };
-		2A440BA72023BD390003CC2A /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE8E1D4C1729A7790051FA6C /* Default-568h@2x.png */; };
-		2A440BA92023BD390003CC2A /* white_button.png in Resources */ = {isa = PBXBuildFile; fileRef = AE8E1D4F1729AA460051FA6C /* white_button.png */; };
-		2A440BAA2023BD390003CC2A /* MPRewardedVideoAdDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4ADE5FCB1B4FE836004C3673 /* MPRewardedVideoAdDetailViewController.xib */; };
-		2A440BAE2023BD390003CC2A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2A5874FA1F9033E800E8CDFA /* LaunchScreen.storyboard */; };
-		2A440BB22023BD390003CC2A /* MPNativeAdTableHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4A8DD10518C90636005E9389 /* MPNativeAdTableHeaderView.xib */; };
-		2A440BBE2023BD710003CC2A /* MPAdInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = AED9E4C416F7934900EA71A7 /* MPAdInfo.m */; };
-		2A440BBF2023BD710003CC2A /* MPAdSection.m in Sources */ = {isa = PBXBuildFile; fileRef = AE43413C16F8EEC500B73710 /* MPAdSection.m */; };
-		2A440BC02023BD710003CC2A /* MPAdTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AED9E4BA16F7912900EA71A7 /* MPAdTableViewController.m */; };
-		2A440BC12023BD710003CC2A /* MPBannerAdDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AED9E4CB16F7987F00EA71A7 /* MPBannerAdDetailViewController.m */; };
-		2A440BC22023BD710003CC2A /* MPMRectBannerAdDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 462E156E17F0F5D100408E17 /* MPMRectBannerAdDetailViewController.m */; };
-		2A440BC32023BD710003CC2A /* MPLeaderboardBannerAdDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 46F883C817FB7AC5004CE563 /* MPLeaderboardBannerAdDetailViewController.m */; };
-		2A440BC42023BD710003CC2A /* MPInterstitialAdDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE43414516F9068000B73710 /* MPInterstitialAdDetailViewController.m */; };
-		2A440BC52023BD710003CC2A /* MPRewardedVideoAdDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4ADE5FCD1B4FE836004C3673 /* MPRewardedVideoAdDetailViewController.m */; };
-		2A440BC72023BD710003CC2A /* MPAdEntryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 46DA87AF185010DD00F34858 /* MPAdEntryViewController.m */; };
-		2A440BC82023BD710003CC2A /* MPNativeAdDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A6FC1F518C561B3007A1197 /* MPNativeAdDetailViewController.m */; };
-		2A440BC92023BD710003CC2A /* MPNativeAdPlacerTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A1C1DB71980722600B6DB33 /* MPNativeAdPlacerTableViewController.m */; };
-		2A440BCA2023BD710003CC2A /* MPNativeAdPlacerCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E060FE6B1994000C00F4F33C /* MPNativeAdPlacerCollectionViewController.m */; };
-		2A440BCB2023BD710003CC2A /* MPNativeAdPlacerPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 577DF03B19A28786001514D3 /* MPNativeAdPlacerPageViewController.m */; };
-		2A440BCC2023BD710003CC2A /* MPNativeVideoTableViewAdPlacerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 57C784D51BCC4C6C00E4BB7D /* MPNativeVideoTableViewAdPlacerView.m */; };
-		2A440BCD2023BD710003CC2A /* MPTableViewAdPlacerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A8DD10018C90542005E9389 /* MPTableViewAdPlacerView.m */; };
-		2A440BCE2023BD710003CC2A /* MPIndexPathPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7736CEB199D73D500AD4887 /* MPIndexPathPickerView.m */; };
-		2A440BCF2023BD710003CC2A /* MPNativeAdTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A8DD10318C90620005E9389 /* MPNativeAdTableHeaderView.m */; };
-		2A440BD02023BD710003CC2A /* MPCollectionViewAdPlacerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 57FFAB85199C110D00F655CF /* MPCollectionViewAdPlacerView.m */; };
-		2A440BD12023BD710003CC2A /* MPNativeAdPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 577A1FA119AE7EA6006DA28B /* MPNativeAdPageView.m */; };
-		2A440BD22023BD710003CC2A /* MPStaticNativeAdView.m in Sources */ = {isa = PBXBuildFile; fileRef = 571EF4271B7194D60035C9BB /* MPStaticNativeAdView.m */; };
-		2A440BD32023BD710003CC2A /* MPNativeVideoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 57C784E81BCC4F4600E4BB7D /* MPNativeVideoView.m */; };
-		2A440BD42023BD710003CC2A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AE2323A216F78A17002C2082 /* AppDelegate.m */; };
-		2A440BD52023BD710003CC2A /* MPSampleAppInstanceProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = AED9E4DD16F7B00100EA71A7 /* MPSampleAppInstanceProvider.m */; };
-		2A440BD62023BD710003CC2A /* MPAdPersistenceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 467343EF17FE3D6900D68BB6 /* MPAdPersistenceManager.m */; };
-		2A440BD72023BD710003CC2A /* MPSampleAppLogReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 469A15EF1AC1F0BA00D6F0EF /* MPSampleAppLogReader.m */; };
-		2A440BD82023BD710003CC2A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = AE23239E16F78A17002C2082 /* main.m */; };
-		BC343E4D212C92710001C1C1 /* MPViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BCEF09E41F72D6A2004CEBD6 /* MPViewController.m */; };
-		BC6FFA7C20E2F83900FC7FAD /* MoPubSDKFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC6FFA7720E2EF5100FC7FAD /* MoPubSDKFramework.framework */; };
+		2A5874FB1F9033E800E8CDFA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2A5874FA1F9033E800E8CDFA /* LaunchScreen.storyboard */; };
+		2A5874FE1F90341F00E8CDFA /* mopub_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 2A5874FD1F90341F00E8CDFA /* mopub_logo.png */; };
+		2A86E7F21D710CE60087594C /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57EF00CD1BD96EB5002634DE /* WebKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		2AC79F441DF7814700195AC5 /* SafariServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2AC79F431DF7814700195AC5 /* SafariServices.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		462E156F17F0F5D100408E17 /* MPMRectBannerAdDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 462E156E17F0F5D100408E17 /* MPMRectBannerAdDetailViewController.m */; };
+		467343F017FE3D6900D68BB6 /* MPAdPersistenceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 467343EF17FE3D6900D68BB6 /* MPAdPersistenceManager.m */; };
+		469A15F01AC1F0BA00D6F0EF /* MPSampleAppLogReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 469A15EF1AC1F0BA00D6F0EF /* MPSampleAppLogReader.m */; };
+		46B9E8AB17E0D7D100B78D11 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AE10920D170120E700812E6E /* libsqlite3.dylib */; };
+		46B9E8AC17E0D7D800B78D11 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AE10920C170120E700812E6E /* libz.dylib */; };
+		46B9E8B217E0D80400B78D11 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46B9E8B117E0D80400B78D11 /* MessageUI.framework */; };
+		46DA87B1185010DD00F34858 /* MPAdEntryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 46DA87AF185010DD00F34858 /* MPAdEntryViewController.m */; };
+		46DA87B4185010DD00F34858 /* MPAdEntryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 46DA87B0185010DD00F34858 /* MPAdEntryViewController.xib */; };
+		46F883C917FB7AC5004CE563 /* MPLeaderboardBannerAdDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 46F883C817FB7AC5004CE563 /* MPLeaderboardBannerAdDetailViewController.m */; };
+		4A62566A19A7B45900ED18C8 /* MPNativeAdPlacerTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A1C1DB71980722600B6DB33 /* MPNativeAdPlacerTableViewController.m */; };
+		4A6FC1F718C561B3007A1197 /* MPNativeAdDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A6FC1F518C561B3007A1197 /* MPNativeAdDetailViewController.m */; };
+		4A6FC1F918C561B3007A1197 /* MPNativeAdDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4A6FC1F618C561B3007A1197 /* MPNativeAdDetailViewController.xib */; };
+		4A8DD10118C90542005E9389 /* MPTableViewAdPlacerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A8DD10018C90542005E9389 /* MPTableViewAdPlacerView.m */; };
+		4A8DD10418C90620005E9389 /* MPNativeAdTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A8DD10318C90620005E9389 /* MPNativeAdTableHeaderView.m */; };
+		4A8DD10618C90636005E9389 /* MPNativeAdTableHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4A8DD10518C90636005E9389 /* MPNativeAdTableHeaderView.xib */; };
+		4ADE5FCE1B4FE836004C3673 /* MPRewardedVideoAdDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4ADE5FCB1B4FE836004C3673 /* MPRewardedVideoAdDetailViewController.xib */; };
+		4ADE5FD01B4FE836004C3673 /* MPRewardedVideoAdDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4ADE5FCD1B4FE836004C3673 /* MPRewardedVideoAdDetailViewController.m */; };
+		4AF797D519A7F9E8007CE34D /* MPNativeAdPlacerCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E060FE6B1994000C00F4F33C /* MPNativeAdPlacerCollectionViewController.m */; };
+		571EF4281B7194D60035C9BB /* MPStaticNativeAdView.m in Sources */ = {isa = PBXBuildFile; fileRef = 571EF4271B7194D60035C9BB /* MPStaticNativeAdView.m */; };
+		577A1FA219AE7EA6006DA28B /* MPNativeAdPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 577A1FA119AE7EA6006DA28B /* MPNativeAdPageView.m */; };
+		577DF03C19A28786001514D3 /* MPNativeAdPlacerPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 577DF03B19A28786001514D3 /* MPNativeAdPlacerPageViewController.m */; };
+		57C784D61BCC4C6C00E4BB7D /* MPNativeVideoTableViewAdPlacerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 57C784D51BCC4C6C00E4BB7D /* MPNativeVideoTableViewAdPlacerView.m */; };
+		57C784E91BCC4F4600E4BB7D /* MPNativeVideoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 57C784E81BCC4F4600E4BB7D /* MPNativeVideoView.m */; };
+		57FFAB86199C110D00F655CF /* MPCollectionViewAdPlacerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 57FFAB85199C110D00F655CF /* MPCollectionViewAdPlacerView.m */; };
+		AE0F1FAD171F1D0A00FA3BE6 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AED9E47216F78DAD00EA71A7 /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		AE0F1FAE171F1D1000FA3BE6 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AED9E47016F78DA900EA71A7 /* StoreKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		AE0F1FB2171F1D2800FA3BE6 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE0F1FB1171F1D2800FA3BE6 /* CoreLocation.framework */; };
+		AE0F1FB3171F1D3100FA3BE6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE23239416F78A17002C2082 /* Foundation.framework */; };
+		AE23239D16F78A17002C2082 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AE23239B16F78A17002C2082 /* InfoPlist.strings */; };
+		AE23239F16F78A17002C2082 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = AE23239E16F78A17002C2082 /* main.m */; };
+		AE2323A316F78A17002C2082 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AE2323A216F78A17002C2082 /* AppDelegate.m */; };
+		AE43413D16F8EEC500B73710 /* MPAdSection.m in Sources */ = {isa = PBXBuildFile; fileRef = AE43413C16F8EEC500B73710 /* MPAdSection.m */; };
+		AE43414716F9068000B73710 /* MPInterstitialAdDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE43414516F9068000B73710 /* MPInterstitialAdDetailViewController.m */; };
+		AE43414A16F9068000B73710 /* MPInterstitialAdDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = AE43414616F9068000B73710 /* MPInterstitialAdDetailViewController.xib */; };
+		AE515FAE171F1BFF0086B464 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE23239216F78A17002C2082 /* UIKit.framework */; };
+		AE8E1D451729A76C0051FA6C /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = AE8E1D441729A76C0051FA6C /* icon.png */; };
+		AE8E1D471729A76F0051FA6C /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE8E1D461729A76F0051FA6C /* icon@2x.png */; };
+		AE8E1D491729A7730051FA6C /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = AE8E1D481729A7730051FA6C /* Default.png */; };
+		AE8E1D4B1729A7760051FA6C /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE8E1D4A1729A7760051FA6C /* Default@2x.png */; };
+		AE8E1D4D1729A7790051FA6C /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AE8E1D4C1729A7790051FA6C /* Default-568h@2x.png */; };
+		AE8E1D501729AA460051FA6C /* white_button.png in Resources */ = {isa = PBXBuildFile; fileRef = AE8E1D4F1729AA460051FA6C /* white_button.png */; };
+		AED9E4BB16F7912900EA71A7 /* MPAdTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AED9E4BA16F7912900EA71A7 /* MPAdTableViewController.m */; };
+		AED9E4C516F7934900EA71A7 /* MPAdInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = AED9E4C416F7934900EA71A7 /* MPAdInfo.m */; };
+		AED9E4CC16F7987F00EA71A7 /* MPBannerAdDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AED9E4CB16F7987F00EA71A7 /* MPBannerAdDetailViewController.m */; };
+		AED9E4CF16F798AF00EA71A7 /* MPBannerAdDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = AED9E4CE16F798AF00EA71A7 /* MPBannerAdDetailViewController.xib */; };
+		AED9E4DE16F7B00100EA71A7 /* MPSampleAppInstanceProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = AED9E4DD16F7B00100EA71A7 /* MPSampleAppInstanceProvider.m */; };
+		B26284151B83CACE00960F74 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46E5043F18035A26006A2FC3 /* CoreMedia.framework */; };
+		BC3B98671E70C7E400C77554 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46B3345919F083EC0078078A /* QuartzCore.framework */; };
+		BC3B98681E70C7EC00C77554 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46B3345B19F083F70078078A /* SystemConfiguration.framework */; };
+		BC3B98691E70C7F500C77554 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46B3345719F083350078078A /* MediaPlayer.framework */; };
+		BC3B986A1E70C85400C77554 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE23239616F78A17002C2082 /* CoreGraphics.framework */; };
+		BC6A9187216568A000C35DF5 /* MoPubSDKFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC6FFA7720E2EF5100FC7FAD /* MoPubSDKFramework.framework */; };
+		BC6A9188216568A000C35DF5 /* MoPubSDKFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BC6FFA7720E2EF5100FC7FAD /* MoPubSDKFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BC789C1C1F7AD333001CE308 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE10920A170120E700812E6E /* CoreTelephony.framework */; };
+		BCD33AD7201002E2003F4FFB /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46B9E8AF17E0D7F600B78D11 /* AVFoundation.framework */; };
+		BCEF09E51F72D6A2004CEBD6 /* MPViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BCEF09E41F72D6A2004CEBD6 /* MPViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		BC6A9189216568A000C35DF5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BC6FFA6620E2EF5000FC7FAD /* MoPubSDK.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 2AF030C02016723700909F29;
+			remoteInfo = MoPubSDKFramework;
+		};
 		BC6FFA6E20E2EF5100FC7FAD /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BC6FFA6620E2EF5000FC7FAD /* MoPubSDK.xcodeproj */;
@@ -105,22 +112,16 @@
 			remoteGlobalIDString = 2AF030C12016723700909F29;
 			remoteInfo = MoPubSDKFramework;
 		};
-		BC6FFA7820E2EF5D00FC7FAD /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BC6FFA6620E2EF5000FC7FAD /* MoPubSDK.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 2AF030C02016723700909F29;
-			remoteInfo = MoPubSDKFramework;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		2AA733B72023BE37006EDA5C /* Embed Frameworks */ = {
+		BC6A918B216568A000C35DF5 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				BC6A9188216568A000C35DF5 /* MoPubSDKFramework.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -128,7 +129,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		2A440BB72023BD390003CC2A /* MoPubSampleApp+Framework.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "MoPubSampleApp+Framework.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2A5874FA1F9033E800E8CDFA /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2A5874FD1F90341F00E8CDFA /* mopub_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mopub_logo.png; sourceTree = "<group>"; };
 		2AC79F431DF7814700195AC5 /* SafariServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SafariServices.framework; path = System/Library/Frameworks/SafariServices.framework; sourceTree = SDKROOT; };
@@ -193,6 +193,7 @@
 		AE10920B170120E700812E6E /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		AE10920C170120E700812E6E /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		AE10920D170120E700812E6E /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		AE23238F16F78A17002C2082 /* MoPubSampleApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MoPubSampleApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE23239216F78A17002C2082 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		AE23239416F78A17002C2082 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		AE23239616F78A17002C2082 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -230,6 +231,8 @@
 		AED9E4CE16F798AF00EA71A7 /* MPBannerAdDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MPBannerAdDetailViewController.xib; sourceTree = "<group>"; };
 		AED9E4DC16F7B00100EA71A7 /* MPSampleAppInstanceProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPSampleAppInstanceProvider.h; sourceTree = "<group>"; };
 		AED9E4DD16F7B00100EA71A7 /* MPSampleAppInstanceProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPSampleAppInstanceProvider.m; sourceTree = "<group>"; };
+		AEEA5E4B16F940EC003D48F4 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk/System/Library/Frameworks/MobileCoreServices.framework; sourceTree = "<absolute>"; };
+		AEEA5E4F16F940EC003D48F4 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk/System/Library/Frameworks/MessageUI.framework; sourceTree = "<absolute>"; };
 		BC6FFA6520E2EF0300FC7FAD /* MoPubSampleApp+Framework-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MoPubSampleApp+Framework-Info.plist"; sourceTree = "<group>"; };
 		BC6FFA6620E2EF5000FC7FAD /* MoPubSDK.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MoPubSDK.xcodeproj; path = ../MoPubSDK.xcodeproj; sourceTree = "<group>"; };
 		BCEF09E31F72D6A2004CEBD6 /* MPViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MPViewController.h; sourceTree = "<group>"; };
@@ -239,28 +242,28 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		2A440B792023BD390003CC2A /* Frameworks */ = {
+		AE23238C16F78A17002C2082 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BC6FFA7C20E2F83900FC7FAD /* MoPubSDKFramework.framework in Frameworks */,
-				2A440B7A2023BD390003CC2A /* MediaPlayer.framework in Frameworks */,
-				2A440B7B2023BD390003CC2A /* SystemConfiguration.framework in Frameworks */,
-				2A440B7C2023BD390003CC2A /* QuartzCore.framework in Frameworks */,
-				2A440B7D2023BD390003CC2A /* AVFoundation.framework in Frameworks */,
-				2A440B7E2023BD390003CC2A /* CoreTelephony.framework in Frameworks */,
-				2A440B7F2023BD390003CC2A /* SafariServices.framework in Frameworks */,
-				2A440B802023BD390003CC2A /* WebKit.framework in Frameworks */,
-				2A440B812023BD390003CC2A /* CoreMedia.framework in Frameworks */,
-				2A440B832023BD390003CC2A /* CoreGraphics.framework in Frameworks */,
-				2A440B842023BD390003CC2A /* MessageUI.framework in Frameworks */,
-				2A440B852023BD390003CC2A /* libz.dylib in Frameworks */,
-				2A440B862023BD390003CC2A /* libsqlite3.dylib in Frameworks */,
-				2A440B872023BD390003CC2A /* Foundation.framework in Frameworks */,
-				2A440B882023BD390003CC2A /* CoreLocation.framework in Frameworks */,
-				2A440B892023BD390003CC2A /* StoreKit.framework in Frameworks */,
-				2A440B8B2023BD390003CC2A /* AdSupport.framework in Frameworks */,
-				2A440B8C2023BD390003CC2A /* UIKit.framework in Frameworks */,
+				BC3B98691E70C7F500C77554 /* MediaPlayer.framework in Frameworks */,
+				BC3B98681E70C7EC00C77554 /* SystemConfiguration.framework in Frameworks */,
+				BC3B98671E70C7E400C77554 /* QuartzCore.framework in Frameworks */,
+				BCD33AD7201002E2003F4FFB /* AVFoundation.framework in Frameworks */,
+				BC789C1C1F7AD333001CE308 /* CoreTelephony.framework in Frameworks */,
+				2AC79F441DF7814700195AC5 /* SafariServices.framework in Frameworks */,
+				2A86E7F21D710CE60087594C /* WebKit.framework in Frameworks */,
+				B26284151B83CACE00960F74 /* CoreMedia.framework in Frameworks */,
+				BC3B986A1E70C85400C77554 /* CoreGraphics.framework in Frameworks */,
+				46B9E8B217E0D80400B78D11 /* MessageUI.framework in Frameworks */,
+				46B9E8AC17E0D7D800B78D11 /* libz.dylib in Frameworks */,
+				46B9E8AB17E0D7D100B78D11 /* libsqlite3.dylib in Frameworks */,
+				AE0F1FB3171F1D3100FA3BE6 /* Foundation.framework in Frameworks */,
+				AE0F1FB2171F1D2800FA3BE6 /* CoreLocation.framework in Frameworks */,
+				BC6A9187216568A000C35DF5 /* MoPubSDKFramework.framework in Frameworks */,
+				AE0F1FAE171F1D1000FA3BE6 /* StoreKit.framework in Frameworks */,
+				AE0F1FAD171F1D0A00FA3BE6 /* AdSupport.framework in Frameworks */,
+				AE515FAE171F1BFF0086B464 /* UIKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -305,7 +308,7 @@
 		AE23239016F78A17002C2082 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				2A440BB72023BD390003CC2A /* MoPubSampleApp+Framework.app */,
+				AE23238F16F78A17002C2082 /* MoPubSampleApp.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -337,7 +340,9 @@
 				AE10920C170120E700812E6E /* libz.dylib */,
 				46B3345719F083350078078A /* MediaPlayer.framework */,
 				46B9E8B117E0D80400B78D11 /* MessageUI.framework */,
+				AEEA5E4F16F940EC003D48F4 /* MessageUI.framework */,
 				46B3348519F0874E0078078A /* MobileCoreServices.framework */,
+				AEEA5E4B16F940EC003D48F4 /* MobileCoreServices.framework */,
 				AE902A39171F559F00991DF9 /* PassKit.framework */,
 				46B3345919F083EC0078078A /* QuartzCore.framework */,
 				2AC79F431DF7814700195AC5 /* SafariServices.framework */,
@@ -460,23 +465,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		2A440AB22023BD390003CC2A /* MoPubSampleApp+Framework */ = {
+		AE23238E16F78A17002C2082 /* MoPubSampleApp */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2A440BB42023BD390003CC2A /* Build configuration list for PBXNativeTarget "MoPubSampleApp+Framework" */;
+			buildConfigurationList = AE2323AC16F78A17002C2082 /* Build configuration list for PBXNativeTarget "MoPubSampleApp" */;
 			buildPhases = (
-				2A440AB42023BD390003CC2A /* Sources */,
-				2A440B792023BD390003CC2A /* Frameworks */,
-				2A440B8D2023BD390003CC2A /* Resources */,
-				2AA733B72023BE37006EDA5C /* Embed Frameworks */,
+				AE23238B16F78A17002C2082 /* Sources */,
+				AE23238C16F78A17002C2082 /* Frameworks */,
+				AE23238D16F78A17002C2082 /* Resources */,
+				BC6A918B216568A000C35DF5 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				BC6FFA7920E2EF5D00FC7FAD /* PBXTargetDependency */,
+				BC6A918A216568A000C35DF5 /* PBXTargetDependency */,
 			);
-			name = "MoPubSampleApp+Framework";
+			name = MoPubSampleApp;
 			productName = MoPubSampleApp;
-			productReference = 2A440BB72023BD390003CC2A /* MoPubSampleApp+Framework.app */;
+			productReference = AE23238F16F78A17002C2082 /* MoPubSampleApp.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -488,8 +493,9 @@
 				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = MoPub;
 				TargetAttributes = {
-					2A440AB22023BD390003CC2A = {
+					AE23238E16F78A17002C2082 = {
 						DevelopmentTeam = 4S7XS533V3;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -511,7 +517,7 @@
 			);
 			projectRoot = "";
 			targets = (
-				2A440AB22023BD390003CC2A /* MoPubSampleApp+Framework */,
+				AE23238E16F78A17002C2082 /* MoPubSampleApp */,
 			);
 		};
 /* End PBXProject section */
@@ -555,72 +561,71 @@
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
-		2A440B8D2023BD390003CC2A /* Resources */ = {
+		AE23238D16F78A17002C2082 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2A440B8E2023BD390003CC2A /* InfoPlist.strings in Resources */,
-				2A440B902023BD390003CC2A /* MPBannerAdDetailViewController.xib in Resources */,
-				2A440B912023BD390003CC2A /* MPInterstitialAdDetailViewController.xib in Resources */,
-				2A440B922023BD390003CC2A /* mopub_logo.png in Resources */,
-				2A440B992023BD390003CC2A /* MPNativeAdDetailViewController.xib in Resources */,
-				2A440B9D2023BD390003CC2A /* icon.png in Resources */,
-				2A440BA12023BD390003CC2A /* MPAdEntryViewController.xib in Resources */,
-				2A440BA22023BD390003CC2A /* icon@2x.png in Resources */,
-				2A440BA42023BD390003CC2A /* Default.png in Resources */,
-				2A440BA52023BD390003CC2A /* Default@2x.png in Resources */,
-				2A440BA72023BD390003CC2A /* Default-568h@2x.png in Resources */,
-				2A440BA92023BD390003CC2A /* white_button.png in Resources */,
-				2A440BAA2023BD390003CC2A /* MPRewardedVideoAdDetailViewController.xib in Resources */,
-				2A440BAE2023BD390003CC2A /* LaunchScreen.storyboard in Resources */,
-				2A440BB22023BD390003CC2A /* MPNativeAdTableHeaderView.xib in Resources */,
+				AE23239D16F78A17002C2082 /* InfoPlist.strings in Resources */,
+				AED9E4CF16F798AF00EA71A7 /* MPBannerAdDetailViewController.xib in Resources */,
+				AE43414A16F9068000B73710 /* MPInterstitialAdDetailViewController.xib in Resources */,
+				2A5874FE1F90341F00E8CDFA /* mopub_logo.png in Resources */,
+				4A6FC1F918C561B3007A1197 /* MPNativeAdDetailViewController.xib in Resources */,
+				AE8E1D451729A76C0051FA6C /* icon.png in Resources */,
+				46DA87B4185010DD00F34858 /* MPAdEntryViewController.xib in Resources */,
+				AE8E1D471729A76F0051FA6C /* icon@2x.png in Resources */,
+				AE8E1D491729A7730051FA6C /* Default.png in Resources */,
+				AE8E1D4B1729A7760051FA6C /* Default@2x.png in Resources */,
+				AE8E1D4D1729A7790051FA6C /* Default-568h@2x.png in Resources */,
+				AE8E1D501729AA460051FA6C /* white_button.png in Resources */,
+				4ADE5FCE1B4FE836004C3673 /* MPRewardedVideoAdDetailViewController.xib in Resources */,
+				2A5874FB1F9033E800E8CDFA /* LaunchScreen.storyboard in Resources */,
+				4A8DD10618C90636005E9389 /* MPNativeAdTableHeaderView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		2A440AB42023BD390003CC2A /* Sources */ = {
+		AE23238B16F78A17002C2082 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2A440BBE2023BD710003CC2A /* MPAdInfo.m in Sources */,
-				2A440BBF2023BD710003CC2A /* MPAdSection.m in Sources */,
-				2A440BC02023BD710003CC2A /* MPAdTableViewController.m in Sources */,
-				2A440BC12023BD710003CC2A /* MPBannerAdDetailViewController.m in Sources */,
-				2A440BC22023BD710003CC2A /* MPMRectBannerAdDetailViewController.m in Sources */,
-				2A440BC32023BD710003CC2A /* MPLeaderboardBannerAdDetailViewController.m in Sources */,
-				2A440BC42023BD710003CC2A /* MPInterstitialAdDetailViewController.m in Sources */,
-				BC343E4D212C92710001C1C1 /* MPViewController.m in Sources */,
-				2A440BC52023BD710003CC2A /* MPRewardedVideoAdDetailViewController.m in Sources */,
-				2A440BC72023BD710003CC2A /* MPAdEntryViewController.m in Sources */,
-				2A440BC82023BD710003CC2A /* MPNativeAdDetailViewController.m in Sources */,
-				2A440BC92023BD710003CC2A /* MPNativeAdPlacerTableViewController.m in Sources */,
-				2A440BCA2023BD710003CC2A /* MPNativeAdPlacerCollectionViewController.m in Sources */,
-				2A440BCB2023BD710003CC2A /* MPNativeAdPlacerPageViewController.m in Sources */,
-				2A440BCC2023BD710003CC2A /* MPNativeVideoTableViewAdPlacerView.m in Sources */,
-				2A440BCD2023BD710003CC2A /* MPTableViewAdPlacerView.m in Sources */,
-				2A440BCE2023BD710003CC2A /* MPIndexPathPickerView.m in Sources */,
-				2A440BCF2023BD710003CC2A /* MPNativeAdTableHeaderView.m in Sources */,
-				2A440BD02023BD710003CC2A /* MPCollectionViewAdPlacerView.m in Sources */,
-				2A440BD12023BD710003CC2A /* MPNativeAdPageView.m in Sources */,
-				2A440BD22023BD710003CC2A /* MPStaticNativeAdView.m in Sources */,
-				2A440BD32023BD710003CC2A /* MPNativeVideoView.m in Sources */,
-				2A440BD42023BD710003CC2A /* AppDelegate.m in Sources */,
-				2A440BD52023BD710003CC2A /* MPSampleAppInstanceProvider.m in Sources */,
-				2A440BD62023BD710003CC2A /* MPAdPersistenceManager.m in Sources */,
-				2A440BD72023BD710003CC2A /* MPSampleAppLogReader.m in Sources */,
-				2A440BD82023BD710003CC2A /* main.m in Sources */,
+				AE23239F16F78A17002C2082 /* main.m in Sources */,
+				AE2323A316F78A17002C2082 /* AppDelegate.m in Sources */,
+				AED9E4BB16F7912900EA71A7 /* MPAdTableViewController.m in Sources */,
+				AED9E4C516F7934900EA71A7 /* MPAdInfo.m in Sources */,
+				AED9E4CC16F7987F00EA71A7 /* MPBannerAdDetailViewController.m in Sources */,
+				AED9E4DE16F7B00100EA71A7 /* MPSampleAppInstanceProvider.m in Sources */,
+				AE43413D16F8EEC500B73710 /* MPAdSection.m in Sources */,
+				AE43414716F9068000B73710 /* MPInterstitialAdDetailViewController.m in Sources */,
+				BCEF09E51F72D6A2004CEBD6 /* MPViewController.m in Sources */,
+				467343F017FE3D6900D68BB6 /* MPAdPersistenceManager.m in Sources */,
+				46F883C917FB7AC5004CE563 /* MPLeaderboardBannerAdDetailViewController.m in Sources */,
+				4ADE5FD01B4FE836004C3673 /* MPRewardedVideoAdDetailViewController.m in Sources */,
+				4A8DD10118C90542005E9389 /* MPTableViewAdPlacerView.m in Sources */,
+				4A62566A19A7B45900ED18C8 /* MPNativeAdPlacerTableViewController.m in Sources */,
+				57C784D61BCC4C6C00E4BB7D /* MPNativeVideoTableViewAdPlacerView.m in Sources */,
+				57FFAB86199C110D00F655CF /* MPCollectionViewAdPlacerView.m in Sources */,
+				4AF797D519A7F9E8007CE34D /* MPNativeAdPlacerCollectionViewController.m in Sources */,
+				4A6FC1F718C561B3007A1197 /* MPNativeAdDetailViewController.m in Sources */,
+				469A15F01AC1F0BA00D6F0EF /* MPSampleAppLogReader.m in Sources */,
+				462E156F17F0F5D100408E17 /* MPMRectBannerAdDetailViewController.m in Sources */,
+				46DA87B1185010DD00F34858 /* MPAdEntryViewController.m in Sources */,
+				571EF4281B7194D60035C9BB /* MPStaticNativeAdView.m in Sources */,
+				577A1FA219AE7EA6006DA28B /* MPNativeAdPageView.m in Sources */,
+				577DF03C19A28786001514D3 /* MPNativeAdPlacerPageViewController.m in Sources */,
+				4A8DD10418C90620005E9389 /* MPNativeAdTableHeaderView.m in Sources */,
+				57C784E91BCC4F4600E4BB7D /* MPNativeVideoView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		BC6FFA7920E2EF5D00FC7FAD /* PBXTargetDependency */ = {
+		BC6A918A216568A000C35DF5 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = MoPubSDKFramework;
-			targetProxy = BC6FFA7820E2EF5D00FC7FAD /* PBXContainerItemProxy */;
+			targetProxy = BC6A9189216568A000C35DF5 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -636,78 +641,6 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		2A440BB52023BD390003CC2A /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ENABLE_MODULES = NO;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = 4S7XS533V3;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/../MoPubSDK/Viewability/MOAT",
-					"$(PROJECT_DIR)/../MoPubSDK",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "MoPubSampleApp-Prefix.pch";
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)/../MoPubSDK/**",
-				);
-				INFOPLIST_FILE = "MoPubSampleApp+Framework-Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/..",
-					"$(PROJECT_DIR)/../MoPubSDK/Viewability/Avid",
-				);
-				OTHER_LDFLAGS = (
-					"-ObjC",
-					"$(inherited)",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.mopub.samples.objc.MoPubSampleAppFramework;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				WRAPPER_EXTENSION = app;
-			};
-			name = Debug;
-		};
-		2A440BB62023BD390003CC2A /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ENABLE_MODULES = NO;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = 4S7XS533V3;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/../MoPubSDK/Viewability/MOAT",
-					"$(PROJECT_DIR)/../MoPubSDK",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "MoPubSampleApp-Prefix.pch";
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)/../MoPubSDK/**",
-				);
-				INFOPLIST_FILE = "MoPubSampleApp+Framework-Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/..",
-					"$(PROJECT_DIR)/../MoPubSDK/Viewability/Avid",
-				);
-				OTHER_LDFLAGS = (
-					"-ObjC",
-					"$(inherited)",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.mopub.samples.objc.MoPubSampleAppFramework;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				WRAPPER_EXTENSION = app;
-			};
-			name = Release;
-		};
 		AE2323AA16F78A17002C2082 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -798,23 +731,94 @@
 			};
 			name = Release;
 		};
+		AE2323AD16F78A17002C2082 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = 4S7XS533V3;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/../MoPubSDK/Viewability/MOAT",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "MoPubSampleApp-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../MoPubSDK/**",
+				);
+				INFOPLIST_FILE = "MoPubSampleApp-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/..",
+					"$(PROJECT_DIR)/../MoPubSDK/Viewability/Avid",
+				);
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"$(inherited)",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.mopub.samples.objc.MoPubSampleApp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		AE2323AE16F78A17002C2082 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = 4S7XS533V3;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/../MoPubSDK/Viewability/MOAT",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "MoPubSampleApp-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../MoPubSDK/**",
+				);
+				INFOPLIST_FILE = "MoPubSampleApp-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/..",
+					"$(PROJECT_DIR)/../MoPubSDK/Viewability/Avid",
+				);
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"$(inherited)",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.mopub.samples.objc.MoPubSampleApp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		2A440BB42023BD390003CC2A /* Build configuration list for PBXNativeTarget "MoPubSampleApp+Framework" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				2A440BB52023BD390003CC2A /* Debug */,
-				2A440BB62023BD390003CC2A /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		AE23238A16F78A17002C2082 /* Build configuration list for PBXProject "MoPubSampleApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				AE2323AA16F78A17002C2082 /* Debug */,
 				AE2323AB16F78A17002C2082 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AE2323AC16F78A17002C2082 /* Build configuration list for PBXNativeTarget "MoPubSampleApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AE2323AD16F78A17002C2082 /* Debug */,
+				AE2323AE16F78A17002C2082 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
